@@ -5,8 +5,13 @@ config = json.load(open('src/config.json'))
 database = config['database']
 
 if os.path.exists(database):
-    os.remove(database)
-    print('[-] Database already exists. Deleting it.')
+    confirm = input('Database already exists. Do you want to delete it and create a new one? (y/[N]): ')
+    if confirm == 'y':
+        os.remove(database)
+        print('[-] Database already exists. Deleting it.')
+    else:
+        print('[-] Exiting.')
+        exit()
 
 conn = sqlite3.connect(database)
 print('[+] Database opened successfully.')
