@@ -1,0 +1,2 @@
+aioHttp
+pyTelegramBotApi
