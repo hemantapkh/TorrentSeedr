@@ -28,15 +28,15 @@ def text(message):
     
     #! Add accounts
     if message.text == language['addAccountBtn'][userLanguage]:
-        addAccount(message)
+        addAccount(message, userLanguage)
     
     #! File manager
     elif message.text == language['fileManagerBtn'][userLanguage]:
-        files(message)
+        files(message, userLanguage)
 
     #! Active torrents
     elif message.text == language['activeTorrentsBtn'][userLanguage]:
-        active(message)
+        active(message, userLanguage)
 
     #! Wishlist
     elif message.text == language['wishlistBtn'][userLanguage]:
@@ -44,7 +44,7 @@ def text(message):
     
     #! Account and profile
     elif message.text == language['accountBtn'][userLanguage]:
-        account(message)
+        account(message, userLanguage)
     
     #! Settings
     elif message.text == language['settingsBtn'][userLanguage]:
@@ -60,7 +60,7 @@ def text(message):
     
     #! Adding torrents
     else:
-        addTorrent(message)
+        addTorrent(message, userLanguage)
     
 #: Polling Bot
 if config['connectionType'] == 'polling':
