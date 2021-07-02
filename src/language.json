@@ -1,0 +1,66 @@
+{
+    "greet":{
+        "english": "Welcome to the seedr bot."
+   
+    },
+
+    "files":{
+        "english": "Files:"
+   
+    },
+
+    "link":{
+        "english": "Link:"
+   
+    },
+
+    "delete":{
+        "english": "Delete:"
+   
+    },
+
+    "addAccountBtn":{
+        "english": "➕ Add Account"
+
+    },
+
+    "fileManagerBtn":{
+        "english": "📂 File Manager"
+
+    },
+
+    "activeTorrentsBtn":{
+        "english": "⌛ Active Torrents"
+    
+    },
+
+    "wishlistBtn":{
+        "english": "⭐ Wishlist"
+    
+    },
+
+    "accountBtn":{
+        "english": "👤 Account"
+    
+    },
+
+    "switchBtn":{
+        "english": "🔃 Switch"
+    
+    },
+
+    "settingsBtn":{
+        "english": "⚙️ Settings"
+    
+    },
+
+    "helpBtn":{
+        "english": "⁉️ Help"
+    
+    },
+
+    "supportBtn":{ 
+        "english": "🎁 Support"
+    
+    }
+}
