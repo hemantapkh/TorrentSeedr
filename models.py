@@ -101,12 +101,10 @@ class dbQuery():
         #!? If the seedrId not on the table, insert new
         if cursor.execute(f'SELECT * FROM accounts WHERE ownerId={userId} AND accountId="{accountId}"').fetchone() == None:
             cursor.execute(f'INSERT INTO accounts (accountId, ownerId, userName, email, password, cookie) VALUES ({accountId},{userId},"{userName}","{email}", "{password}", "{cookie}")')
-            accountId = cursor.lastrowid
             con.commit()
 
         #!? If the accountId is already on the table, update the cookie
         else:
-            accountId = cursor.execute(f'SELECT * FROM accounts WHERE ownerId={userId} AND accountId="{accountId}"').fetchone()[0]
             cursor.execute(f'UPDATE accounts SET cookie="{cookie}" WHERE accountId={accountId} AND ownerId={userId}')
             con.commit()
 

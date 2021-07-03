@@ -32,7 +32,9 @@ conn.execute('''CREATE TABLE settings
 print('[+] Table settings created successfully.')
 
 conn.execute('''CREATE TABLE accounts
-         (accountId INTEGER PRIMARY KEY,
+         (
+         id         INTEGER PRIMARY KEY AUTOINCREMENT,
+         accountId INTEGER  NOT NULL,
          ownerId    INTEGER NOT NULL,
          userName   TEXT    NOT NULL,
          email      TEXT    NOT NULL,
