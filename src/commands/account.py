@@ -1,8 +1,7 @@
 from src.objs import *
 from src.functions.bars import spaceBar
 from src.functions.convert import convertSize
-from src.functions.exceptions import exceptions
-from src.functions.keyboard import mainReplyKeyboard
+from src.functions.exceptions import exceptions, noAccount
 
 #: View account profile, add new accounts and remove existing accounts
 @bot.message_handler(commands=['account'])
@@ -31,4 +30,4 @@ def account(message, userLanguage=None):
     
     #! If no accounts
     else:
-        bot.send_message(message.chat.id, language['noAccount'][userLanguage], reply_markup=mainReplyKeyboard(userId, userLanguage))
+        noAccount(message, userLanguage)

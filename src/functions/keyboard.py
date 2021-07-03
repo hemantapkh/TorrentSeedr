@@ -22,8 +22,8 @@ def mainReplyKeyboard(userId, userLanguage):
         keyboard.row(button5, button6, button7)
     
     else:
-        keyboard.row(button10, button1, button2) if len(account) > 1 else keyboard.row(button1, button2)
-        keyboard.row(button3, button4)
+        keyboard.row(button1, button2)
+        keyboard.row(button10, button3, button4) if len(account) > 1 else keyboard.row(button3, button4)
         keyboard.row(button5, button6, button7)
 
     return keyboard

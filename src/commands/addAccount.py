@@ -7,7 +7,7 @@ def addAccount(message, userLanguage=None):
 
     markup = telebot.types.InlineKeyboardMarkup()
     
-    markup.add(telebot.types.InlineKeyboardButton(text=language['login'][userLanguage], url='https://torrentseedrbot.herokuapp.com'),
-        telebot.types.InlineKeyboardButton(text=language['signup'][userLanguage], url='https://torrentseedrbot.herokuapp.com'))
+    markup.add(telebot.types.InlineKeyboardButton(text=language['login'][userLanguage], url='https://torrentseedrbot.herokuapp.com/login'),
+        telebot.types.InlineKeyboardButton(text=language['signup'][userLanguage], url='https://torrentseedrbot.herokuapp.com/signup'))
 
     bot.send_message(message.from_user.id, language['addAccount'][userLanguage], reply_markup=markup, disable_web_page_preview=True)
