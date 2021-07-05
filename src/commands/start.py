@@ -31,7 +31,7 @@ def start(message):
 #: Account login
 def login(sent, userLanguage, data):
     userId = sent.chat.id
-    bot.edit_message_text(language['loggingIn'], chat_id=sent.chat.id, message_id=sent.id)
+    bot.edit_message_text(language['loggingIn'][userLanguage], chat_id=sent.chat.id, message_id=sent.id)
     
     response = seedrAc.login(data['email'], data['password'], data['captchaResponse'])
     cookies = requests.utils.dict_from_cookiejar(response.cookies)
@@ -39,7 +39,7 @@ def login(sent, userLanguage, data):
 
     #! If account logged in successfully
     if 'remember' in cookies:
-        dbSql.setAccount(userId, accountId=response['user_id'], userName=response['userusername'], email=data['email'], password=data['password'], cookie=f"remember={cookies['remember']}")
+        dbSql.setAccount(userId, accountId=response['user_id'], userName=response['username'], email=data['email'], password=data['password'], cookie=f"remember={cookies['remember']}")
         bot.send_message(sent.chat.id, language['loggedInAs'][userLanguage].format(response['username']), reply_markup=mainReplyKeyboard(userId, userLanguage))
     
     else:
