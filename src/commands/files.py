@@ -2,13 +2,14 @@ from src.objs import *
 from src.functions.convert import convertSize
 from src.functions.exceptions import exceptions, noAccount
 
+#: File manager
 @bot.message_handler(commands=['files'])
 def files(message, userLanguage=None):
     userId = message.from_user.id
     userLanguage = userLanguage or dbSql.getSetting(userId, 'language')
     ac = dbSql.getDefaultAc(userId)
 
-    #! If user has account
+    #! If user has an account
     if ac:
         account = Seedr(cookie=ac['cookie'])
         response = account.listContents().json()

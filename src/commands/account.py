@@ -10,12 +10,12 @@ def account(message, userLanguage=None):
     userLanguage = userLanguage or dbSql.getSetting(userId, 'language')
     ac = dbSql.getDefaultAc(userId)
 
-    #! If user has account
+    #! If user has an account
     if ac:
         account = Seedr(cookie=ac['cookie'])
         response = account.getSettings().json()
 
-        #!? On success
+        #! On success
         if response['result'] == True:
             text = f"<b>{language['accountBtn'][userLanguage]}</b>\n\n{language['username'][userLanguage]} {response['account']['username']}\n{language['email'][userLanguage]} {response['account']['email']}\n{language['totalBandwidthUsed'][userLanguage]} {convertSize(response['account']['bandwidth_used'])}\n{language['country'][userLanguage]} {response['country']}\n"
             text += f"{language['inviteLink'][userLanguage]} https://www.seedr.cc/?r={response['account']['user_id']} \n{language['inviteRemaining'][userLanguage]} {response['account']['invites']} / {response['account']['max_invites']}\n{language['inviteAccepted'][userLanguage]} {response['account']['invites_accepted']}"

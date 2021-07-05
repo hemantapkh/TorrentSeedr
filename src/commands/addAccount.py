@@ -1,5 +1,6 @@
 from src.objs import *
 
+#: Login or signup seedr account
 @bot.message_handler(commands=['add'])
 def addAccount(message, userLanguage=None):
     userId = message.from_user.id

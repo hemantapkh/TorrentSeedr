@@ -100,23 +100,24 @@ class dbQuery():
             
         #!? If the seedrId not on the table, insert new
         if cursor.execute(f'SELECT * FROM accounts WHERE ownerId={userId} AND accountId="{accountId}"').fetchone() == None:
-            cursor.execute(f'INSERT INTO accounts (accountId, ownerId, userName, email, password, cookie) VALUES ({accountId},{userId},"{userName}","{email}", "{password}", "{cookie}")')
+            id = cursor.execute(f'INSERT INTO accounts (accountId, ownerId, userName, email, password, cookie) VALUES ({accountId},{userId},"{userName}","{email}", "{password}", "{cookie}")').lastrowid
             con.commit()
 
         #!? If the accountId is already on the table, update the cookie
         else:
-            cursor.execute(f'UPDATE accounts SET cookie="{cookie}" WHERE accountId={accountId} AND ownerId={userId}')
+            cursor.execute(f'UPDATE accounts SET cookie="{cookie}" WHERE ownerId={userId} AND accountId={accountId}')
+            id = cursor.execute(f'SELECT id FROM accounts WHERE ownerID={userId} AND accountId="{accountId}"').fetchone()[0]
             con.commit()
 
         #!? Set the added account as the default account
-        self.setDefaultAc(userId, accountId)
+        self.setDefaultAc(userId, id)
     
     #: Delete a user's account
     def deleteAccount(self, userId, accountId):
         con = sqlite3.connect(self.db)
         cur = con.cursor()
         defaultAcId = self.getSetting(userId, 'defaultAcId')
-        cur.execute(f'DELETE FROM accounts WHERE ownerId={userId} AND accountId={accountId}')
+        cur.execute(f'DELETE FROM accounts WHERE ownerId={userId} AND id={accountId}')
         con.commit()
 
         #!? If the deleted account is the default account, set another account as a default account
@@ -149,7 +150,7 @@ class dbQuery():
 
         #!? If defaultAcId, return the account
         if defaultAcId:
-            account = cur.execute(f'SELECT * FROM accounts WHERE ownerId={userId} AND accountId={defaultAcId}').fetchone()
+            account = cur.execute(f'SELECT * FROM accounts WHERE ownerId={userId} AND id={defaultAcId}').fetchone()
             con.commit()
 
             return account      

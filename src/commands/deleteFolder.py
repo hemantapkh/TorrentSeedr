@@ -1,7 +1,7 @@
 from src.objs import *
 from src.functions.exceptions import exceptions, noAccount
 
-# Delete folder
+#: Delete folder
 @bot.message_handler(func=lambda message: message.text and message.text[:8] == '/delete_')
 def deleteFolder(message):
     userId = message.from_user.id
@@ -16,7 +16,7 @@ def deleteFolder(message):
         id = message.text[8:]
         response = account.deleteFolder(id).json()
 
-        #!? If folder is deleted successfully
+        #! If folder is deleted successfully
         if response['result'] == True:
             bot.edit_message_text(text=language['deletedSuccessfully'], chat_id=message.chat.id, message_id=sent.id)
 

@@ -1,14 +1,14 @@
 from src.objs import *
 from src.functions.exceptions import exceptions, noAccount
 
-# Cancel active downloads
+#: Cancel active downloads
 @bot.message_handler(func=lambda message: message.text and message.text[:8] == '/cancel_')
 def cancelDownload(message):
     userId = message.from_user.id
     userLanguage = dbSql.getSetting(userId, 'language')
     ac = dbSql.getDefaultAc(userId)
 
-    #! If user has account
+    #! If user has an account
     if ac:
         account = Seedr(cookie=ac['cookie'])
 
@@ -16,7 +16,7 @@ def cancelDownload(message):
         id = message.text[8:]
         response = account.deleteTorrent(id).json()
 
-        #!? If torrent cancelled successfully
+        #! If torrent cancelled successfully
         if response['result'] == True:
             bot.edit_message_text(text=language['cancelled'][userLanguage], chat_id=message.chat.id, message_id=sent.id)
 
