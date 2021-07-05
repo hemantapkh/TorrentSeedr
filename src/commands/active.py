@@ -30,7 +30,7 @@ def active(message, userLanguage=None):
                         for warning in warnings:
                             text += f"\n⚠️ {warning.capitalize()}"
                     
-                    text += f"\n{progressBar(i['progress'])}\n\nCancel: /cancel_{i['id']}\n\n"
+                    text += f"\n{progressBar(i['progress'])}\n\n{language['cancel'][userLanguage]} /cancel_{i['id']}\n\n"
 
                 bot.send_message(message.chat.id, text)
     
