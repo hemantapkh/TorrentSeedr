@@ -5,6 +5,7 @@ from src.commands.files import files
 from src.commands.active import active 
 from src.commands.account import account
 from src.commands.getLink import getLink
+from src.commands.fileLink import fileLink
 from src.commands.getFiles import getFiles
 from src.commands.addAccount import addAccount
 from src.commands.addTorrent import addTorrent
