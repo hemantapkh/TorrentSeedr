@@ -8,7 +8,7 @@ def deleteFolder(message):
     userLanguage = dbSql.getSetting(userId, 'language')
     ac = dbSql.getDefaultAc(userId)
 
-    #! If user has account
+    #! If user has an account
     if ac:
         account = Seedr(cookie=ac['cookie'])
 

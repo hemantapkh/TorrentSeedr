@@ -1,0 +1,271 @@
+{
+    "greet":{
+        "english": "👋 Welcome to the seedr bot."
+   
+    },
+
+    "processing":{
+        "english": "↺ Processing your request. Please wait a moment."
+   
+    },
+
+    "loggingIn":{
+        "english": "⟳ Logging in"
+   
+    },
+
+    "loggedInAs":{
+        "english": "💫 Successfully logged in as {}."
+   
+    },
+
+    "captchaFailled":{
+        "english": "⚠️ Captcha verification failed. Please try again."
+   
+    },
+
+    "incorrectPassword":{
+        "english": "⚠️ The email and password do not match. Please try again."
+   
+    },
+
+    "unknwonError":{
+        "english": "⚠️ Unknown error occured. I have reported this to admin."
+   
+    },
+
+    "addAccount":{
+        "english": "➕ You must have an account on seedr.cc to use this bot. If you already have an account, click on the <b>⤵️ Login</b> button below to add your account.\n\nIf you don't have an account, please create an account by clicking on the <b>⤴️ Signup</b> button below."
+    },
+
+    "cancellingDownload":{
+        "english": "❌ Cancelling download"
+    },
+
+    "cancelledSuccessfully":{
+        "english": "🙌 The selected download is cancelled."
+    },
+
+    "removingFile":{
+        "english": "❌ Removing file"
+    },
+
+    "removedSuccessfully":{
+        "english": "🙌 The selected file is removed successfully from the folder."
+    },
+
+    "deletingFolder":{
+        "english": "❌  Deleting folder"
+   
+    },
+
+    "deletedSuccessfully":{
+        "english": "🙌  The selected folder is deleted successfully."
+   
+    },
+
+    "collectingInfo":{
+        "english": "🔄 Collecting torrent information"
+    },
+
+    "alreadyDownloading":{
+        "english": "🥴 The torrent is already downloading. Please see the status in active torrents list or by clicking /active."
+    },
+
+    "downloadFinishedIn":{
+        "english": "<code>🥂 Torrent downloaded successfully [{}]</code>"
+    },
+
+    "collectingSeeds":{
+        "english": "🔄 Collecting seeds"
+    },
+
+    "delayWhileCollectingSeeds":{
+        "english": "😴 Taking too much time to collect seeds. Please see the status in active torrents list or by clicking /active."
+    },
+
+    "delayWhileDownloading":{
+        "english": "😴 Taking too much time to download. Please see the status in active torrents list or by clicking /active."
+    },
+
+    "delayWhileCopying":{
+        "english": "😴 Taking too much time to copy the torrent. Please see the status in active torrents list or by clicking /active."
+    },
+
+    "copyingToFolder":{
+        "english": "🔄 Copying to folder"
+    },
+
+    "fetchingLink":{
+        "english": "🪝 Fetching download link"
+    },
+
+
+    "fetchingFiles":{
+        "english": "🪝 Fetching files"
+    },
+
+    "noAccount":{
+        "english": "⚠️ You don't have any account logged in."
+    },
+
+    "noEnoughSpace":{
+        "english": "⚠️ You don't have enough space to download this torrent. Please remove the files and try again."
+    },
+
+    "invalidMagnet":{
+        "english": "⚠️ Invalid magnet link. Please use @TorrentHuntBot to get the link of your desired torrent."
+    },
+
+    "parallelDownloadExceed":{
+        "english": "⚠️ Maximum parrallel download exceed for you account. Please cancel the active torrent or wait for the previous download to complete."
+    },
+
+    "noFiles":{
+        "english": "🤷‍♂️ You don't have any files. Please send me the magnet link or torrent file to download."
+    },
+
+    "noActiveTorrents":{
+        "english": "🤝 You don't have any active torrents."
+    },
+
+    "loginRequired":{
+        "english": "😬 Your cookie has expired. Please verify your account by clicking the button below."
+    },
+
+    "files":{
+        "english": "Files:"
+   
+    },
+
+    "link":{
+        "english": "Link:"
+   
+    },
+
+    "delete":{
+        "english": "Delete:"
+   
+    },
+
+    "cancel":{
+        "english": "Cancel:"
+   
+    },
+
+    "size":{
+        "english": "Size:"
+   
+    },
+
+    "torrentQuality":{
+        "english": "Torrent Quality:"
+   
+    },
+
+    "connectedTo":{
+        "english": "Connected To:"
+   
+    },
+
+    "seeders":{
+        "english": "Seeders:"
+   
+    },
+
+    "leechers":{
+        "english": "Leechers:"
+   
+    },
+
+    "downloadingFrom":{
+        "english": "Downloading From:"
+   
+    },
+
+    "uploadingTo":{
+        "english": "Uploading To:"
+   
+    },
+
+    "username":{
+        "english": "Username:"
+    },
+
+    "email":{
+        "english": "Email:"
+    },
+
+    "totalBandwidthUsed":{
+        "english": "Total bandwidth used:"
+    },
+
+    "country":{
+        "english": "Country:"
+    },
+
+    "inviteLink":{
+        "english": "Invite Link:"
+    },
+
+    "inviteRemaining":{
+        "english": "Invite Remaining:"
+    },
+
+    "inviteAccepted":{
+        "english": "Invite Accepted:"
+    },
+
+    "loginBtn": {
+        "english": "⤵️ Login"
+    },
+
+    "signupBtn":{
+        "english": "⤴️ Signup"
+    },
+
+    "addAccountBtn":{
+        "english": "➕ Add Account"
+
+    },
+
+    "fileManagerBtn":{
+        "english": "📂 File Manager"
+
+    },
+
+    "activeTorrentsBtn":{
+        "english": "⌛ Active Torrents"
+    
+    },
+
+    "wishlistBtn":{
+        "english": "⭐ Wishlist"
+    
+    },
+
+    "accountBtn":{
+        "english": "👤 Account"
+    
+    },
+
+    "switchBtn":{
+        "english": "🔃 Switch"
+    
+    },
+
+    "settingsBtn":{
+        "english": "⚙️ Settings"
+    
+    },
+
+    "helpBtn":{
+        "english": "⁉️ Help"
+    
+    },
+
+    "supportBtn":{ 
+        "english": "🎁 Support"
+    
+    }
+}

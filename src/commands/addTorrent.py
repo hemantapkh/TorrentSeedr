@@ -126,15 +126,19 @@ def addTorrent(message, userLanguage):
 
         #! If no enough space
         elif response['result'] == 'not_enough_space_added_to_wishlist':
-            bot.send_message(chat_id=message.chat.id, text=language['noSpace'][userLanguage])
+            bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=language['noSpace'][userLanguage])
 
         #! Invalid magnet link
         elif response['result'] == 'parsing_error':
-            bot.send_message(chat_id=message.chat.id, text=language['invalidMagnet'][userLanguage])
+            bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=language['invalidMagnet'][userLanguage])
         
         #! If parallel downloads exceeds
         elif response['result'] == 'queue_full_added_to_wishlist':
-            bot.send_message(chat_id=message.chat.id, text=language['parallelDownloadExceed'][userLanguage])
+            bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=language['parallelDownloadExceed'][userLanguage])
+
+        #! If the torrent is already downloading
+        elif response == {'result': True}:
+            bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=language['alreadyDownloading'][userLanguage])
         
         else:
             exceptions(message, response, userLanguage)
