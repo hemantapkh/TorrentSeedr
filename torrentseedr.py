@@ -39,6 +39,10 @@ def text(message):
     elif message.text == language['activeTorrentsBtn'][userLanguage]:
         active(message, userLanguage)
 
+    #! Switch accounts
+    elif message.text == language['switchBtn'][userLanguage]:
+        switch(message, userLanguage)
+
     #! Wishlist
     elif message.text == language['wishlistBtn'][userLanguage]:
         pass

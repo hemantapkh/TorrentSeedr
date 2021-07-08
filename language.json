@@ -109,6 +109,10 @@
         "english": "⚠️ You don't have any account logged in."
     },
 
+    "noMultipleAccounts":{
+        "english": "⚠️ You don't have multiple accounts to switch."
+    },
+
     "noEnoughSpace":{
         "english": "⚠️ You don't have enough space to download this torrent. Please remove the files and try again."
     },

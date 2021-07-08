@@ -2,7 +2,8 @@ from src.objs import config, dbSql
 from src.objs import bot, language
 from src.commands.start import start
 from src.commands.files import files
-from src.commands.active import active 
+from src.commands.active import active
+from src.commands.switch import switch
 from src.commands.account import account
 from src.commands.getLink import getLink
 from src.commands.fileLink import fileLink

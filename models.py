@@ -135,6 +135,7 @@ class dbQuery():
     #: Gel all accounts of certain user
     def getAccounts(self, userId):
         con = sqlite3.connect(self.db)
+        con.row_factory = dict_factory
         cur = con.cursor()
         accounts = cur.execute(f'SELECT * FROM accounts WHERE ownerId={userId}').fetchall()
         con.commit()
