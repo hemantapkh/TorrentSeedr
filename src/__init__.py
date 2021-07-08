@@ -8,6 +8,7 @@ from src.commands.account import account
 from src.commands.getLink import getLink
 from src.commands.fileLink import fileLink
 from src.commands.getFiles import getFiles
+from src.commands.broadcast import broadcast
 from src.commands.addAccount import addAccount
 from src.commands.addTorrent import addTorrent
 from src.commands.removeFile import removeFile
