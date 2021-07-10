@@ -142,6 +142,16 @@ class dbQuery():
 
         return accounts if accounts else None
 
+    #: Gel certain account of a user
+    def getAccount(self, userId, accountId):
+        con = sqlite3.connect(self.db)
+        con.row_factory = dict_factory
+        cur = con.cursor()
+        accounts = cur.execute(f'SELECT * FROM accounts WHERE ownerId={userId} and id={accountId}').fetchone()
+        con.commit()
+
+        return accounts if accounts else None
+
     #: Get the default account of the user
     def getDefaultAc(self, userId):
         con = sqlite3.connect(self.db)

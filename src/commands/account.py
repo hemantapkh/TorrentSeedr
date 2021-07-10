@@ -17,13 +17,19 @@ def account(message, userLanguage=None):
 
         #! On success
         if response['result'] == True:
-            text = f"<b>{language['accountBtn'][userLanguage]}</b>\n\n{language['username'][userLanguage]} {response['account']['username']}\n{language['email'][userLanguage]} {response['account']['email']}\n{language['totalBandwidthUsed'][userLanguage]} {convertSize(response['account']['bandwidth_used'])}\n{language['country'][userLanguage]} {response['country']}\n"
-            text += f"{language['inviteLink'][userLanguage]} https://www.seedr.cc/?r={response['account']['user_id']} \n{language['inviteRemaining'][userLanguage]} {response['account']['invites']} / {response['account']['max_invites']}\n{language['inviteAccepted'][userLanguage]} {response['account']['invites_accepted']}"
+            text = f"<b>{language['accountBtn'][userLanguage]}</b>\n\n{language['username'][userLanguage]} {response['account']['username']}\n{language['totalBandwidthUsed'][userLanguage]} {convertSize(response['account']['bandwidth_used'])}\n{language['country'][userLanguage]} {response['country']}\n"
+            text += f"{language['inviteLink'][userLanguage]} seedr.cc/?r={response['account']['user_id']} \n{language['inviteRemaining'][userLanguage]} {response['account']['invites']} / {response['account']['max_invites']}\n{language['inviteAccepted'][userLanguage]} {response['account']['invites_accepted']}"
             
             text += f"\n\n{convertSize(response['account']['space_used'])} / {convertSize(response['account']['space_max'])}"
             text += f"\n{spaceBar(totalSpace=response['account']['space_max'], spaceUsed=response['account']['space_used'])}"
+
+            markup = telebot.types.InlineKeyboardMarkup()
+
+            markup.add(telebot.types.InlineKeyboardButton(text=language['credintialsBtn'][userLanguage], callback_data=f"viewCredintials_{ac['id']}"))
+            markup.add(telebot.types.InlineKeyboardButton(text=language['removeAccountBtn'][userLanguage], callback_data=f"removeAccount_{ac['id']}"))
+            markup.add(telebot.types.InlineKeyboardButton(text=language['loginBtn'][userLanguage], url='https://torrentseedrbot.herokuapp.com/login'), telebot.types.InlineKeyboardButton(text=language['signupBtn'][userLanguage], url='https://torrentseedrbot.herokuapp.com/signup'))
             
-            bot.send_message(message.chat.id, text, disable_web_page_preview=True)
+            bot.send_message(message.chat.id, text, disable_web_page_preview=True, reply_markup=markup)
                 
         else:
             exceptions(message, response, userLanguage)

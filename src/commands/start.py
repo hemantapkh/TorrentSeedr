@@ -40,7 +40,7 @@ def login(sent, userLanguage, data):
     #! If account logged in successfully
     if 'remember' in cookies:
         dbSql.setAccount(userId, accountId=response['user_id'], userName=response['username'], email=data['email'], password=data['password'], cookie=f"remember={cookies['remember']}")
-        bot.send_message(sent.chat.id, language['loggedInAs'][userLanguage].format(response['username']), reply_markup=mainReplyKeyboard(userId, userLanguage))
+        bot.edit_message_text(chat_id=sent.chat.id, message_id=sent.id, text=language['loggedInAs'][userLanguage].format(response['username']), reply_markup=mainReplyKeyboard(userId, userLanguage))
     
     else:
         #! Captcha failed
