@@ -2,7 +2,7 @@
 def progressBar(progress):
     bars = int(float(progress)) // 5
 
-    return f"{'█'*bars}{(20-bars)*'░'} {round(float(progress), 2)}%"
+    return f"{'▣'*bars}{(20-bars)*'▢'} {round(float(progress), 2)}%"
 
 #: Account space bar
 def spaceBar(totalSpace, spaceUsed):
