@@ -25,7 +25,7 @@ def account(message, userLanguage=None):
 
             markup = telebot.types.InlineKeyboardMarkup()
 
-            markup.add(telebot.types.InlineKeyboardButton(text=language['credintialsBtn'][userLanguage], callback_data=f"viewCredintials_{ac['id']}"))
+            #markup.add(telebot.types.InlineKeyboardButton(text=language['credentialsBtn'][userLanguage], callback_data=f"viewCredintials_{ac['id']}"))
             markup.add(telebot.types.InlineKeyboardButton(text=language['removeAccountBtn'][userLanguage], callback_data=f"removeAccount_{ac['id']}"))
             markup.add(telebot.types.InlineKeyboardButton(text=language['loginBtn'][userLanguage], url='https://torrentseedrbot.herokuapp.com/login'), telebot.types.InlineKeyboardButton(text=language['signupBtn'][userLanguage], url='https://torrentseedrbot.herokuapp.com/signup'))
             

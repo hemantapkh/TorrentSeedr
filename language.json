@@ -233,12 +233,12 @@
         "english": "⤴️ Signup"
     },
 
-    "credintialsBtn":{
-        "english": "📒 Credintials"
+    "credentialsBtn":{
+        "english": "📒 Credentials"
     },
 
-    "credintialsNotFound":{
-        "english": "⚠️ Login credintial not found."
+    "credentialsNotFound":{
+        "english": "⚠️ Login credential not found."
     },
 
     "addAccountBtn":{

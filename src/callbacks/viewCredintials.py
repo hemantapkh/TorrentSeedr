@@ -8,7 +8,7 @@ def viewCredintials(call):
     credintals = dbSql.getAccount(userId, accountId)
 
     if credintals:
-        bot.answer_callback_query(call.id, text=f"{language['credintialsBtn'][userLanguage]}\n\n{language['email'][userLanguage]} {credintals['email']}\n\nPassword: {credintals['password']}", show_alert=True)
+        bot.answer_callback_query(call.id, text=f"{language['credentialsBtn'][userLanguage]}\n\n{language['email'][userLanguage]} {credintals['email']}\n\nPassword: {credintals['password']}", show_alert=True)
     
     else:
-        bot.edit_message_text(language['credintialsNotFound'][userLanguage], chat_id=call.message.chat.id, message_id=call.message.id)
+        bot.edit_message_text(language['credentialsNotFound'][userLanguage], chat_id=call.message.chat.id, message_id=call.message.id)
