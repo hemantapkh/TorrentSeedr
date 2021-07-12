@@ -1,5 +1,6 @@
 import requests, json
 from src.objs import *
+from src.functions.floodControl import floodControl
 from src.functions.keyboard import mainReplyKeyboard
 
 # Start handler
@@ -9,24 +10,26 @@ def start(message):
     params = message.text.split()[1] if len(message.text.split()) > 1 else None
     
     userLanguage = dbSql.getSetting(userId, 'language')
-    if not params:
-        bot.send_message(message.chat.id, text=language['greet'][userLanguage], reply_markup=mainReplyKeyboard(userId, userLanguage))
 
-    #! If start paramater is passed
-    if params:
-        sent = bot.send_message(message.chat.id, text=language['processing'][userLanguage])
-        data = requests.get(f"https://torrentseedrbot.herokuapp.com/getdata?key={config['databaseKey']}&id={params}")
-        data = json.loads(data.content)
+    if floodControl(message, userLanguage):
+        if not params:
+            bot.send_message(message.chat.id, text=language['greet'][userLanguage], reply_markup=mainReplyKeyboard(userId, userLanguage))
 
-        if data['status'] == 'success':
-            data = json.loads(data['data'])
+        #! If start paramater is passed
+        if params:
+            sent = bot.send_message(message.chat.id, text=language['processing'][userLanguage])
+            data = requests.get(f"https://torrentseedrbot.herokuapp.com/getdata?key={config['databaseKey']}&id={params}")
+            data = json.loads(data.content)
+
+            if data['status'] == 'success':
+                data = json.loads(data['data'])
+                
+                #! Login new account
+                if data['type'] == 'login':
+                    login(sent, userLanguage, data)
             
-            #! Login new account
-            if data['type'] == 'login':
-                login(sent, userLanguage, data)
-        
-        else:
-            print(data)
+            else:
+                print(data)
 
 #: Account login
 def login(sent, userLanguage, data):

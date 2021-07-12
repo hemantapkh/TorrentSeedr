@@ -1,4 +1,5 @@
 from src.objs import *
+from src.functions.floodControl import floodControl
 from src.functions.exceptions import exceptions, noAccount
 
 #: Get download link of torrents
@@ -6,24 +7,26 @@ from src.functions.exceptions import exceptions, noAccount
 def getLink(message):
     userId = message.from_user.id
     userLanguage = dbSql.getSetting(userId, 'language')
-    ac = dbSql.getDefaultAc(userId)
 
-    #! If user has an account
-    if ac:
-        id = message.text[9:]
-        account = Seedr(cookie=ac['cookie'])
+    if floodControl(message, userLanguage):
+        ac = dbSql.getDefaultAc(userId)
 
-        sent = bot.send_message(message.chat.id, language['fetchingLink'][userLanguage])
-        response = account.createArchive(id).json()
+        #! If user has an account
+        if ac:
+            id = message.text[9:]
+            account = Seedr(cookie=ac['cookie'])
 
-        #! If download link found
-        if 'archive_url' in response:
-            text = f"🔗 {response['archive_url']}\n\n<b>🔥via @TorrentSeedrBot</b>"
-            bot.edit_message_text(text=text, chat_id=message.chat.id, message_id=sent.id)
+            sent = bot.send_message(message.chat.id, language['fetchingLink'][userLanguage])
+            response = account.createArchive(id).json()
+
+            #! If download link found
+            if 'archive_url' in response:
+                text = f"🔗 {response['archive_url']}\n\n<b>🔥via @TorrentSeedrBot</b>"
+                bot.edit_message_text(text=text, chat_id=message.chat.id, message_id=sent.id)
+            
+            else:
+                exceptions(message, response, userLanguage)
         
+        #! If no accounts
         else:
-            exceptions(message, response, userLanguage)
-    
-    #! If no accounts
-    else:
-        noAccount(message, userLanguage)
+            noAccount(message, userLanguage)

@@ -9,7 +9,7 @@ def broadcast(message):
         bot.register_next_step_handler(sent, broadcast2)
     else:
         userLanguage = dbSql.getSetting(message.from_user.id, 'language')
-        bot.send_message(chat_id=message.chat.id, text=language['noPermission'][userLanguage])
+        bot.send_message(chat_id=message.chat.id, text="⚠️ You don't have permission to use this command.")
     
 def broadcast2(message):
     if message.text == '/cancel':

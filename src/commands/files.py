@@ -1,4 +1,5 @@
 from src.objs import *
+from src.functions.floodControl import floodControl
 from src.functions.convert import convertSize
 from src.functions.exceptions import exceptions, noAccount
 
@@ -7,30 +8,32 @@ from src.functions.exceptions import exceptions, noAccount
 def files(message, userLanguage=None):
     userId = message.from_user.id
     userLanguage = userLanguage or dbSql.getSetting(userId, 'language')
-    ac = dbSql.getDefaultAc(userId)
 
-    #! If user has an account
-    if ac:
-        account = Seedr(cookie=ac['cookie'])
-        response = account.listContents().json()
-        
-        if 'result' not in response:
-            #! If user has files
-            if response['folders']:
-                text = ''
+    if floodControl(message, userLanguage):
+        ac = dbSql.getDefaultAc(userId)
 
-                for i in response['folders']:
-                    text += f"<b>📂 {i['fullname']}</b>\n\n💾 {convertSize(i['size'])}B, ⏰ {i['last_update']}"
-                    text += f"\n\n{language['files'][userLanguage]} /getFiles_{i['id']}\n{language['link'][userLanguage]} /getLink_{i['id']}\n{language['delete'][userLanguage]} /delete_{i['id']}\n\n"
-
-                bot.send_message(message.chat.id, text)
+        #! If user has an account
+        if ac:
+            account = Seedr(cookie=ac['cookie'])
+            response = account.listContents().json()
             
-            #! If user has no files
+            if 'result' not in response:
+                #! If user has files
+                if response['folders']:
+                    text = ''
+
+                    for i in response['folders']:
+                        text += f"<b>📂 {i['fullname']}</b>\n\n💾 {convertSize(i['size'])}B, ⏰ {i['last_update']}"
+                        text += f"\n\n{language['files'][userLanguage]} /getFiles_{i['id']}\n{language['link'][userLanguage]} /getLink_{i['id']}\n{language['delete'][userLanguage]} /delete_{i['id']}\n\n"
+
+                    bot.send_message(message.chat.id, text)
+                
+                #! If user has no files
+                else:
+                    bot.send_message(message.chat.id, language['noFiles'][userLanguage])
             else:
-                bot.send_message(message.chat.id, language['noFiles'][userLanguage])
+                exceptions(message, response, userLanguage)
+        
+        #! If no accounts
         else:
-            exceptions(message, response, userLanguage)
-    
-    #! If no accounts
-    else:
-        noAccount(message, userLanguage)
+            noAccount(message, userLanguage)

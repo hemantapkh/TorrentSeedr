@@ -43,3 +43,12 @@ conn.execute('''CREATE TABLE accounts
          );''')
          
 print('[+] Table accounts created successfully.')
+
+conn.execute('''CREATE TABLE flood
+         (ownerId       INTEGER PRIMARY KEY,
+         warned         INTEGER DEFAULT 0,
+         lastMessage   INTEGER DEFAULT 0,
+         blockTill     INTEGER DEFAULT 0
+         );''')
+         
+print('[+] Table flood created successfully.')

@@ -39,6 +39,16 @@
    
     },
 
+    "warningTooFast":{
+        "english": "🛑 You are seding messages too fast. Please slowdown or you may get banned."
+   
+    },
+
+    "blockedTooFast":{
+        "english": "⛔ You have been banned for 5 minutes for spamming the bot."
+   
+    },
+
     "addAccount":{
         "english": "➕ You must have an account on seedr.cc to use this bot. If you already have an account, click on the <b>⤵️ Login</b> button below to add your account.\n\nIf you don't have an account, please create an account by clicking on the <b>⤴️ Signup</b> button below."
     },
