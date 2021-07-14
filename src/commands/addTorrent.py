@@ -1,4 +1,4 @@
-import requests
+import requests, asyncio
 from time import time, sleep
 
 from src.objs import *
@@ -8,7 +8,7 @@ from src.functions.convert import convertSize, convertTime
 from src.functions.exceptions import exceptions, noAccount
 
 #: Add torrent into the user's account
-def addTorrent(message, userLanguage):
+async def addTorrent(message, userLanguage):
     userId = message.from_user.id
 
     if floodControl(message, userLanguage):
@@ -52,7 +52,8 @@ def addTorrent(message, userLanguage):
                             break
                         
                         #! Increase the amount of sleep in each iteration
-                        sleep(i)
+                        #sleep(i)
+                        await asyncio.sleep(i)
                         
                     #! If seeds collected successfully
                     if 'title' in progressResponse:
@@ -87,7 +88,8 @@ def addTorrent(message, userLanguage):
                                         
                                         break
                                     else:
-                                        sleep(5)
+                                        #sleep(5)
+                                        await asyncio.sleep(5)
                                 
                                 if not copyFlag:
                                     bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=language['delayWhileCopying'][userLanguage])
@@ -112,7 +114,8 @@ def addTorrent(message, userLanguage):
                                     bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=text)
                                     oldText = text
                                 
-                                sleep(3)
+                                #sleep(3)
+                                await asyncio.sleep(3)
                                 progressResponse = json.loads(requests.get(progressUrl).text[2:-1])
                         
                         #! If download is taking long time

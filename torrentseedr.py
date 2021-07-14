@@ -1,5 +1,5 @@
 import ssl
-import telebot
+import telebot, asyncio
 from aiohttp import web
 
 from src import *
@@ -65,7 +65,8 @@ def text(message):
     
     #! Adding torrents
     else:
-        addTorrent(message, userLanguage)
+        #addTorrent(message, userLanguage)
+        asyncio.run(addTorrent(message, userLanguage))
     
 #: Polling Bot
 if config['connectionType'] == 'polling':

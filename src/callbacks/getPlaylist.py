@@ -4,12 +4,12 @@ import xspf_lib as xspf
 from src.objs import *
 from src.functions.exceptions import exceptions, noAccount
 
-#: Removeing random name from file name
+#: Removing random name from file name
 # -> https://stackoverflow.com/a/61282009/13987868
-def gcn():
-    return iter([" "])
+# def gcn():
+#     return iter([" "])
 
-tempfile._get_candidate_names = gcn
+# tempfile._get_candidate_names = gcn
 
 @bot.callback_query_handler(func=lambda call: True and call.data[:12] == 'getPlaylist_')
 def getPlaylist(call):
