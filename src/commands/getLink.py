@@ -1,4 +1,5 @@
 from src.objs import *
+from src.functions.urlEncode import urlEncode
 from src.functions.floodControl import floodControl
 from src.functions.exceptions import exceptions, noAccount
 
@@ -21,10 +22,11 @@ def getLink(message):
 
             #! If download link found
             if 'archive_url' in response:
-                text = f"🔗 <code>{response['archive_url']}</code>\n\n<b>🔥via @TorrentSeedrBot</b>"
+                encodedUrl = urlEncode(response['archive_url'])
+                text = f"🔗 <code>{encodedUrl}</code>\n\n<b>🔥via @TorrentSeedrBot</b>"
 
                 markup = telebot.types.InlineKeyboardMarkup()
-                markup.add(telebot.types.InlineKeyboardButton(text=language['openInBrowser'][userLanguage], url=response['archive_url']))
+                markup.add(telebot.types.InlineKeyboardButton(text=language['openInBrowser'][userLanguage], url=encodedUrl))
 
                 bot.edit_message_text(text=text, chat_id=message.chat.id, message_id=sent.id, reply_markup=markup)
             

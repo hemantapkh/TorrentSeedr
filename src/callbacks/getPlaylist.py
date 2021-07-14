@@ -2,6 +2,7 @@ import tempfile
 
 import xspf_lib as xspf
 from src.objs import *
+from src.functions.urlEncode import urlEncode
 from src.functions.exceptions import exceptions, noAccount
 
 #: Removing random name from file name
@@ -29,7 +30,7 @@ def getPlaylist(call):
 
                 if 'url' in response:
                     bot.send_chat_action(call.message.chat.id, 'upload_document')
-                    track = xspf.Track(location=response['url'], title=response['name'])
+                    track = xspf.Track(location=urlEncode(response['url']), title=response['name'])
                     
                     playlist = xspf.Playlist(title=response['name'].replace('.',' '), trackList=[track])
 
