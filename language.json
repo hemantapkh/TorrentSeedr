@@ -115,6 +115,10 @@
         "english": "▶️ Open In media player"
     },
 
+    "openInBrowser":{
+        "english": "🌐 Open in browser"
+    },
+
     "fileNotFound":{
         "english": "❌ File not found."
     }, 

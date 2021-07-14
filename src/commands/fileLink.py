@@ -22,11 +22,12 @@ def fileLink(message):
             #! If download link found
             if 'url' in response:
                 text = f"🖹 <b>{response['name']}</b>\n\n"
-                text += f"🔗 {response['url']}\n\n<b>🔥via @TorrentSeedrBot</b>"
+                text += f"🔗 <code>{response['url']}</code>\n\n<b>🔥via @TorrentSeedrBot</b>"
 
-                markup = None
+                markup = telebot.types.InlineKeyboardMarkup()
+                markup.add(telebot.types.InlineKeyboardButton(text=language['openInBrowser'][userLanguage], url=response['url']))
+
                 if id[0] != 'u':
-                    markup = telebot.types.InlineKeyboardMarkup()
                     markup.add(telebot.types.InlineKeyboardButton(text=language['openInPlayer'][userLanguage], callback_data=f'getPlaylist_file_{id[1:]}'))
                 
                 bot.edit_message_text(text=text, chat_id=message.chat.id, message_id=sent.id, reply_markup=markup)

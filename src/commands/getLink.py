@@ -21,8 +21,12 @@ def getLink(message):
 
             #! If download link found
             if 'archive_url' in response:
-                text = f"🔗 {response['archive_url']}\n\n<b>🔥via @TorrentSeedrBot</b>"
-                bot.edit_message_text(text=text, chat_id=message.chat.id, message_id=sent.id)
+                text = f"🔗 <code>{response['archive_url']}</code>\n\n<b>🔥via @TorrentSeedrBot</b>"
+
+                markup = telebot.types.InlineKeyboardMarkup()
+                markup.add(telebot.types.InlineKeyboardButton(text=language['openInBrowser'][userLanguage], url=response['archive_url']))
+
+                bot.edit_message_text(text=text, chat_id=message.chat.id, message_id=sent.id, reply_markup=markup)
             
             else:
                 exceptions(message, response, userLanguage)
