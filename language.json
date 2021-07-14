@@ -111,6 +111,14 @@
         "english": "🔄 Copying to folder"
     },
 
+    "openInPlayer":{
+        "english": "▶️ Open In media player"
+    },
+
+    "fileNotFound":{
+        "english": "❌ File not found."
+    }, 
+
     "fetchingLink":{
         "english": "🪝 Fetching download link"
     },

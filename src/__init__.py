@@ -16,5 +16,7 @@ from src.commands.removeFile import removeFile
 from src.commands.deleteFolder import deleteFolder
 from src.commands.cancelDownload import cancelDownload
 
-from src.callbacks.viewCredintials import viewCredintials
+
+from src.callbacks.getPlaylist import getPlaylist
 from src.callbacks.removeAccount import removeAccount
+from src.callbacks.viewCredintials import viewCredintials

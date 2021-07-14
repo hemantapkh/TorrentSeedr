@@ -77,7 +77,6 @@ class dbQuery():
         cur = con.cursor()
         
         setting = cur.execute(f'SELECT {var} FROM {table} WHERE ownerId={userId} limit 1').fetchone()
-        print(setting)
         con.commit()
 
         return setting[0] if setting else None

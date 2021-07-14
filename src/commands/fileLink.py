@@ -17,14 +17,20 @@ def fileLink(message):
             account = Seedr(cookie=ac['cookie'])
 
             sent = bot.send_message(message.chat.id, language['fetchingLink'][userLanguage])
-            response = account.fetchFile(id).json()
+            response = account.fetchFile(id[1:]).json()
 
             #! If download link found
             if 'url' in response:
                 text = f"🖹 <b>{response['name']}</b>\n\n"
                 text += f"🔗 {response['url']}\n\n<b>🔥via @TorrentSeedrBot</b>"
-                bot.edit_message_text(text=text, chat_id=message.chat.id, message_id=sent.id)
-            
+
+                markup = None
+                if id[0] != 'u':
+                    markup = telebot.types.InlineKeyboardMarkup()
+                    markup.add(telebot.types.InlineKeyboardButton(text=language['openInPlayer'][userLanguage], callback_data=f'getPlaylist_file_{id[1:]}'))
+                
+                bot.edit_message_text(text=text, chat_id=message.chat.id, message_id=sent.id, reply_markup=markup)
+
             else:
                 exceptions(message, response, userLanguage)
         
