@@ -123,12 +123,13 @@ class dbQuery():
 
         #!? If the deleted account is the default account, set another account as a default account
         if str(accountId) == str(defaultAcId):
-            lastAccountId = self.getAccounts(userId)
+            accounts = self.getAccounts(userId)
             
             #!? If any accounts is left, make the last account as a default account. Else, make default account empty.
-            if lastAccountId:
-                lastAccountId = lastAccountId[-1][0]
+            if accounts:
+                lastAccountId = accounts[-1]['id']
                 self.setSetting(userId, 'defaultAcId', lastAccountId)
+            
             #!? If no account left, make the default account NULL
             else:
                 self.setSetting(userId, 'defaultAcId', None)
