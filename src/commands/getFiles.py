@@ -31,7 +31,7 @@ def getFiles(message):
                     text += f"{language['delete'][userLanguage]} /delete_{folder['id']}\n\n"
 
                 for file in response['files']:
-                    text += f"<code>📓 {file['name']}</code> <b>[{convertSize(file['size'])}]</b>\n\n"
+                    text += f"<code>{'🎬' if file['play_video'] == True else '🎵' if file['play_audio'] == True else '📄'} {file['name']}</code> <b>[{convertSize(file['size'])}]</b>\n\n"
                     text += f"{language['link'][userLanguage]} /fileLink_{'v' if file['play_video'] == True else 'a' if file['play_audio'] == True else 'u'}{file['folder_file_id']}\n"
                     text += f"{language['delete'][userLanguage]} /remove_{file['folder_file_id']}\n\n"
 
