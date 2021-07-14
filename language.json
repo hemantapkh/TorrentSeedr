@@ -311,5 +311,13 @@
     "supportBtn":{ 
         "english": "🎁 Support"
     
+    },
+
+    "joinChannelBtn": {
+        "english": "➕ Channel"
+    },
+
+    "joinDiscussionBtn": {
+        "english": "🗣️ Group Chat"
     }
 }
