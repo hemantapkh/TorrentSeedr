@@ -152,6 +152,10 @@
         "english": "⚠️ Invalid magnet link. Please use @TorrentHuntBot to get the link of your desired torrent."
     },
 
+    "noPermission":{
+        "english": "⚠️ You don't have permission to execute this command."
+    },
+
     "parallelDownloadExceed":{
         "english": "⚠️ Maximum parrallel download exceed for you account. Please cancel the active torrent or wait for the previous download to complete."
     },
