@@ -49,7 +49,8 @@ def getPlaylist(call):
         #! Create playlist for folder
         else:
             id = call.data[19:]
-            playlist = folderToPlaylist(account, id)
+
+            playlist = folderToPlaylist(account, id, [])
             
             if playlist:
                 bot.answer_callback_query(call.id)
@@ -64,7 +65,7 @@ def getPlaylist(call):
         noAccount(call, userLanguage, called=True)
 
 #: Generate list of tracks from a folder
-def folderToPlaylist(account, folderId, trackList=[]):
+def folderToPlaylist(account, folderId, trackList):
     response = account.listContents(folderId=folderId).json()
 
     #! If success
