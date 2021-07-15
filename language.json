@@ -115,6 +115,10 @@
         "english": "▶️ Open In media player"
     },
 
+    "noPlayableMedia":{
+        "english": "⚠️ This folder doesn't contain any playable media."
+    },
+
     "openInBrowser":{
         "english": "🌐 Open in browser"
     },

@@ -17,8 +17,7 @@ def getPlaylist(call):
     ac = dbSql.getDefaultAc(call.from_user.id)
     userLanguage = dbSql.getSetting(call.from_user.id, 'language')
 
-    if ac:
-        bot.answer_callback_query(call.id)
+    if ac:        
         account = Seedr(cookie=ac['cookie'])
 
         #! Create playlist file for media
@@ -45,6 +44,54 @@ def getPlaylist(call):
                     exceptions(call, response, userLanguage, called=True)
             
             except json.JSONDecodeError:
-                bot.edit_message_text(language['fileNotFound'][userLanguage], chat_id=call.message.chat.id, message_id=call.message.id)
+                bot.answer_callback_query(call.id, language['fileNotFound'][userLanguage], show_alert=True)
+        
+        #! Create playlist for folder
+        else:
+            id = call.data[19:]
+            playlist = folderToPlaylist(account, id)
+            
+            if playlist:
+                bot.answer_callback_query(call.id)
+                bot.send_chat_action(call.message.chat.id, 'upload_document')
+                thumb = open('images/play.jpg', 'rb')
+                bot.send_document(call.message.chat.id, playlist, thumb=thumb)
+            
+            else:
+                bot.answer_callback_query(call.id, language['noPlayableMedia'][userLanguage], show_alert=True)
+                
     else:
         noAccount(call, userLanguage, called=True)
+
+#: Generate list of tracks from a folder
+def folderToPlaylist(account, folderId, trackList=[]):
+    response = account.listContents(folderId=folderId).json()
+
+    #! If success
+    if 'name' in response:
+        #!? sort the list of files by its name
+        files = sorted(response['files'], key=lambda k: k['name']) 
+        
+        for file in files:
+            if file['play_video'] == True or file['play_audio'] == True:
+                fileUrl = account.fetchFile(file['folder_file_id']).json()
+                trackList.append(xspf.Track(location=urlEncode(fileUrl['url']), title=fileUrl['name']))
+
+        #!? sort the list of files by its name
+        folders = sorted(response['folders'], key=lambda k: k['name']) 
+        
+        #!? If the folder contains another folder, recall the function
+        for folder in folders:
+            folderToPlaylist(account, folder['id'], trackList)
+
+        #!? Create a playlist file if the folder contains tracks
+        if trackList:
+            playlist = xspf.Playlist(title=response['name'].replace('.',' '), trackList=trackList)
+
+            playListFile = tempfile.NamedTemporaryFile(prefix=response['name'].replace('.',' '), suffix='.xspf')
+            playListFile.write(playlist.xml_string().encode())
+            playListFile.seek(0)
+
+            return playListFile
+    
+    return None
