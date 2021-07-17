@@ -45,7 +45,7 @@ def text(message):
 
     #! Wishlist
     elif message.text == language['wishlistBtn'][userLanguage]:
-        pass
+        bot.send_message(message.chat.id, language['featureNotAvailable'][userLanguage])
     
     #! Account and profile
     elif message.text == language['accountBtn'][userLanguage]:
@@ -53,15 +53,15 @@ def text(message):
     
     #! Settings
     elif message.text == language['settingsBtn'][userLanguage]:
-        pass
+        bot.send_message(message.chat.id, language['featureNotAvailable'][userLanguage])
     
     #! Help
     elif message.text == language['helpBtn'][userLanguage]:
-        pass
+        bot.send_message(message.chat.id, language['featureNotAvailable'][userLanguage])
 
     #! Support
     elif message.text == language['supportBtn'][userLanguage]:
-        pass
+        bot.send_message(message.chat.id, language['featureNotAvailable'][userLanguage])
     
     #! Adding torrents
     else:

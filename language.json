@@ -327,5 +327,9 @@
 
     "joinDiscussionBtn": {
         "english": "🗣️ Group Chat"
+    },
+
+    "featureNotAvailable":{
+        "english": "<b>💣 The bot is still in it's development phase so this feature is not available yet.</b>"
     }
 }
