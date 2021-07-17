@@ -1,5 +1,6 @@
-import requests, asyncio
+import requests
 from time import time
+import base64, asyncio
 
 from src.objs import *
 from src.functions.bars import progressBar
@@ -143,7 +144,7 @@ async def addTorrent(message, userLanguage):
 
                 #! Invalid magnet link
                 elif response['result'] == 'parsing_error':
-                    bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=language['invalidMagnet'][userLanguage])
+                    invalidMagnet(message, userLanguage, sent.id)
                 
                 #! If parallel downloads exceeds
                 elif response['result'] == 'queue_full_added_to_wishlist':
@@ -158,8 +159,24 @@ async def addTorrent(message, userLanguage):
             
             #! Invalid magnet link
             else:
-                bot.send_message(chat_id=message.chat.id, text=language['invalidMagnet'][userLanguage])
+                invalidMagnet(message, userLanguage)
             
         #! If no accounts
         else:
             noAccount(message, userLanguage)
+
+def invalidMagnet(message, userLanguage, message_id=None):
+    markup = telebot.types.InlineKeyboardMarkup()
+
+    params = base64.b64encode(message.text.encode('utf-8')).decode('utf-8')
+    params = f'?start={params}' if len(params) <= 64 else ''
+        
+    markup.add(telebot.types.InlineKeyboardButton(text='Torrent Hunt 🔎', url=f'https://t.me/torrenthuntbot{params}'))
+    
+    #! If message_id is passwd, edit the message
+    if message_id:
+        bot.edit_message_text(chat_id=message.chat.id, message_id=message_id, text=language['invalidMagnet'][userLanguage], reply_markup=markup)
+    
+    #! Else, send a new message
+    else:
+        bot.send_message(chat_id=message.chat.id, text=language['invalidMagnet'][userLanguage], reply_markup=markup)
