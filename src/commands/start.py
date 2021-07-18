@@ -1,5 +1,7 @@
+import asyncio
 import requests, json
 from src.objs import *
+from src.commands.addTorrent import addTorrent
 from src.functions.floodControl import floodControl
 from src.functions.keyboard import mainReplyKeyboard
 
@@ -18,18 +20,28 @@ def start(message):
         #! If start paramater is passed
         if params:
             sent = bot.send_message(message.chat.id, text=language['processing'][userLanguage])
-            data = requests.get(f"https://torrentseedrbot.herokuapp.com/getdata?key={config['databaseKey']}&id={params}")
-            data = json.loads(data.content)
 
-            if data['status'] == 'success':
-                data = json.loads(data['data'])
+            #! If add torrent paramater is passed
+            if params.startswith('addTorrent'):
+                url = f'https://tinyurl.com/{params[11:]}'
+                response = requests.get(url, allow_redirects=False)
                 
-                #! Login new account
-                if data['type'] == 'login':
-                    login(sent, userLanguage, data)
-            
+                asyncio.run(addTorrent(message, userLanguage, magnetLink=response.headers['Location'], messageId=sent.id))
+
+            #! Else, login token is passed
             else:
-                print(data)
+                data = requests.get(f"https://torrentseedrbot.herokuapp.com/getdata?key={config['databaseKey']}&id={params}")
+                data = json.loads(data.content)
+
+                if data['status'] == 'success':
+                    data = json.loads(data['data'])
+                    
+                    #! Login new account
+                    if data['type'] == 'login':
+                        login(sent, userLanguage, data)
+                
+                else:
+                    bot.edit_message_text(language['processFailed'][userLanguage], chat_id=sent.chat.id, message_id=sent.id)
 
 #: Account login
 def login(sent, userLanguage, data):

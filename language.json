@@ -152,6 +152,10 @@
         "english": "⚠️ Invalid magnet link. Please use @TorrentHuntBot to get the link of your desired torrent."
     },
 
+    "processFailed":{
+        "english": "⚠️ Failed to process your request. Please try again."
+    },
+
     "noPermission":{
         "english": "⚠️ You don't have permission to execute this command."
     },

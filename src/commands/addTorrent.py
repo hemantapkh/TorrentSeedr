@@ -9,7 +9,7 @@ from src.functions.convert import convertSize, convertTime
 from src.functions.exceptions import exceptions, noAccount
 
 #: Add torrent into the user's account
-async def addTorrent(message, userLanguage):
+async def addTorrent(message, userLanguage, magnetLink=None, messageId=None):
     userId = message.from_user.id
 
     if floodControl(message, userLanguage):
@@ -18,12 +18,19 @@ async def addTorrent(message, userLanguage):
         #! If user has an account
         if ac:
             #! If the text is a valid url or magnet link
-            if message.text.startswith('http') or 'magnet:?' in message.text:
-                
+            if magnetLink or message.text.startswith('http') or 'magnet:?' in message.text:
                 #! Add torrent in the account
-                sent = bot.send_message(message.chat.id, language['collectingInfo'][userLanguage])
+
+                #!? If torrent is added via start paramater
+                if magnetLink:
+                    sent = bot.edit_message_text(text=language['collectingInfo'][userLanguage], chat_id=message.chat.id, message_id=messageId)
+                
+                #!? If torrent is added via direct message
+                else:
+                    sent = bot.send_message(message.chat.id, language['collectingInfo'][userLanguage])
+                
                 account = Seedr(cookie=ac['cookie'])
-                response = account.addTorrent(message.text).json()
+                response = account.addTorrent(magnetLink or message.text).json()
                 
                 #! If torrent added successfully
                 if 'user_torrent_id' in response:
@@ -140,7 +147,7 @@ async def addTorrent(message, userLanguage):
 
                 #! If no enough space
                 elif response['result'] == 'not_enough_space_added_to_wishlist':
-                    bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=language['noSpace'][userLanguage])
+                    bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=language['noEnoughSpace'][userLanguage])
 
                 #! Invalid magnet link
                 elif response['result'] == 'parsing_error':
