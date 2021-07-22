@@ -73,6 +73,7 @@ async def addTorrent(message, userLanguage, magnetLink=None, messageId=None):
                         #! If seeds collected successfully
                         if 'title' in progressResponse:
                             downloadComplete = False
+                            cancelled = False
 
                             ## [Alert] Must change this algorithm
                             #! Updating download status
@@ -106,9 +107,16 @@ async def addTorrent(message, userLanguage, magnetLink=None, messageId=None):
                                             copyFlag = True
                                             
                                             break
+                                        
                                         else:
-                                            #sleep(5)
-                                            await asyncio.sleep(5)
+                                            response = account.listContents().json()
+                                            if not torrentId in response['torrents']:
+                                                bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=language['cancelledSuccessfully'][userLanguage])
+                                                cancelled = True
+                                                break
+                                        
+                                            else:
+                                                await asyncio.sleep(5)
                                     
                                     if not copyFlag:
                                         bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=language['delayWhileCopying'][userLanguage], reply_markup=cancelMarkup)
@@ -126,18 +134,24 @@ async def addTorrent(message, userLanguage, magnetLink=None, messageId=None):
                                     #     for warning in warnings:
                                     #         text += f"\n⚠️ {warning.capitalize()}"
                                     
-                                    
                                     #! Only edit the text if the response changes
                                     if oldText != text:
                                         bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=text, reply_markup=cancelMarkup)
                                         oldText = text
+                                    
+                                    else:
+                                        response = account.listContents().json()
+                                        if not torrentId in response['torrents']:
+                                            bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=language['cancelledSuccessfully'][userLanguage])
+                                            cancelled = True
+                                            break
                                     
                                     #sleep(3)
                                     await asyncio.sleep(3)
                                     progressResponse = json.loads(requests.get(progressUrl).text[2:-1])
                             
                             #! If download is taking long time
-                            if not downloadComplete:
+                            if not cancelled and not downloadComplete:
                                 bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=language['delayWhileDownloading'][userLanguage], reply_markup=cancelMarkup)
                                     
                         #! If seeds collecting is taking long time

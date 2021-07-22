@@ -17,6 +17,7 @@ def cancelDownload(message, called=False):
 
             if not called:
                 sent = bot.send_message(message.chat.id, language['cancellingDownload'][userLanguage])
+                id = message.text[8:]
 
             else:
                 id = message.data[7:]
