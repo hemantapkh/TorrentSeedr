@@ -28,10 +28,10 @@ def active(message, userLanguage=None):
                         text += f"{language['torrentQuality'][userLanguage]} {i['torrent_quality']}\n{language['connectedTo'][userLanguage]} {i['connected_to']}\n{language['downloadingFrom'][userLanguage]} {i['downloading_from']}\n{language['seeders'][userLanguage]} {i['seeders']}\n{language['leechers'][userLanguage]} {i['leechers']}\n{language['uploadingTo'][userLanguage]} {i['uploading_to']}\n"
                     
                         #! Show warnings if any
-                        if i['warnings'] != '[]':
-                            warnings = i['warnings'].strip('[]').replace('"','').split(',')
-                            for warning in warnings:
-                                text += f"\n⚠️ {warning.capitalize()}"
+                        # if i['warnings'] != '[]':
+                        #     warnings = i['warnings'].strip('[]').replace('"','').split(',')
+                        #     for warning in warnings:
+                        #         text += f"\n⚠️ {warning.capitalize()}"
                         
                         text += f"\n{progressBar(i['progress'])}\n\n{language['cancel'][userLanguage]} /cancel_{i['id']}\n\n"
 

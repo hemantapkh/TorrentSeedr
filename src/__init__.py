@@ -19,4 +19,5 @@ from src.commands.cancelDownload import cancelDownload
 
 from src.callbacks.getPlaylist import getPlaylist
 from src.callbacks.removeAccount import removeAccount
+from src.callbacks.cancelDownload import cancelDownload
 from src.callbacks.viewCredintials import viewCredintials

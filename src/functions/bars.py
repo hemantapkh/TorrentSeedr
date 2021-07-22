@@ -1,8 +1,8 @@
 #: Progress bar of downloading torrents
 def progressBar(progress):
-    bars = int(float(progress)) // 6
+    bars = int(float(progress)) // 5
 
-    return f"{'▬'*bars}{(15-bars)*'▭'} {round(float(progress), 2)}%"
+    return f"{'▣'*bars}{(20-bars)*'▢'}"
 
 #: Account space bar
 def spaceBar(totalSpace, spaceUsed):

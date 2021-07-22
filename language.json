@@ -231,6 +231,16 @@
    
     },
 
+    "rate":{
+        "english": "Rate:"
+   
+    },
+
+    "percentage":{
+        "english": "Percentage:"
+   
+    },
+    
     "username":{
         "english": "Username:"
     },
@@ -283,6 +293,11 @@
     "removeAccountBtn":{
         "english": "➖ Remove Account"
 
+    },
+
+    "cancelBtn":{
+        "english": "❌ Cancel download"
+   
     },
 
     "fileManagerBtn":{

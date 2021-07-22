@@ -35,9 +35,13 @@ async def addTorrent(message, userLanguage, magnetLink=None, messageId=None):
                 #! If torrent added successfully
                 if 'user_torrent_id' in response:
                     startTime = time()
-                    bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=f"⬇️ <b>{response['title']}</b>")
-                    
                     torrentId = response['user_torrent_id']
+                    
+                    cancelMarkup = telebot.types.InlineKeyboardMarkup()
+                    cancelMarkup.add(telebot.types.InlineKeyboardButton(text=language['cancelBtn'][userLanguage], callback_data=f'cancel_{torrentId}'))
+                    
+                    bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=f"⬇️ <b>{response['title']}</b>", reply_markup=cancelMarkup)
+                    
                     queue = account.listContents().json()
 
                     #!? Getting the progressUrl from active torrents list
@@ -49,7 +53,7 @@ async def addTorrent(message, userLanguage, magnetLink=None, messageId=None):
 
                     #! If progressUrl is found
                     if progressUrl:
-                        bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=f"⬇️ <b>{response['title']}</b>\n\n{language['collectingSeeds'][userLanguage]}")
+                        bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=f"⬇️ <b>{response['title']}</b>\n\n{language['collectingSeeds'][userLanguage]}", reply_markup=cancelMarkup)
                         progressPercentage = 0
                         oldText = ''
                         
@@ -80,7 +84,7 @@ async def addTorrent(message, userLanguage, magnetLink=None, messageId=None):
                                 if progressResponse['progress'] == 101:
                                     text = f"<b>📁 {progressResponse['title']}</b>\n\n"
                                     
-                                    bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=f"{text}{language['copyingToFolder'][userLanguage]}")
+                                    bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=f"{text}{language['copyingToFolder'][userLanguage]}", reply_markup=cancelMarkup)
                                     
                                     copyFlag = False
                                     ## [Alert] Must change this algorithm
@@ -107,26 +111,25 @@ async def addTorrent(message, userLanguage, magnetLink=None, messageId=None):
                                             await asyncio.sleep(5)
                                     
                                     if not copyFlag:
-                                        bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=language['delayWhileCopying'][userLanguage])
+                                        bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=language['delayWhileCopying'][userLanguage], reply_markup=cancelMarkup)
                                     
                                     break
                                 
                                 #!? If downloading, update the status
                                 else:
-                                    text += f"{language['size'][userLanguage]} {convertSize(progressResponse['size'])}\n{language['torrentQuality'][userLanguage]} {progressResponse['torrent_quality']}\n{language['seeders'][userLanguage]} {progressResponse['stats']['seeders']}\n{language['leechers'][userLanguage]} {progressResponse['stats']['leechers']}\n{language['downloadingFrom'][userLanguage]} {progressResponse['stats']['downloading_from']}\n{language['uploadingTo'][userLanguage]} {progressResponse['stats']['uploading_to']}\n\n"
-                                    text += f"{convertSize(progressResponse['download_rate'])}/sec \n{progressBar(progressPercentage)}"
+                                    text += f"{language['size'][userLanguage]} {convertSize(progressResponse['size'])}\n{language['torrentQuality'][userLanguage]} {progressResponse['torrent_quality']}\n{language['seeders'][userLanguage]} {progressResponse['stats']['seeders']}\n{language['leechers'][userLanguage]} {progressResponse['stats']['leechers']}\n{language['downloadingFrom'][userLanguage]} {progressResponse['stats']['downloading_from']}\n{language['uploadingTo'][userLanguage]} {progressResponse['stats']['uploading_to']}\n"
+                                    text += f"{language['rate'][userLanguage]} {convertSize(progressResponse['download_rate'])}/sec \n{language['percentage'][userLanguage]} {round(float(progressPercentage), 2)}%\n\n{progressBar(progressPercentage)}"
                                 
                                     #! Show warnings
-                                    if progressResponse['warnings'] != '[]':
-                                        warnings = progressResponse['warnings'].strip('[]').replace('"','').split(',')
-                                        for warning in warnings:
-                                            text += f"\n⚠️ {warning.capitalize()}"
+                                    # if progressResponse['warnings'] != '[]':
+                                    #     warnings = progressResponse['warnings'].strip('[]').replace('"','').split(',')
+                                    #     for warning in warnings:
+                                    #         text += f"\n⚠️ {warning.capitalize()}"
                                     
-                                    text += f"\n\n{language['cancel'][userLanguage]} /cancel_{torrentId}\n\n"
                                     
                                     #! Only edit the text if the response changes
                                     if oldText != text:
-                                        bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=text)
+                                        bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=text, reply_markup=cancelMarkup)
                                         oldText = text
                                     
                                     #sleep(3)
@@ -135,11 +138,11 @@ async def addTorrent(message, userLanguage, magnetLink=None, messageId=None):
                             
                             #! If download is taking long time
                             if not downloadComplete:
-                                bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=language['delayWhileDownloading'][userLanguage])
+                                bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=language['delayWhileDownloading'][userLanguage], reply_markup=cancelMarkup)
                                     
                         #! If seeds collecting is taking long time
                         else:
-                            bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=language['delayWhileCollectingSeeds'][userLanguage])
+                            bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=language['delayWhileCollectingSeeds'][userLanguage], reply_markup=cancelMarkup)
                     
                     #! If failed to find progressUrl
                     else:
