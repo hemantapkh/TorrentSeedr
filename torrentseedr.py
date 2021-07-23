@@ -22,9 +22,7 @@ async def handle(request):
 
 app.router.add_post('/{token}/', handle)
 
-#: Text handler
-@bot.message_handler(content_types=['text'])
-def text(message):
+async def text(message):
     userLanguage = dbSql.getSetting(message.from_user.id, 'language')
     
     #! Add accounts
@@ -66,7 +64,13 @@ def text(message):
     #! Adding torrents
     else:
         #addTorrent(message, userLanguage)
-        asyncio.run(addTorrent(message, userLanguage))
+        #asyncio.run(addTorrent(message, userLanguage))
+        await asyncio.gather(addTorrent(message, userLanguage))
+
+#: Text handler
+@bot.message_handler(content_types=['text'])
+def _text(message):
+    asyncio.run(text(message))
     
 #: Polling Bot
 if config['connectionType'] == 'polling':
