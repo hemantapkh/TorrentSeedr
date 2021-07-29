@@ -94,11 +94,12 @@ async def addTorrent(message, userLanguage, magnetLink=None, messageId=None):
                                         progress = json.loads(progress)
 
                                         if 'folder_created' in progress:
-                                            text += f"{language['files'][userLanguage]} /getFiles_{progress['folder_created']}\n{language['link'][userLanguage]} /getLink_{progress['folder_created']}\n{language['delete'][userLanguage]} /delete_{progress['folder_created']}\n\n"
+                                            text += f"{language['files'][userLanguage]} /getFiles_{progress['folder_created']}\n{language['delete'][userLanguage]} /delete_{progress['folder_created']}\n\n"
                                             text += language['downloadFinishedIn'][userLanguage].format(convertTime(time() - startTime))
                                             
                                             markup = telebot.types.InlineKeyboardMarkup()
-                                            markup.add(telebot.types.InlineKeyboardButton(text=language['openInPlayer'][userLanguage], callback_data=f"getPlaylist_folder_{progress['folder_created']}"))
+                                            markup.add(telebot.types.InlineKeyboardButton(text=language['getLinkBtn'][userLanguage], callback_data=f"getLink_{progress['folder_created']}"))
+                                            markup.add(telebot.types.InlineKeyboardButton(text=language['openInPlayerBtn'][userLanguage], callback_data=f"getPlaylist_folder_{progress['folder_created']}"))
                                             markup.add(telebot.types.InlineKeyboardButton(text=language['joinChannelBtn'][userLanguage], url='t.me/h9youtube'), telebot.types.InlineKeyboardButton(text=language['joinDiscussionBtn'][userLanguage], url='t.me/h9discussion'))
                                             
                                             bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=text, reply_markup=markup)

@@ -111,16 +111,8 @@
         "english": "🔄 Copying to folder"
     },
 
-    "openInPlayer":{
-        "english": "▶️ Open In media player"
-    },
-
     "noPlayableMedia":{
         "english": "⚠️ This folder doesn't contain any playable media."
-    },
-
-    "openInBrowser":{
-        "english": "🌐 Open in browser"
     },
 
     "fileNotFound":{
@@ -298,6 +290,18 @@
     "cancelBtn":{
         "english": "❌ Cancel download"
    
+    },
+
+    "openInPlayerBtn":{
+        "english": "▶️ Open In media player"
+    },
+
+    "getLinkBtn":{
+        "english": "🔗 Download link"
+    },
+
+    "openInBrowserBtn":{
+        "english": "🌐 Open in browser"
     },
 
     "fileManagerBtn":{

@@ -23,6 +23,8 @@ def getFiles(message):
             #! If success
             if 'name' in response:
                 text = f"<b>📁 {response['name']}</b>\n\n"
+                markup = telebot.types.InlineKeyboardMarkup()
+                markup.add(telebot.types.InlineKeyboardButton(text=language['getLinkBtn'][userLanguage], callback_data=f'getLink_{id}'))
 
                 for folder in response['folders']:
                     text += f"🖿 {folder['name']} <b>[ {convertSize(folder['size'])}]</b>\n\n"
@@ -34,8 +36,10 @@ def getFiles(message):
                     text += f"<code>{'🎬' if file['play_video'] == True else '🎵' if file['play_audio'] == True else '📄'} {file['name']}</code> <b>[{convertSize(file['size'])}]</b>\n\n"
                     text += f"{language['link'][userLanguage]} /fileLink_{'v' if file['play_video'] == True else 'a' if file['play_audio'] == True else 'u'}{file['folder_file_id']}\n"
                     text += f"{language['delete'][userLanguage]} /remove_{file['folder_file_id']}\n\n"
-
-                bot.edit_message_text(text=text, chat_id=message.chat.id, message_id=sent.id)
+                
+                markup.add(telebot.types.InlineKeyboardButton(text=language['openInPlayerBtn'][userLanguage], callback_data=f'getPlaylist_folder_{id}'))
+                markup.add(telebot.types.InlineKeyboardButton(text=language['joinChannelBtn'][userLanguage], url='t.me/h9youtube'), telebot.types.InlineKeyboardButton(text=language['joinDiscussionBtn'][userLanguage], url='t.me/h9discussion'))
+                bot.edit_message_text(text=text, chat_id=message.chat.id, message_id=sent.id, reply_markup=markup)
 
             else:
                 exceptions(message, response, userLanguage)

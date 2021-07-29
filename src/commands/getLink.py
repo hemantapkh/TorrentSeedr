@@ -5,7 +5,7 @@ from src.functions.exceptions import exceptions, noAccount
 
 #: Get download link of torrents
 @bot.message_handler(func=lambda message: message.text and message.text[:9] == '/getLink_')
-def getLink(message):
+def getLink(message, called=False):
     userId = message.from_user.id
     userLanguage = dbSql.getSetting(userId, 'language')
 
@@ -14,10 +14,9 @@ def getLink(message):
 
         #! If user has an account
         if ac:
-            id = message.text[9:]
+            id = message.data[8:] if called else message.text[9:]
             account = Seedr(cookie=ac['cookie'])
 
-            sent = bot.send_message(message.chat.id, language['fetchingLink'][userLanguage])
             response = account.createArchive(id).json()
 
             #! If download link found
@@ -26,11 +25,14 @@ def getLink(message):
                 text = f"🔗 <code>{encodedUrl}</code>\n\n<b>🔥via @TorrentSeedrBot</b>"
 
                 markup = telebot.types.InlineKeyboardMarkup()
-                markup.add(telebot.types.InlineKeyboardButton(text=language['openInBrowser'][userLanguage], url=encodedUrl))
-                markup.add(telebot.types.InlineKeyboardButton(text=language['openInPlayer'][userLanguage], callback_data=f'getPlaylist_folder_{id}'))
+                markup.add(telebot.types.InlineKeyboardButton(text=language['openInBrowserBtn'][userLanguage], url=encodedUrl))
+                markup.add(telebot.types.InlineKeyboardButton(text=language['openInPlayerBtn'][userLanguage], callback_data=f'getPlaylist_folder_{id}'))
                 markup.add(telebot.types.InlineKeyboardButton(text=language['joinChannelBtn'][userLanguage], url='t.me/h9youtube'), telebot.types.InlineKeyboardButton(text=language['joinDiscussionBtn'][userLanguage], url='t.me/h9discussion'))
 
-                bot.edit_message_text(text=text, chat_id=message.chat.id, message_id=sent.id, reply_markup=markup)
+                if called:
+                    bot.edit_message_text(text=text, chat_id=message.message.chat.id, message_id=message.message.id, reply_markup=markup)
+                else:
+                    bot.send_message(text=text, chat_id=message.chat.id, reply_markup=markup)
             
             else:
                 exceptions(message, response, userLanguage)
