@@ -110,11 +110,12 @@ async def addTorrent(message, userLanguage, magnetLink=None, messageId=None):
                                         
                                         else:
                                             response = account.listContents().json()
-                                            if not torrentId in response['torrents']:
-                                                bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=language['cancelledSuccessfully'][userLanguage])
-                                                cancelled = True
-                                                break
-                                        
+                                            if response['torrents']:
+                                                for torrents in response['torrents']:
+                                                    if torrentId not in torrents.values():
+                                                        bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=language['cancelledSuccessfully'][userLanguage])
+                                                        cancelled = True
+                                                        break
                                             else:
                                                 await asyncio.sleep(5)
                                     
@@ -141,11 +142,12 @@ async def addTorrent(message, userLanguage, magnetLink=None, messageId=None):
                                     
                                     else:
                                         response = account.listContents().json()
-                                        if not torrentId in response['torrents']:
-                                            bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=language['cancelledSuccessfully'][userLanguage])
-                                            cancelled = True
-                                            break
-                                    
+                                        if response['torrents']:
+                                            for torrents in response['torrents']:
+                                                if torrentId not in torrents.values():
+                                                    bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=language['cancelledSuccessfully'][userLanguage])
+                                                    cancelled = True
+                                                    break
                                     #sleep(3)
                                     await asyncio.sleep(3)
                                     progressResponse = json.loads(requests.get(progressUrl).text[2:-1])
