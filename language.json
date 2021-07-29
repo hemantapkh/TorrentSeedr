@@ -293,7 +293,7 @@
     },
 
     "openInPlayerBtn":{
-        "english": "▶️ Open In media player"
+        "english": "▶️ Open in media player"
     },
 
     "getLinkBtn":{
@@ -304,8 +304,17 @@
         "english": "🌐 Open in browser"
     },
 
+    "showFilesBtn":{
+        "english": "📂 Show files"
+    },
+
     "fileManagerBtn":{
         "english": "📂 File Manager"
+
+    },
+
+    "deleteBtn":{
+        "english": "🗑 Delete"
 
     },
 

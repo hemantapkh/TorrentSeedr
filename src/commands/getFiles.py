@@ -5,7 +5,7 @@ from src.functions.exceptions import exceptions, noAccount
 
 #: Get the contents of a folder
 @bot.message_handler(func=lambda message: message.text and message.text[:10] == '/getFiles_')
-def getFiles(message):
+def getFiles(message, called=False):
     userId = message.from_user.id
     userLanguage = dbSql.getSetting(userId, 'language')
 
@@ -14,10 +14,9 @@ def getFiles(message):
 
         #! If user has an account
         if ac:
-            id = message.text[10:]
+            id = message.data[9:] if called else message.text[10:]
             account = Seedr(cookie=ac['cookie'])
 
-            sent = bot.send_message(message.chat.id, language['fetchingFiles'][userLanguage])
             response = account.listContents(folderId=id).json()
 
             #! If success
@@ -38,8 +37,12 @@ def getFiles(message):
                     text += f"{language['delete'][userLanguage]} /remove_{file['folder_file_id']}\n\n"
                 
                 markup.add(telebot.types.InlineKeyboardButton(text=language['openInPlayerBtn'][userLanguage], callback_data=f'getPlaylist_folder_{id}'))
-                markup.add(telebot.types.InlineKeyboardButton(text=language['joinChannelBtn'][userLanguage], url='t.me/h9youtube'), telebot.types.InlineKeyboardButton(text=language['joinDiscussionBtn'][userLanguage], url='t.me/h9discussion'))
-                bot.edit_message_text(text=text, chat_id=message.chat.id, message_id=sent.id, reply_markup=markup)
+                #markup.add(telebot.types.InlineKeyboardButton(text=language['joinChannelBtn'][userLanguage], url='t.me/h9youtube'), telebot.types.InlineKeyboardButton(text=language['joinDiscussionBtn'][userLanguage], url='t.me/h9discussion'))
+                
+                if called:
+                    bot.edit_message_text(chat_id=message.message.chat.id, message_id=message.message.message_id, text=text, reply_markup=markup)
+                else:
+                    bot.send_message(message.chat.id, text, reply_markup=markup)
 
             else:
                 exceptions(message, response, userLanguage)
