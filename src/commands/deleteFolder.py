@@ -21,6 +21,7 @@ def deleteFolder(message, called=False):
             #! If folder is deleted successfully
             if response['result'] == True:
                 if called:
+                    bot.answer_callback_query(message.id)
                     bot.edit_message_text(text=language['deletedSuccessfully'][userLanguage], chat_id=message.message.chat.id, message_id=message.message.id)
                 else:
                     bot.send_message(message.chat.id, language['deletedSuccessfully'][userLanguage])

@@ -31,6 +31,7 @@ def getLink(message, called=False):
                 markup.add(telebot.types.InlineKeyboardButton(text=language['joinChannelBtn'][userLanguage], url='t.me/h9youtube'), telebot.types.InlineKeyboardButton(text=language['joinDiscussionBtn'][userLanguage], url='t.me/h9discussion'))
 
                 if called:
+                    bot.answer_callback_query(message.id)
                     bot.edit_message_text(text=text, chat_id=message.message.chat.id, message_id=message.message.id, reply_markup=markup)
                 else:
                     bot.send_message(text=text, chat_id=message.chat.id, reply_markup=markup)

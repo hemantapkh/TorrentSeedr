@@ -23,7 +23,7 @@ def getFiles(message, called=False):
             if 'name' in response:
                 text = f"<b>📁 {response['name']}</b>\n\n"
                 markup = telebot.types.InlineKeyboardMarkup()
-                markup.add(telebot.types.InlineKeyboardButton(text=language['getLinkBtn'][userLanguage], callback_data=f'getLink_{id}'))
+                markup.add(telebot.types.InlineKeyboardButton(text=language['getLinkBtn'][userLanguage], callback_data=f'getLink_{id}'), telebot.types.InlineKeyboardButton(text=language['deleteBtn'][userLanguage], callback_data=f'delete_{id}'))
 
                 for folder in response['folders']:
                     text += f"🖿 {folder['name']} <b>[ {convertSize(folder['size'])}]</b>\n\n"
@@ -37,9 +37,10 @@ def getFiles(message, called=False):
                     text += f"{language['delete'][userLanguage]} /remove_{file['folder_file_id']}\n\n"
                 
                 markup.add(telebot.types.InlineKeyboardButton(text=language['openInPlayerBtn'][userLanguage], callback_data=f'getPlaylist_folder_{id}'))
-                #markup.add(telebot.types.InlineKeyboardButton(text=language['joinChannelBtn'][userLanguage], url='t.me/h9youtube'), telebot.types.InlineKeyboardButton(text=language['joinDiscussionBtn'][userLanguage], url='t.me/h9discussion'))
+                markup.add(telebot.types.InlineKeyboardButton(text=language['joinChannelBtn'][userLanguage], url='t.me/h9youtube'), telebot.types.InlineKeyboardButton(text=language['joinDiscussionBtn'][userLanguage], url='t.me/h9discussion'))
                 
                 if called:
+                    bot.answer_callback_query(message.id)
                     bot.edit_message_text(chat_id=message.message.chat.id, message_id=message.message.message_id, text=text, reply_markup=markup)
                 else:
                     bot.send_message(message.chat.id, text, reply_markup=markup)
