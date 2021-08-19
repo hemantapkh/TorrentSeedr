@@ -14,8 +14,18 @@
    
     },
 
+    "refreshing":{
+        "english": "⟳ Refreshing account"
+   
+    },
+
     "loggedInAs":{
         "english": "💫 Successfully logged in as {}."
+   
+    },
+
+    "refreshed":{
+        "english": "💫 Successfully refreshed the cookies of {}."
    
     },
 
@@ -165,7 +175,7 @@
     },
 
     "loginRequired":{
-        "english": "😬 Your cookie has expired. Please verify your account by clicking the button below."
+        "english": "😬 Your cookie for <code>{}</code> has expired. Please refresh your account by clicking the <b>🔄 Refresh</b> button below."
     },
 
     "files":{
@@ -267,6 +277,10 @@
 
     "signupBtn":{
         "english": "⤴️ Signup"
+    },
+
+    "refreshBtn":{
+        "english": "🔄 Refresh"
     },
 
     "credentialsBtn":{

@@ -30,7 +30,7 @@ def account(message, userLanguage=None):
 
                 #markup.add(telebot.types.InlineKeyboardButton(text=language['credentialsBtn'][userLanguage], callback_data=f"viewCredintials_{ac['id']}"))
                 markup.add(telebot.types.InlineKeyboardButton(text=language['removeAccountBtn'][userLanguage], callback_data=f"removeAccount_{ac['id']}"))
-                markup.add(telebot.types.InlineKeyboardButton(text=language['loginBtn'][userLanguage], url='https://torrentseedrbot.herokuapp.com/login'), telebot.types.InlineKeyboardButton(text=language['signupBtn'][userLanguage], url='https://torrentseedrbot.herokuapp.com/signup'))
+                markup.add(telebot.types.InlineKeyboardButton(text=language['loginBtn'][userLanguage], url='https://torrentseedrbot.herokuapp.com/login'), telebot.types.InlineKeyboardButton(text=language['signupBtn'][userLanguage], url='https://www.seedr.cc/?r=921385'))
                 
                 bot.send_message(message.chat.id, text, disable_web_page_preview=True, reply_markup=markup)
                     
