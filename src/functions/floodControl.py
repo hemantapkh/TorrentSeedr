@@ -5,8 +5,8 @@ from src.objs import *
 def floodControl(message, userLanguage):
     userId = message.from_user.id
     
-    # if userId == config['adminId']:
-    #     return True
+    if userId == config['adminId']:
+        return True
 
     #! If the user is not banned
     if not dbSql.getSetting(userId, 'blockTill', table='flood') - int(time.time())  > 0:
