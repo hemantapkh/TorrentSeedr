@@ -54,12 +54,16 @@ def login(sent, userLanguage, data, refresh=False):
     if refresh:
         ac = dbSql.getDefaultAc(userId)
         if ac:
-            response = seedrAc.login(ac['email'], ac['password'], data['captchaResponse'])
+            email = ac['email']
+            password = ac['password']
+            response = seedrAc.login(email, password, data['captchaResponse'])
         else:
             response = None
             bot.edit_message_text(language['noAccount'][userLanguage] if refresh else language['loggingIn'][userLanguage], chat_id=sent.chat.id, message_id=sent.id)
     else:
-        response = seedrAc.login(data['email'], data['password'], data['captchaResponse'])
+        email = data['email']
+        password = data['password']
+        response = seedrAc.login(email, password, data['captchaResponse'])
     
     if response:
         cookies = requests.utils.dict_from_cookiejar(response.cookies)
@@ -67,7 +71,7 @@ def login(sent, userLanguage, data, refresh=False):
 
         #! If account logged in successfully
         if 'remember' in cookies:
-            dbSql.setAccount(userId, accountId=response['user_id'], userName=response['username'], email=data['email'], password=data['password'], cookie=f"remember={cookies['remember']}")
+            dbSql.setAccount(userId, accountId=response['user_id'], userName=response['username'], email=email, password=password, cookie=f"remember={cookies['remember']}")
             bot.delete_message(chat_id=sent.chat.id, message_id=sent.id)
             bot.send_message(chat_id=sent.chat.id, text=language['refreshed'][userLanguage].format(response['username']) if refresh else language['loggedInAs'][userLanguage].format(response['username']), reply_markup=mainReplyKeyboard(userId, userLanguage))
         
