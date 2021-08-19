@@ -100,7 +100,7 @@ async def addTorrent(message, userLanguage, magnetLink=None, messageId=None):
                                             markup = telebot.types.InlineKeyboardMarkup()
                                             markup.add(telebot.types.InlineKeyboardButton(text=language['getLinkBtn'][userLanguage], callback_data=f"getLink_{progress['folder_created']}"))
                                             markup.add(telebot.types.InlineKeyboardButton(text=language['openInPlayerBtn'][userLanguage], callback_data=f"getPlaylist_folder_{progress['folder_created']}"))
-                                            markup.add(telebot.types.InlineKeyboardButton(text=language['showFilesBtn'][userLanguage], callback_data=f"getFiles{progress['folder_created']}"), telebot.types.InlineKeyboardButton(text=language['deleteBtn'][userLanguage], callback_data=f"delete_{progress['folder_created']}"))
+                                            markup.add(telebot.types.InlineKeyboardButton(text=language['showFilesBtn'][userLanguage], callback_data=f"getFiles_{progress['folder_created']}"), telebot.types.InlineKeyboardButton(text=language['deleteBtn'][userLanguage], callback_data=f"delete_{progress['folder_created']}"))
                                             markup.add(telebot.types.InlineKeyboardButton(text=language['joinChannelBtn'][userLanguage], url='t.me/h9youtube'), telebot.types.InlineKeyboardButton(text=language['joinDiscussionBtn'][userLanguage], url='t.me/h9discussion'))
                                             
                                             bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=text, reply_markup=markup)
