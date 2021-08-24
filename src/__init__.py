@@ -24,3 +24,5 @@ from src.callbacks.deleteFolder import deleteFolder
 from src.callbacks.removeAccount import removeAccount
 from src.callbacks.cancelDownload import cancelDownload
 from src.callbacks.viewCredintials import viewCredintials
+
+from src.commands.featureUnavailable import featureUnavailable

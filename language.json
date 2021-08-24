@@ -29,6 +29,10 @@
    
     },
 
+    "getFreeSpace":{
+        "english": "✨ Get a chance to add <b>free 2GB</b> space in your seedr account. Your referral link will be shown to other users and you will be benifited when someone signup using your link. To get in, follow us on GitHub and click the button below to verify."
+    },
+
     "thanksGithub":{
         "english": "✨ Thanks for the follow. Your referral link will be shown to other users and you will earn 0.5 GB extra space for the first four times someone signup using your link.\n\n<b>Note:</b> You must have invites remaining in your account. You can see your invite status in the account menu."
 
