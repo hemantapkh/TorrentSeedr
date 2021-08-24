@@ -26,6 +26,8 @@ print('[+] Table users created successfully.')
 conn.execute('''CREATE TABLE settings
          (ownerId       INTEGER PRIMARY KEY,
          language       TEXT DEFAULT "english",
+         githubId       TEXT DEFAULT 0,
+         totalRefer     INTEGER DEFAULT 0,
          defaultAcId    INTEGER
          );''')
          

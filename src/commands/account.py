@@ -2,6 +2,7 @@ from src.objs import *
 from src.functions.bars import spaceBar
 from src.functions.convert import convertSize
 from src.functions.floodControl import floodControl
+from src.functions.referralCode import referralCode
 from src.functions.exceptions import exceptions, noAccount
 
 #: View account profile, add new accounts and remove existing accounts
@@ -30,7 +31,7 @@ def account(message, userLanguage=None):
 
                 #markup.add(telebot.types.InlineKeyboardButton(text=language['credentialsBtn'][userLanguage], callback_data=f"viewCredintials_{ac['id']}"))
                 markup.add(telebot.types.InlineKeyboardButton(text=language['removeAccountBtn'][userLanguage], callback_data=f"removeAccount_{ac['id']}"))
-                markup.add(telebot.types.InlineKeyboardButton(text=language['loginBtn'][userLanguage], url='https://torrentseedrbot.herokuapp.com/login'), telebot.types.InlineKeyboardButton(text=language['signupBtn'][userLanguage], url='https://www.seedr.cc/?r=921385'))
+                markup.add(telebot.types.InlineKeyboardButton(text=language['loginBtn'][userLanguage], url='https://torrentseedrbot.herokuapp.com/login'), telebot.types.InlineKeyboardButton(text=language['signupBtn'][userLanguage], url=f'https://www.seedr.cc/?r={referralCode()}'))
                 
                 bot.send_message(message.chat.id, text, disable_web_page_preview=True, reply_markup=markup)
                     

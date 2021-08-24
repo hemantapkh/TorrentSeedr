@@ -1,4 +1,5 @@
 from src.objs import *
+from src.functions.referralCode import referralCode
 from src.functions.keyboard import mainReplyKeyboard
 
 def exceptions(message, response, userLanguage, called=False):
@@ -8,7 +9,7 @@ def exceptions(message, response, userLanguage, called=False):
             markup = telebot.types.InlineKeyboardMarkup()
             ac = dbSql.getDefaultAc(message.from_user.id)
 
-            markup.add(telebot.types.InlineKeyboardButton(text=language['loginBtn'][userLanguage], url='https://torrentseedrbot.herokuapp.com/login'), telebot.types.InlineKeyboardButton(text=language['signupBtn'][userLanguage], url='https://www.seedr.cc/?r=921385'))
+            markup.add(telebot.types.InlineKeyboardButton(text=language['loginBtn'][userLanguage], url='https://torrentseedrbot.herokuapp.com/login'), telebot.types.InlineKeyboardButton(text=language['signupBtn'][userLanguage], url=f'https://www.seedr.cc/?r={referralCode()}'))
             markup.add(telebot.types.InlineKeyboardButton(text=language['removeAccountBtn'][userLanguage], callback_data=f"removeAccount_{ac['id']}"))
             markup.add(telebot.types.InlineKeyboardButton(text=language['refreshBtn'][userLanguage], url='https://torrentseedrbot.herokuapp.com/refresh'))
             

@@ -27,3 +27,11 @@ def mainReplyKeyboard(userId, userLanguage):
         keyboard.row(button5, button6, button7)
 
     return keyboard
+
+def githubAuthKeyboard(userLanguage):
+    markup = telebot.types.InlineKeyboardMarkup()
+
+    markup.add(telebot.types.InlineKeyboardButton(text=language['followOnGithubBtn'][userLanguage], url=f"https://github.com/hemantapkh"))
+    markup.add(telebot.types.InlineKeyboardButton(text=language['verifyBtn'][userLanguage], url='https://github.com/login/oauth/authorize?client_id=ba5e2296f2bbe59f5097'))
+
+    return markup

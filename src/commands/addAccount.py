@@ -1,4 +1,5 @@
 from src.objs import *
+from src.functions.referralCode import referralCode
 from src.functions.floodControl import floodControl
 
 #: Login or signup seedr account
@@ -12,6 +13,6 @@ def addAccount(message, userLanguage=None):
         markup = telebot.types.InlineKeyboardMarkup()
         
         markup.add(telebot.types.InlineKeyboardButton(text=language['loginBtn'][userLanguage], url='https://torrentseedrbot.herokuapp.com/login'),
-            telebot.types.InlineKeyboardButton(text=language['signupBtn'][userLanguage], url='https://www.seedr.cc/?r=921385'))
+            telebot.types.InlineKeyboardButton(text=language['signupBtn'][userLanguage], url=f'https://www.seedr.cc/?r={referralCode()}'))
 
         bot.send_message(message.from_user.id, language['addAccount'][userLanguage], reply_markup=markup, disable_web_page_preview=True)

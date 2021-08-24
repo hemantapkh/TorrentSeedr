@@ -29,6 +29,16 @@
    
     },
 
+    "thanksGithub":{
+        "english": "✨ Thanks for the follow. Your referral link will be shown to other users and you will earn 0.5 GB extra space for the first four times someone signup using your link.\n\n<b>Note:</b> You must have invites remaining in your account. You can see your invite status in the account menu."
+
+    },
+
+    "ghNotFollowed":{
+        "english": "🥺 This feature is only available to our GitHub followers. Please follow us on GitHub and click on the verify button to continue."
+
+    },
+
     "accountRemoved":{
         "english": "➖ Account removed successfully."
    
@@ -373,6 +383,14 @@
 
     "joinDiscussionBtn": {
         "english": "🗣️ Group Chat"
+    },
+
+    "followOnGithubBtn": {
+        "english": "👨‍💻 Follow on GitHub"
+    },
+
+    "verifyBtn": {
+        "english": "✅ Verify"
     },
 
     "featureNotAvailable":{

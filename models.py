@@ -33,6 +33,17 @@ class dbQuery():
         con.commit()
 
         return users if users else None
+
+    #: Get all user's with GitHub oauth
+    def getAllGhUsers(self):
+        con = sqlite3.connect(self.db)
+        con.row_factory = lambda cursor, row: row[0]
+        cur = con.cursor()
+        
+        users = cur.execute(f'SELECT ownerId FROM settings where githubId!=0').fetchall()
+        con.commit()
+
+        return users if users else None
     
     #: Get all the users with date
     def getAllUsersDate(self):
