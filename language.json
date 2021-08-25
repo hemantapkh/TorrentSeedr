@@ -30,7 +30,7 @@
     },
 
     "getFreeSpace":{
-        "english": "✨ Get a chance to add <b>free 2GB</b> space in your seedr account. Your referral link will be shown to other users and you will be benifited when someone signup using your link. To get in, follow us on GitHub and click the button below to verify."
+        "english": "✨ Get a chance to add <b>free 2GB space</b> in your seedr account. Your referral link will be shown to other users and you will be benifited when someone signup using your link. To get in, follow us on GitHub and click the button below to verify."
     },
 
     "thanksGithub":{
@@ -74,7 +74,7 @@
     },
 
     "addAccount":{
-        "english": "➕ You must have an account on seedr.cc to use this bot. If you already have an account, click on the <b>⤵️ Login</b> button below to add your account.\n\nIf you don't have an account, please create an account by clicking on the <b>⤴️ Signup</b> button below."
+        "english": "➕ You must have an seedr account to use this bot. If you already have an account, click on the <b>⤵️ Login</b> button below to add your account.\n\nIf you don't have an account, please create an account by clicking on the <b>⤴️ Signup</b> button below."
     },
 
     "cancellingDownload":{
