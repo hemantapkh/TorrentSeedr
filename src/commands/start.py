@@ -14,70 +14,69 @@ def start(message):
     
     userLanguage = dbSql.getSetting(userId, 'language')
 
-    if floodControl(message, userLanguage):
-        if not params:
-            bot.send_message(message.chat.id, text=language['greet'][userLanguage], reply_markup=mainReplyKeyboard(userId, userLanguage))
+    if not params:
+        bot.send_message(message.chat.id, text=language['greet'][userLanguage], reply_markup=mainReplyKeyboard(userId, userLanguage))
 
-        #! If start paramater is passed
-        if params:
-            sent = bot.send_message(message.chat.id, text=language['processing'][userLanguage])
+    #! If start paramater is passed
+    if params:
+        sent = bot.send_message(message.chat.id, text=language['processing'][userLanguage])
 
-            #! Github oauth
-            if params.startswith('oauth'):
-                code = params[6:]
-                
-                params = {'client_id': 'ba5e2296f2bbe59f5097', 'client_secret': config['githubSecret'], 'code':code}
-                response = requests.get('https://github.com/login/oauth/access_token', params=params)
-                
-                #! Successfully authenticated
-                if response.text[:13] == 'access_token=':
-                    accessToken = response.text[13:].split('&', 1)[0]
+        #! Github oauth
+        if params.startswith('oauth'):
+            code = params[6:]
+            
+            params = {'client_id': 'ba5e2296f2bbe59f5097', 'client_secret': config['githubSecret'], 'code':code}
+            response = requests.get('https://github.com/login/oauth/access_token', params=params)
+            
+            #! Successfully authenticated
+            if response.text[:13] == 'access_token=':
+                accessToken = response.text[13:].split('&', 1)[0]
 
-                    headers = {'Authorization': f'token {accessToken}'}
-                    response = requests.get('https://api.github.com/user', headers=headers).json()
+                headers = {'Authorization': f'token {accessToken}'}
+                response = requests.get('https://api.github.com/user', headers=headers).json()
 
-                    if 'login' in response:
-                        bot.edit_message_text(language['loggedInAs'][userLanguage].format(f"<a href='https://github.com/{response['login']}'>{response['login'].capitalize()}</a>"), chat_id=sent.chat.id, message_id=sent.id)
+                if 'login' in response:
+                    bot.edit_message_text(language['loggedInAs'][userLanguage].format(f"<a href='https://github.com/{response['login']}'>{response['login'].capitalize()}</a>"), chat_id=sent.chat.id, message_id=sent.id)
 
-                        following = requests.get(f"https://api.github.com/users/{response['login']}/following").json()
-                        
-                        #! User is following
-                        if any(dicT['login'] == 'hemantapkh' for dicT in following):
-                            dbSql.setSetting(userId, 'githubId', response['id'])
-                            bot.send_message(chat_id=message.chat.id, text=language['thanksGithub'][userLanguage])
-                        
-                        #! User is not following
-                        else:
-                            bot.send_message(chat_id=message.chat.id, text=language['ghNotFollowed'][userLanguage], reply_markup=githubAuthKeyboard(userLanguage))
+                    following = requests.get(f"https://api.github.com/users/{response['login']}/following").json()
+                    
+                    #! User is following
+                    if any(dicT['login'] == 'hemantapkh' for dicT in following):
+                        dbSql.setSetting(userId, 'githubId', response['id'])
+                        bot.send_message(chat_id=message.chat.id, text=language['thanksGithub'][userLanguage])
+                    
+                    #! User is not following
+                    else:
+                        bot.send_message(chat_id=message.chat.id, text=language['ghNotFollowed'][userLanguage], reply_markup=githubAuthKeyboard(userLanguage))
 
-                #! Error
-                else:
-                    bot.edit_message_text(language['processFailed'][userLanguage], chat_id=sent.chat.id, message_id=sent.id)
- 
-            #! If add torrent paramater is passed
-            elif params.startswith('addTorrent'):
-                url = f'https://tinyurl.com/{params[11:]}'
-                response = requests.get(url, allow_redirects=False)
-                
-                asyncio.run(addTorrent(message, userLanguage, magnetLink=response.headers['Location'], messageId=sent.id))
-
-            #! Else, login token is passed
+            #! Error
             else:
-                data = requests.get(f"https://torrentseedrbot.herokuapp.com/getdata?key={config['databaseKey']}&id={params}")
-                data = json.loads(data.content)
+                bot.edit_message_text(language['processFailed'][userLanguage], chat_id=sent.chat.id, message_id=sent.id)
 
-                if data['status'] == 'success':
-                    data = json.loads(data['data'])
-                    
-                    #! Login new account
-                    if data['type'] == 'login':
-                        login(sent, userLanguage, data)
-                    
-                    elif data['type'] == 'refresh':
-                        login(sent, userLanguage, data, refresh=True)
+        #! If add torrent paramater is passed
+        elif params.startswith('addTorrent'):
+            url = f'https://tinyurl.com/{params[11:]}'
+            response = requests.get(url, allow_redirects=False)
+            
+            asyncio.run(addTorrent(message, userLanguage, magnetLink=response.headers['Location'], messageId=sent.id))
+
+        #! Else, login token is passed
+        else:
+            data = requests.get(f"https://torrentseedrbot.herokuapp.com/getdata?key={config['databaseKey']}&id={params}")
+            data = json.loads(data.content)
+
+            if data['status'] == 'success':
+                data = json.loads(data['data'])
                 
-                else:
-                    bot.edit_message_text(language['processFailed'][userLanguage], chat_id=sent.chat.id, message_id=sent.id)
+                #! Login new account
+                if data['type'] == 'login':
+                    login(sent, userLanguage, data)
+                
+                elif data['type'] == 'refresh':
+                    login(sent, userLanguage, data, refresh=True)
+            
+            else:
+                bot.edit_message_text(language['processFailed'][userLanguage], chat_id=sent.chat.id, message_id=sent.id)
 
 #: Account login
 def login(sent, userLanguage, data, refresh=False):
