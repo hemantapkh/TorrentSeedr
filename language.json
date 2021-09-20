@@ -192,6 +192,10 @@
         "english": "😬 Your cookie for <code>{}</code> has expired. Please refresh your account by clicking the <b>🔄 Refresh</b> button below."
     },
 
+    "openInMediaCaption": {
+        "english": "Click👆 the icon above and the media shall start playing in your default player.\n\n<code>Install VLC media player for better performance.</code> \n\n<b>⚠️ If failed to play, please choose a different file extension by clicking the button below.</b>"
+    },
+
     "files":{
         "english": "Files:"
    
@@ -322,6 +326,18 @@
 
     "openInPlayerBtn":{
         "english": "▶️ Open in media player"
+    },
+
+    "vlcBtn":{
+        "english": "VLC"
+    },
+
+    "m3uBtn":{
+        "english": "M3U"
+    },
+
+    "xspfBtn":{
+        "english": "XSPF"
     },
 
     "getLinkBtn":{

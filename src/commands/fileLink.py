@@ -30,7 +30,7 @@ def fileLink(message):
                 markup.add(telebot.types.InlineKeyboardButton(text=language['openInBrowserBtn'][userLanguage], url=encodedUrl))
 
                 if id[0] != 'u':
-                    markup.add(telebot.types.InlineKeyboardButton(text=language['openInPlayerBtn'][userLanguage], callback_data=f'getPlaylist_file_{id[1:]}'))
+                    markup.add(telebot.types.InlineKeyboardButton(text=language['openInPlayerBtn'][userLanguage], callback_data=f'getPlaylist_000_file_{id[1:]}'))
                 
                 markup.add(telebot.types.InlineKeyboardButton(text=language['joinChannelBtn'][userLanguage], url='t.me/h9youtube'), telebot.types.InlineKeyboardButton(text=language['joinDiscussionBtn'][userLanguage], url='t.me/h9discussion'))
                 

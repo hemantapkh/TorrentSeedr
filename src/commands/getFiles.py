@@ -36,7 +36,7 @@ def getFiles(message, called=False):
                     text += f"{language['link'][userLanguage]} /fileLink_{'v' if file['play_video'] == True else 'a' if file['play_audio'] == True else 'u'}{file['folder_file_id']}\n"
                     text += f"{language['delete'][userLanguage]} /remove_{file['folder_file_id']}\n\n"
                 
-                markup.add(telebot.types.InlineKeyboardButton(text=language['openInPlayerBtn'][userLanguage], callback_data=f'getPlaylist_folder_{id}'))
+                markup.add(telebot.types.InlineKeyboardButton(text=language['openInPlayerBtn'][userLanguage], callback_data=f'getPlaylist_000_folder_{id}'))
                 markup.add(telebot.types.InlineKeyboardButton(text=language['joinChannelBtn'][userLanguage], url='t.me/h9youtube'), telebot.types.InlineKeyboardButton(text=language['joinDiscussionBtn'][userLanguage], url='t.me/h9discussion'))
                 
                 if called:
