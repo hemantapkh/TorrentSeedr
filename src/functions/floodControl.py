@@ -13,7 +13,7 @@ def floodControl(message, userLanguage):
         lastMessage = dbSql.getSetting(userId, 'lastMessage', table='flood')
         called = True if type(message) == telebot.types.CallbackQuery else False
 
-        messageDate = message.message.date if called else message.date
+        messageDate = message.message.edit_date if called else message.date
 
         #! Spam detected
         if messageDate - lastMessage < 1:

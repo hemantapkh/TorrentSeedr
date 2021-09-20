@@ -23,12 +23,17 @@ def getPlaylist(call):
         playlistType = call.data[12:15]
         callBacked = True
         
-        #! If playlist type not 000, change the value in database
-        if playlistType != '000':
-            dbSql.setSetting(call.from_user.id, 'playlist', playlistType)
-        else:
+        #! If playlist type 000, get the type from database
+        if playlistType == '000':
             playlistType = dbSql.getSetting(call.from_user.id, 'playlist')
             callBacked = False
+            
+        elif playlistType in ['m3u', 'vlc', 'xpf']:
+            dbSql.setSetting(call.from_user.id, 'playlist', playlistType)
+
+        #! If playlist type is not supported, set it to default
+        else:
+            playlistType = 'm3u'
 
         #! Create playlist file for media
         if call.data[16:20] == 'file':
