@@ -81,7 +81,7 @@ def mediaToPlaylist(account, fileId, playlistType):
 
         # For M3U and VLC
         else:
-            track = f"#EXTM3U\n#EXTINF:1, {response['name']}\n{response['url']}"
+            track = f"#EXTM3U\n#EXTINF:1, {response['name']}\n{urlEncode(response['url'])}"
 
             playlistFile = tempfile.NamedTemporaryFile(prefix=response['name'].replace('.',' '), suffix=f'.{playlistType}')
             playlistFile.write(track.encode())
@@ -107,7 +107,7 @@ def folderToPlaylist(account, folderId, playlistType, trackList):
                 if playlistType == 'xpf':
                     trackList+=[xspf.Track(location=urlEncode(fileUrl['url']), title=fileUrl['name'])]
                 else:
-                    trackList+=f"\n\n#EXTINF:1, {fileUrl['name']}\n{fileUrl['url']}"
+                    trackList+=f"\n\n#EXTINF:1, {fileUrl['name']}\n{urlEncode(fileUrl['url'])}"
 
         #!? sort the list of files by its name
         folders = sorted(response['folders'], key=lambda k: k['name']) 
