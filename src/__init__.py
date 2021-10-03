@@ -26,3 +26,8 @@ from src.callbacks.cancelDownload import cancelDownload
 from src.callbacks.viewCredintials import viewCredintials
 
 from src.commands.featureUnavailable import featureUnavailable
+
+try:
+    from src.inline.inlineSearch import inlineSearch
+except ModuleNotFoundError:
+    pass

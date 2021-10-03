@@ -199,9 +199,12 @@ def invalidMagnet(message, userLanguage, message_id=None):
     params = base64.b64encode(message.text.encode('utf-8')).decode('utf-8')
     params = f'?start={params}' if len(params) <= 64 else ''
         
+    markup.add(telebot.types.InlineKeyboardButton(text='⚡️ 1337x', switch_inline_query_current_chat=f"!1337x {message.text}"), telebot.types.InlineKeyboardButton(text='⚡️ Pirate', switch_inline_query_current_chat=f"!pb {message.text}"), telebot.types.InlineKeyboardButton(text='⚡️ Rarbg', switch_inline_query_current_chat=f"!rb {message.text}"))
+    markup.add(telebot.types.InlineKeyboardButton(text='🎎 Nyaa', switch_inline_query_current_chat=f"!nyaa {message.text}"), telebot.types.InlineKeyboardButton(text='📺 Ez', switch_inline_query_current_chat=f"!ez {message.text}"), telebot.types.InlineKeyboardButton(text='⚡️ Tor Lock', switch_inline_query_current_chat=f"!tl {message.text}"))
+    markup.add(telebot.types.InlineKeyboardButton(text='🍿 YTS', switch_inline_query_current_chat=f"!yts {message.text}"), telebot.types.InlineKeyboardButton(text='📺 Et', switch_inline_query_current_chat=f"!et {message.text}") , telebot.types.InlineKeyboardButton(text='⚡️ Galaxy', switch_inline_query_current_chat=f"!tg {message.text}"))
     markup.add(telebot.types.InlineKeyboardButton(text='Torrent Hunt 🔎', url=f'https://t.me/torrenthuntbot{params}'))
-    
-    #! If message_id is passwd, edit the message
+      
+    #! If message_id, edit the message
     if message_id:
         bot.edit_message_text(chat_id=message.chat.id, message_id=message_id, text=language['invalidMagnet'][userLanguage], reply_markup=markup)
     
