@@ -204,8 +204,16 @@
         "english": "⚠️ <code>Error while fetching link ...</code>"
     },
 
+    "notSubscribed": {
+        "english": "🥺 It seems like you are not subscribed to our channel yet. Due to our limited resources, only our subscriers can use this service. Please support us by subscribing to our channel to use this service."
+    },
+
     "notSubscribedCallback": {
         "english": "You are not subscribed yet."
+    },
+
+    "clickForMoreDetails": {
+        "english": "Click for more details."
     },
     
     "files":{
