@@ -165,7 +165,7 @@
     },
 
     "invalidMagnet":{
-        "english": "⚠️ Please provide a valid Magnet link or click the button below to get the torrent link from the <b>Torrent Hunt Bot</b>."
+        "english": "⚠️ Please provide a valid Magnet link or click the button below to search the torrent in the <b>Torrent Hunt Bot</b>."
     },
 
     "processFailed":{
