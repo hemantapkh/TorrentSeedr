@@ -2,8 +2,9 @@ import sqlite3
 from datetime import datetime
 
 class dbQuery():
-    def __init__(self, db):
+    def __init__(self, db, mdb):
         self.db = db
+        self.mdb = mdb
     
     #: Add the user into the database if not registered
     def setUser(self, userId):
@@ -188,6 +189,17 @@ class dbQuery():
         cur.execute(f'INSERT OR IGNORE INTO settings (ownerId, defaultAcId) VALUES ({userId}, {accountId})')
         cur.execute(f'UPDATE settings SET defaultAcId={accountId} WHERE ownerId={userId}')
         con.commit()
+
+    
+    #: Get the magnet link from the database
+    def getMagnet(self, key):
+        con = sqlite3.connect(self.mdb)
+        cur = con.cursor()
+        
+        magnetLink = cur.execute(f'SELECT magnetLink FROM data WHERE key="{key}"').fetchone()
+        con.commit()
+
+        return magnetLink[0] if magnetLink else None
 
 #: Return query as dictionary
 #! https://stackoverflow.com/a/3300514/13987868

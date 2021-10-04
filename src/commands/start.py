@@ -53,12 +53,20 @@ def start(message):
             else:
                 bot.edit_message_text(language['processFailed'][userLanguage], chat_id=sent.chat.id, message_id=sent.id)
 
-        #! If add torrent paramater is passed
-        elif params.startswith('addTorrent'):
-            url = f'https://tinyurl.com/{params[11:]}'
+        #! If add torrent paramater is passed via database key
+        elif params.startswith('addTorrentDb'):
+            key = params[13:]
+            magnetLink = dbSql.getMagnet(key)
+
+            asyncio.run(addTorrent(message, userLanguage, magnetLink, messageId=sent.id))
+        
+        #! If add torrent paramater is passed via URL
+        elif params.startswith('addTorrentURL'):
+            url = f'https://tinyurl.com/{params[14:]}'
             response = requests.get(url, allow_redirects=False)
+            magnetLink = response.headers['Location'] if 'Location' in response.headers else None
             
-            asyncio.run(addTorrent(message, userLanguage, magnetLink=response.headers['Location'], messageId=sent.id))
+            asyncio.run(addTorrent(message, userLanguage, magnetLink, messageId=sent.id))
 
         #! Else, login token is passed
         else:
