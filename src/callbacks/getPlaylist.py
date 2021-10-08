@@ -1,16 +1,11 @@
-import tempfile
+from os import remove
+from pathlib import Path
 
 import xspf_lib as xspf
+
 from src.objs import *
 from src.functions.urlEncode import urlEncode
-from src.functions.exceptions import exceptions, noAccount
-
-#: Removing random name from file name
-# -> https://stackoverflow.com/a/61282009/13987868
-# def gcn():
-#     return iter([" "])
-
-# tempfile._get_candidate_names = gcn
+from src.functions.exceptions import noAccount
 
 @bot.callback_query_handler(func=lambda call: True and call.data[:12] == 'getPlaylist_')
 def getPlaylist(call):
@@ -54,12 +49,9 @@ def getPlaylist(call):
             
             thumb = open(f'images/{playlistType}.jpg', 'rb')
             
-            # Not implementing this feature now because it's not working 
-            #if callBacked:
-                #bot.edit_message_media(chat_id=call.message.chat.id, message_id=call.message.id, media=telebot.types.InputMediaDocument(media=playlist, caption=language['openInMediaCaption'][userLanguage]), reply_markup=playListButtons(userLanguage, mediaType, id, playlistType))
-  
-            bot.send_document(call.message.chat.id, playlist, thumb=thumb, reply_markup=playListButtons(userLanguage, mediaType, id, playlistType), caption=language['openInMediaCaption'][userLanguage])    
-            
+            bot.send_document(call.message.chat.id, open(playlist, 'rb'), thumb=thumb, reply_markup=playListButtons(userLanguage, mediaType, id, playlistType), caption=language['openInMediaCaption'][userLanguage])    
+            remove(playlist)
+        
         else:
             bot.answer_callback_query(call.id, language['noPlayableMedia'][userLanguage], show_alert=True)
                 
@@ -76,17 +68,18 @@ def mediaToPlaylist(account, fileId, playlistType):
                             
             playlist = xspf.Playlist(title=response['name'].replace('.',' '), trackList=[track])
 
-            playlistFile = tempfile.NamedTemporaryFile(prefix=response['name'].replace('.',' '), suffix='.xspf')
-            playlistFile.write(playlist.xml_string().encode())
+            Path(f"/tmp/TorrentSeedr/{fileId}").mkdir(parents=True, exist_ok=True)
+            playlistFile = f"/tmp/TorrentSeedr/{fileId}/{response['name'].replace('.',' ')}.xspf"
+            open(playlistFile, 'wb').write(playlist.xml_string().encode())
 
         # For M3U and VLC
         else:
             track = f"#EXTM3U\n#EXTINF:1, {response['name']}\n{urlEncode(response['url'])}"
 
-            playlistFile = tempfile.NamedTemporaryFile(prefix=response['name'].replace('.',' '), suffix=f'.{playlistType}')
-            playlistFile.write(track.encode())
+            Path(f"/tmp/TorrentSeedr/{fileId}").mkdir(parents=True, exist_ok=True)
+            playlistFile = f"/tmp/TorrentSeedr/{fileId}/{response['name'].replace('.',' ')}.{playlistType}"
+            open(playlistFile, 'wb').write(track.encode())
         
-        playlistFile.seek(0)
         return playlistFile
     
     else:
@@ -121,16 +114,18 @@ def folderToPlaylist(account, folderId, playlistType, trackList):
             if playlistType== 'xpf':
                 playlist = xspf.Playlist(title=response['name'].replace('.',' '), trackList=trackList)
 
-                playlistFile = tempfile.NamedTemporaryFile(prefix=response['name'].replace('.',' '), suffix='.xspf')
-                playlistFile.write(playlist.xml_string().encode())
+                Path(f"/tmp/TorrentSeedr/{folderId}").mkdir(parents=True, exist_ok=True)
+                
+                playlistFile = f"/tmp/TorrentSeedr/{folderId}/{response['name'].replace('.',' ')}.xspf"
+                open(playlistFile, 'wb').write(playlist.xml_string().encode())
 
             # For M3U and VLC
             else:
-                playlistFile = tempfile.NamedTemporaryFile(prefix=response['name'].replace('.',' '), suffix=f'.{playlistType}')
+                Path(f"/tmp/TorrentSeedr/{folderId}").mkdir(parents=True, exist_ok=True)
                 
-                playlistFile.write(('#EXTM3U\n'+''.join(trackList)).encode())
+                playlistFile = f"/tmp/TorrentSeedr/{folderId}/{response['name'].replace('.',' ')}.{playlistType}"
+                open(playlistFile, 'wb').write(('#EXTM3U\n'+''.join(trackList)).encode())
             
-            playlistFile.seek(0)
             return playlistFile
     
     return None
