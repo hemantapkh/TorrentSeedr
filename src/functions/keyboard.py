@@ -14,16 +14,18 @@ def mainReplyKeyboard(userId, userLanguage):
     button9 = telebot.types.KeyboardButton(text=language['addAccountBtn'][userLanguage])
     button10 = telebot.types.KeyboardButton(text=language['switchBtn'][userLanguage])
     
-    account = dbSql.getAccounts(userId)
+    account = dbSql.getDefaultAc(userId)
 
     #! If user has no account
-    if not account:
-        keyboard.row(button9)
+    if account and account['token']:
+        accounts = dbSql.getAccounts(userId)
+        keyboard.row(button1, button2)
+
+        keyboard.row(button10, button3, button4) if len(accounts) > 1 else keyboard.row(button3, button4)
         keyboard.row(button5, button6, button7)
     
     else:
-        keyboard.row(button1, button2)
-        keyboard.row(button10, button3, button4) if len(account) > 1 else keyboard.row(button3, button4)
+        keyboard.row(button9)
         keyboard.row(button5, button6, button7)
 
     return keyboard
