@@ -119,7 +119,7 @@ class dbQuery():
 
         #!? If the accountId is already on the table, update the token
         else:
-            cursor.execute(f'UPDATE accounts SET token="{token}" WHERE ownerId={userId} AND accountId={accountId}')
+            cursor.execute(f'UPDATE accounts SET token="{token}", deviceCode="{deviceCode}", isPremium={isPremium}, invitesRemaining={invitesRemaining}, timestamp={int(time())} WHERE ownerId={userId} AND accountId={accountId}')
             id = cursor.execute(f'SELECT id FROM accounts WHERE ownerID={userId} AND accountId="{accountId}"').fetchone()[0]
             con.commit()
 
