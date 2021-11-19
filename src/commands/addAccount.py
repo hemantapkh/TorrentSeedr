@@ -3,7 +3,7 @@ from src.functions.referralCode import referralCode
 from src.functions.floodControl import floodControl
 
 #: Login or signup seedr account
-@bot.message_handler(commands=['login'])
+@bot.message_handler(commands=['login', 'add'])
 def addAccount(message, called=False, userLanguage=None):
     userId = message.from_user.id
 
