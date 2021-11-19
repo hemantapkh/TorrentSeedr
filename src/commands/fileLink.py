@@ -13,9 +13,9 @@ def fileLink(message):
         ac = dbSql.getDefaultAc(userId)
 
         #! If user has an account
-        if ac:
+        if ac and ac['token']:
             id = message.text[10:]
-            account = Seedr(cookie=ac['cookie'])
+            account = Seedr(token=ac['token'])
 
             sent = bot.send_message(message.chat.id, language['fetchingLink'][userLanguage])
             response = account.fetchFile(id[1:]).json()

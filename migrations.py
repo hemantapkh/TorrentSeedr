@@ -40,9 +40,11 @@ conn.execute('''CREATE TABLE accounts
          accountId INTEGER  NOT NULL,
          ownerId    INTEGER NOT NULL,
          userName   TEXT    NOT NULL,
-         email      TEXT    NOT NULL,
-         password   TEXT    NOT NULL,
-         cookie     TEXT    NOT NULL
+         token      TEXT    NOT NULL,
+         deviceCode TEXT    NOT NULL,
+         isPremium    INTEGER Not NULL,
+         invitesRemaining INTEGER NOT NULL,
+         timestamp  INTEGER NOT NULL
          );''')
          
 print('[+] Table accounts created successfully.')

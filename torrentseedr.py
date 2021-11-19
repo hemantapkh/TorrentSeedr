@@ -27,7 +27,7 @@ async def text(message):
     
     #! Add accounts
     if message.text == language['addAccountBtn'][userLanguage]:
-        addAccount(message, userLanguage)
+        addAccount(message, called=False, userLanguage=userLanguage)
     
     #! File manager
     elif message.text == language['fileManagerBtn'][userLanguage]:
@@ -60,7 +60,11 @@ async def text(message):
     #! Support
     elif message.text == language['supportBtn'][userLanguage]:
         featureUnavailable(message, userLanguage)
-    
+
+    #! Cancel process
+    elif message.text == language['cancelBtn'][userLanguage]:
+        cancel(message, userLanguage)
+
     #! Adding torrents
     else:
         #addTorrent(message, userLanguage)

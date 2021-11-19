@@ -12,11 +12,11 @@ def removeFile(message):
         ac = dbSql.getDefaultAc(userId)
 
         #! If user has an account
-        if ac:
+        if ac and ac['token']:
             sent = bot.send_message(message.chat.id, language['removingFile'][userLanguage])
             id = message.text[8:]
 
-            account = Seedr(cookie=ac['cookie'])
+            account = Seedr(token=ac['token'])
 
             response = account.deleteFile(id).json()
 

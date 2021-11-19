@@ -13,7 +13,7 @@ def getPlaylist(call):
     userLanguage = dbSql.getSetting(call.from_user.id, 'language')
 
     if ac:        
-        account = Seedr(cookie=ac['cookie'])
+        account = Seedr(token=ac['token'])
 
         playlistType = call.data[12:15]
         callBacked = True

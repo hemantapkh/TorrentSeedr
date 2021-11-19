@@ -13,9 +13,9 @@ def getFiles(message, called=False):
         ac = dbSql.getDefaultAc(userId)
 
         #! If user has an account
-        if ac:
+        if ac and ac['token']:
             id = message.data[9:] if called else message.text[10:]
-            account = Seedr(cookie=ac['cookie'])
+            account = Seedr(token=ac['token'])
 
             response = account.listContents(folderId=id).json()
 

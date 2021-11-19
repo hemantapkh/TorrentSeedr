@@ -43,3 +43,10 @@ def notSubscribedMarkup(userLanguage):
             telebot.types.InlineKeyboardButton(text=language['joinChannelBtn'][userLanguage], url='https://t.me/h9youtube')]
             ])
     return markup
+
+#: Reply keyboard for cancel button
+def cancelReplyKeyboard(userLanguage):
+    keyboard = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
+    keyboard.row(telebot.types.KeyboardButton(text=language['cancelBtn'][userLanguage]))
+
+    return keyboard

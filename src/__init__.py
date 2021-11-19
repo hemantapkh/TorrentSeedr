@@ -4,6 +4,7 @@ from src.objs import bot, language
 from src.commands.start import start
 from src.commands.stats import stats
 from src.commands.files import files
+from src.commands.cancel import cancel
 from src.commands.active import active
 from src.commands.switch import switch
 from src.commands.account import account
@@ -19,6 +20,8 @@ from src.commands.cancelDownload import cancelDownload
 
 from src.callbacks.getLink import getLink
 from src.callbacks.getFiles import getFiles
+from src.callbacks.authorize import authorize
+from src.callbacks.addAccount import addAccount
 from src.callbacks.getPlaylist import getPlaylist
 from src.callbacks.deleteFolder import deleteFolder
 from src.callbacks.removeAccount import removeAccount

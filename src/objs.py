@@ -4,9 +4,8 @@ from os import path
 import telebot
 
 from models import dbQuery
-from seedr import Seedr, Account
+from seedr import *
 
-seedrAc = Account()
 config = json.load(open('src/config.json'))
 language = json.load(open(config['language']))
 dbSql = dbQuery(config['database'], config['magnetDatabase'])

@@ -15,8 +15,8 @@ def account(message, userLanguage=None):
         ac = dbSql.getDefaultAc(userId)
 
         #! If user has an account
-        if ac:
-            account = Seedr(cookie=ac['cookie'])
+        if ac and ac['token']:
+            account = Seedr(token=ac['token'])
             response = account.getSettings().json()
 
             #! On success
@@ -31,7 +31,7 @@ def account(message, userLanguage=None):
 
                 #markup.add(telebot.types.InlineKeyboardButton(text=language['credentialsBtn'][userLanguage], callback_data=f"viewCredintials_{ac['id']}"))
                 markup.add(telebot.types.InlineKeyboardButton(text=language['removeAccountBtn'][userLanguage], callback_data=f"removeAccount_{ac['id']}"))
-                markup.add(telebot.types.InlineKeyboardButton(text=language['loginBtn'][userLanguage], url='https://torrentseedrbot.herokuapp.com/login'), telebot.types.InlineKeyboardButton(text=language['signupBtn'][userLanguage], url=f'https://www.seedr.cc/?r={referralCode()}'))
+                markup.add(telebot.types.InlineKeyboardButton(text=language['addAccountBtn'][userLanguage], callback_data='addAccount'))
                 
                 bot.send_message(message.chat.id, text, disable_web_page_preview=True, reply_markup=markup)
                     

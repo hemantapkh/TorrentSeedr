@@ -21,8 +21,23 @@ def start(message):
     if params:
         sent = bot.send_message(message.chat.id, text=language['processing'][userLanguage])
 
+        #! If add torrent paramater is passed via database key
+        if params.startswith('addTorrentDb'):
+            key = params[13:]
+            magnetLink = dbSql.getMagnet(key)
+
+            asyncio.run(addTorrent(message, userLanguage, magnetLink, messageId=sent.id))
+        
+        #! If add torrent paramater is passed via URL
+        elif params.startswith('addTorrentURL'):
+            url = f'https://is.gd/{params[14:]}'
+            response = requests.get(url, allow_redirects=False)
+            magnetLink = response.headers['Location'] if 'Location' in response.headers else None
+            
+            asyncio.run(addTorrent(message, userLanguage, magnetLink, messageId=sent.id))
+
         #! Github oauth
-        if params.startswith('oauth'):
+        elif params.startswith('oauth'):
             code = params[6:]
             
             params = {'client_id': 'ba5e2296f2bbe59f5097', 'client_secret': config['githubSecret'], 'code':code}
@@ -52,84 +67,3 @@ def start(message):
             #! Error
             else:
                 bot.edit_message_text(language['processFailed'][userLanguage], chat_id=sent.chat.id, message_id=sent.id)
-
-        #! If add torrent paramater is passed via database key
-        elif params.startswith('addTorrentDb'):
-            key = params[13:]
-            magnetLink = dbSql.getMagnet(key)
-
-            asyncio.run(addTorrent(message, userLanguage, magnetLink, messageId=sent.id))
-        
-        #! If add torrent paramater is passed via URL
-        elif params.startswith('addTorrentURL'):
-            url = f'https://tinyurl.com/{params[14:]}'
-            response = requests.get(url, allow_redirects=False)
-            magnetLink = response.headers['Location'] if 'Location' in response.headers else None
-            
-            asyncio.run(addTorrent(message, userLanguage, magnetLink, messageId=sent.id))
-
-        #! Else, login token is passed
-        else:
-            data = requests.get(f"https://torrentseedrbot.herokuapp.com/getdata?key={config['databaseKey']}&id={params}")
-            data = json.loads(data.content)
-
-            if data['status'] == 'success':
-                data = json.loads(data['data'])
-                
-                #! Login new account
-                if data['type'] == 'login':
-                    login(sent, userLanguage, data)
-                
-                elif data['type'] == 'refresh':
-                    login(sent, userLanguage, data, refresh=True)
-            
-            else:
-                bot.edit_message_text(language['processFailed'][userLanguage], chat_id=sent.chat.id, message_id=sent.id)
-
-#: Account login
-def login(sent, userLanguage, data, refresh=False):
-    userId = sent.chat.id
-    bot.edit_message_text(language['refreshing'][userLanguage] if refresh else language['loggingIn'][userLanguage], chat_id=sent.chat.id, message_id=sent.id)
-    
-    if refresh:
-        ac = dbSql.getDefaultAc(userId)
-        if ac:
-            email = ac['email']
-            password = ac['password']
-            response = seedrAc.login(email, password, data['captchaResponse'])
-        else:
-            response = None
-            bot.edit_message_text(language['noAccount'][userLanguage] if refresh else language['loggingIn'][userLanguage], chat_id=sent.chat.id, message_id=sent.id)
-    else:
-        email = data['email']
-        password = data['password']
-        response = seedrAc.login(email, password, data['captchaResponse'])
-    
-    if response:
-        cookies = requests.utils.dict_from_cookiejar(response.cookies)
-        response = response.json()
-
-        #! If account logged in successfully
-        if 'remember' in cookies:
-            dbSql.setAccount(userId, accountId=response['user_id'], userName=response['username'], email=email, password=password, cookie=f"remember={cookies['remember']}")
-            bot.delete_message(chat_id=sent.chat.id, message_id=sent.id)
-            bot.send_message(chat_id=sent.chat.id, text=language['refreshed'][userLanguage].format(response['username']) if refresh else language['loggedInAs'][userLanguage].format(response['username']), reply_markup=mainReplyKeyboard(userId, userLanguage))
-        
-        else:
-            #! Captcha failed
-            if response['error'] == 'RECAPTCHA_FAILED':
-                bot.edit_message_text(language['captchaFailled'][userLanguage], chat_id=sent.chat.id, message_id=sent.id)
-            
-            #! Wrong username or password
-            elif response['error'] == 'INCORRECT_PASSWORD':
-                if refresh:
-                    dbSql.deleteAccount(userId, ac['id'])
-                    bot.delete_message(chat_id=sent.chat.id, message_id=sent.id)
-                    bot.send_message(text=language['incorrectPassword'][userLanguage], chat_id=sent.chat.id, reply_markup=mainReplyKeyboard(userId, userLanguage))
-
-                else:
-                    bot.edit_message_text(language['incorrectPassword'][userLanguage], chat_id=sent.chat.id, message_id=sent.id)
-            
-            #! Unknown error
-            else:
-                bot.edit_message_text(language['unknownError'][userLanguage].format(response.text), chat_id=sent.chat.id, message_id=sent.id)

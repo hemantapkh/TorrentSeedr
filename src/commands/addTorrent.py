@@ -16,7 +16,7 @@ async def addTorrent(message, userLanguage, magnetLink=None, messageId=None):
         ac = dbSql.getDefaultAc(userId)
 
         #! If user has an account
-        if ac:
+        if ac and ac['token']:
             #! If the text is a valid url or magnet link
             if magnetLink or message.text.startswith('http') or 'magnet:?' in message.text:
                 #! Add torrent in the account
@@ -29,7 +29,7 @@ async def addTorrent(message, userLanguage, magnetLink=None, messageId=None):
                 else:
                     sent = bot.send_message(message.chat.id, language['collectingInfo'][userLanguage])
                 
-                account = Seedr(cookie=ac['cookie'])
+                account = Seedr(token=ac['token'])
                 response = account.addTorrent(magnetLink or message.text).json()
                 
                 #! If torrent added successfully

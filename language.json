@@ -24,6 +24,22 @@
    
     },
 
+    "enterEmail":{
+        "english": "✉️ Enter your account email address."
+    },
+
+    "enterEmailRepeat":{
+        "english": "❗Invalid email address. Please enter a account email address."
+    },
+
+    "enterPassword":{
+        "english": "🔑 Enter your account password."
+    },
+
+    "clickToLogin":{
+        "english": "Click the button below to login your account with the following credintals.\n\n✉️ Email: <code>{}</code>\n🔑 Password: <code>{}</code>"
+    },
+
     "refreshed":{
         "english": "💫 Successfully refreshed the cookies of {}."
    
@@ -74,7 +90,7 @@
     },
 
     "addAccount":{
-        "english": "➕ You must have an seedr account to use this bot. If you already have an account, click on the <b>⤵️ Login</b> button below to add your account.\n\nIf you don't have an account, please create an account by clicking on the <b>⤴️ Signup</b> button below."
+        "english": "👥 If you don't have a seedr account, click the <b>➕ Sign up</b> button to create a new account. After creating an account, follow the instruction below to login.\n\n• Go to https://seedr.cc/devices\n• Login your account if not logged in\n• Paste the following code <code>{}</code>\n• Click the <b>✅ Done</b> button after completion."
     },
 
     "cancellingDownload":{
@@ -100,6 +116,11 @@
 
     "deletedSuccessfully":{
         "english": "🙌  The selected folder is deleted successfully."
+   
+    },
+
+    "cancelled":{
+        "english": "❌ Cancelled"
    
     },
 
@@ -152,6 +173,10 @@
         "english": "🪝 Fetching files"
     },
 
+    "notAuthorized":{
+        "english": "⚠️ Please follow the steps properly."
+    },
+
     "noAccount":{
         "english": "⚠️ You don't have any account logged in."
     },
@@ -170,6 +195,11 @@
 
     "processFailed":{
         "english": "⚠️ Failed to process your request. Please try again."
+    },
+
+    "somethingWrong":{
+        "english": "⚠️ Something went wrong. Please try again later or contact the developer."
+   
     },
 
     "noPermission":{
@@ -314,11 +344,19 @@
     },
 
     "loginBtn": {
-        "english": "⤵️ Login"
+        "english": "👤 Login"
+    },
+
+    "doneBtn": {
+        "english": "✅ Done"
     },
 
     "signupBtn":{
-        "english": "⤴️ Signup"
+        "english": "➕ Sign up"
+    },
+
+    "clickHereBtn":{
+        "english": "👉 Click here"
     },
 
     "refreshBtn":{
@@ -343,8 +381,13 @@
 
     },
 
-    "cancelBtn":{
+    "cancelDownloadBtn":{
         "english": "❌ Cancel download"
+   
+    },
+
+    "cancelBtn":{
+        "english": "❌ Cancel"
    
     },
 

@@ -12,8 +12,8 @@ def cancelDownload(message, called=False):
         ac = dbSql.getDefaultAc(userId)
 
         #! If user has an account
-        if ac:
-            account = Seedr(cookie=ac['cookie'])
+        if ac and ac['token']:
+            account = Seedr(token=ac['token'])
 
             if not called:
                 sent = bot.send_message(message.chat.id, language['cancellingDownload'][userLanguage])

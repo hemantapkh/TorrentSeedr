@@ -1,4 +1,5 @@
 import sqlite3
+from time import time
 from datetime import datetime
 
 class dbQuery():
@@ -106,19 +107,19 @@ class dbQuery():
         con.commit()
 
     #: Add account in the user's accounts table
-    def setAccount(self, userId, accountId, userName, email, password, cookie):
+    def setAccount(self, userId, accountId, userName, token, deviceCode, isPremium, invitesRemaining):
         self.setUser(userId)
         con = sqlite3.connect(self.db)
         cursor = con.cursor()
             
         #!? If the seedrId not on the table, insert new
         if cursor.execute(f'SELECT * FROM accounts WHERE ownerId={userId} AND accountId="{accountId}"').fetchone() == None:
-            id = cursor.execute(f'INSERT INTO accounts (accountId, ownerId, userName, email, password, cookie) VALUES ({accountId},{userId},"{userName}","{email}", "{password}", "{cookie}")').lastrowid
+            id = cursor.execute(f'INSERT INTO accounts (accountId, ownerId, userName, token, deviceCode, isPremium, invitesRemaining, timestamp) VALUES ({accountId},{userId},"{userName}","{token}","{deviceCode}",{isPremium},{invitesRemaining},{int(time())})').lastrowid
             con.commit()
 
-        #!? If the accountId is already on the table, update the cookie
+        #!? If the accountId is already on the table, update the token
         else:
-            cursor.execute(f'UPDATE accounts SET cookie="{cookie}" WHERE ownerId={userId} AND accountId={accountId}')
+            cursor.execute(f'UPDATE accounts SET token="{token}" WHERE ownerId={userId} AND accountId={accountId}')
             id = cursor.execute(f'SELECT id FROM accounts WHERE ownerID={userId} AND accountId="{accountId}"').fetchone()[0]
             con.commit()
 
