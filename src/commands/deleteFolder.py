@@ -12,7 +12,7 @@ def deleteFolder(message, called=False):
         ac = dbSql.getDefaultAc(userId)
 
         #! If user has an account
-        if ac and ac['token']:
+        if ac:
             account = Seedr(token=ac['token'])
 
             id = message.data[7:] if called else message.text[8:]

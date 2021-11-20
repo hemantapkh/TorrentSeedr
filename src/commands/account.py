@@ -15,7 +15,7 @@ def account(message, userLanguage=None):
         ac = dbSql.getDefaultAc(userId)
 
         #! If user has an account
-        if ac and ac['token']:
+        if ac:
             account = Seedr(token=ac['token'])
             response = account.getSettings().json()
 

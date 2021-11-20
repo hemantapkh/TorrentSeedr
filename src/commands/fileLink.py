@@ -13,7 +13,7 @@ def fileLink(message):
         ac = dbSql.getDefaultAc(userId)
 
         #! If user has an account
-        if ac and ac['token']:
+        if ac:
             id = message.text[10:]
             account = Seedr(token=ac['token'])
 

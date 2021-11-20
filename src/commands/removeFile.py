@@ -12,7 +12,7 @@ def removeFile(message):
         ac = dbSql.getDefaultAc(userId)
 
         #! If user has an account
-        if ac and ac['token']:
+        if ac:
             sent = bot.send_message(message.chat.id, language['removingFile'][userLanguage])
             id = message.text[8:]
 

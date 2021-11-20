@@ -16,7 +16,7 @@ async def addTorrent(message, userLanguage, magnetLink=None, messageId=None):
         ac = dbSql.getDefaultAc(userId)
 
         #! If user has an account
-        if ac and ac['token']:
+        if ac:
             #! If the text is a valid url or magnet link
             if magnetLink or message.text.startswith('http') or 'magnet:?' in message.text:
                 #! Add torrent in the account

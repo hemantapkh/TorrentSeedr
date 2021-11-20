@@ -12,7 +12,7 @@ def cancelDownload(message, called=False):
         ac = dbSql.getDefaultAc(userId)
 
         #! If user has an account
-        if ac and ac['token']:
+        if ac:
             account = Seedr(token=ac['token'])
 
             if not called:

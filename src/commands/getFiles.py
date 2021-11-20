@@ -13,7 +13,7 @@ def getFiles(message, called=False):
         ac = dbSql.getDefaultAc(userId)
 
         #! If user has an account
-        if ac and ac['token']:
+        if ac:
             id = message.data[9:] if called else message.text[10:]
             account = Seedr(token=ac['token'])
 
