@@ -167,7 +167,7 @@ async def addTorrent(message, userLanguage, magnetLink=None, messageId=None):
                         exceptions(message, response, userLanguage)
 
                 #! If no enough space
-                elif response['result'] == 'not_enough_space_added_to_wishlist':
+                elif response['result'] in ['not_enough_space_added_to_wishlist', 'not_enough_space_wishlist_full']:
                     bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=language['noEnoughSpace'][userLanguage])
 
                 #! Invalid magnet link
