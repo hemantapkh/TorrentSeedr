@@ -13,18 +13,23 @@ def mainReplyKeyboard(userId, userLanguage):
     button7 = telebot.types.KeyboardButton(text=language['supportBtn'][userLanguage])
     button9 = telebot.types.KeyboardButton(text=language['addAccountBtn'][userLanguage])
     button10 = telebot.types.KeyboardButton(text=language['switchBtn'][userLanguage])
+    button11 = telebot.types.KeyboardButton(text='🆓 Get free space')
     
     account = dbSql.getAccounts(userId)
 
     #! If user has no account
     if not account:
         keyboard.row(button9)
-        keyboard.row(button5, button6, button7)
+        #keyboard.row(button5, button6, button7)
     
     else:
         keyboard.row(button1, button2)
         keyboard.row(button10, button3, button4) if len(account) > 1 else keyboard.row(button3, button4)
-        keyboard.row(button5, button6, button7)
+        
+        if dbSql.getSetting(userId, 'githubId') == '0':
+            keyboard.row(button11, button7)
+        else:
+            keyboard.row(button7)
 
     return keyboard
 

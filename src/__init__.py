@@ -8,6 +8,7 @@ from src.commands.cancel import cancel
 from src.commands.active import active
 from src.commands.switch import switch
 from src.commands.account import account
+from src.commands.support import support
 from src.commands.getLink import getLink
 from src.commands.fileLink import fileLink
 from src.commands.getFiles import getFiles
@@ -28,4 +29,4 @@ from src.callbacks.removeAccount import removeAccount
 from src.callbacks.cancelDownload import cancelDownload
 from src.callbacks.viewCredintials import viewCredintials
 
-from src.commands.featureUnavailable import featureUnavailable
+from src.functions.keyboard import githubAuthKeyboard

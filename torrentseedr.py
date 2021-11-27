@@ -43,23 +43,19 @@ async def text(message):
 
     #! Wishlist
     elif message.text == language['wishlistBtn'][userLanguage]:
-        featureUnavailable(message, userLanguage)
+        bot.send_message(message.chat.id, language['featureNotAvailable'][userLanguage])
     
     #! Account and profile
     elif message.text == language['accountBtn'][userLanguage]:
         account(message, userLanguage)
-    
-    #! Settings
-    elif message.text == language['settingsBtn'][userLanguage]:
-        featureUnavailable(message, userLanguage)
-    
-    #! Help
-    elif message.text == language['helpBtn'][userLanguage]:
-        featureUnavailable(message, userLanguage)
 
+    #! Earn free space
+    elif message.text == '🆓 Get free space':
+        bot.send_message(message.chat.id, language['getFreeSpace'][userLanguage], reply_markup=githubAuthKeyboard(userLanguage))
+    
     #! Support
     elif message.text == language['supportBtn'][userLanguage]:
-        featureUnavailable(message, userLanguage)
+        support(message, userLanguage)
 
     #! Cancel process
     elif message.text == language['cancelBtn'][userLanguage]:

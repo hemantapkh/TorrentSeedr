@@ -245,6 +245,10 @@
     "clickForMoreDetails": {
         "english": "Click for more details."
     },
+
+    "support": {
+        "english": "<b>{}</b>\n\nThank you for your wish to contribute. Donate any amount to keep this service alive and to give me a motivation to add new features.😇\n\n🐛 To report bugs or to request a new feature, join our discussion chat, and discuss it there."
+    },
     
     "files":{
         "english": "Files:"
@@ -470,11 +474,15 @@
     },
 
     "joinChannelBtn": {
-        "english": "➕ Channel"
+        "english": "📢 Channel"
     },
 
     "joinDiscussionBtn": {
         "english": "🗣️ Group Chat"
+    },
+
+    "subscribeChannelBtn": {
+        "english": "📺 YouTube"
     },
 
     "followOnGithubBtn": {
