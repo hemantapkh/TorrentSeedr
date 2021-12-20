@@ -38,7 +38,7 @@ def getLink(message, called=False):
                         bot.send_message(text=text, chat_id=message.chat.id, reply_markup=markup)
             
             else:
-                exceptions(message, response, ac, userLanguage)
+                exceptions(message, response, ac, userLanguage, called)
         
         #! If no accounts
         else:

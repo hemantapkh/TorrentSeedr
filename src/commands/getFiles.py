@@ -47,7 +47,7 @@ def getFiles(message, called=False):
                         bot.send_message(message.chat.id, text, reply_markup=markup)
 
             else:
-                exceptions(message, response, ac, userLanguage)
+                exceptions(message, response, ac, userLanguage, called)
         
         #! If no accounts
         else:

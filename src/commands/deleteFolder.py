@@ -28,7 +28,7 @@ def deleteFolder(message, called=False):
                         bot.send_message(message.chat.id, language['deletedSuccessfully'][userLanguage])
 
             else:
-                exceptions(message, response, ac, userLanguage)
+                exceptions(message, response, ac, userLanguage, called)
             
         #! If no accounts
         else:
