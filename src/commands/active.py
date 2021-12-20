@@ -18,7 +18,6 @@ def active(message, userLanguage=None):
         if ac:
             account = Seedr(token=ac['token'])
             response = account.listContents().json()
-
             
             if 'error' not in response:
                 if 'torrents' in response:
@@ -39,9 +38,9 @@ def active(message, userLanguage=None):
 
                         bot.send_message(message.chat.id, text)
         
-                #! If user don't have any active torrents
-                else:
-                    bot.send_message(message.chat.id, language['noActiveTorrents'][userLanguage])
+                    #! If user don't have any active torrents
+                    else:
+                        bot.send_message(message.chat.id, language['noActiveTorrents'][userLanguage])
             
             else:
                 exceptions(message, response, ac, userLanguage)
