@@ -15,7 +15,7 @@ def authorize(call, accountId=None, deviceCode=None, userLanguage=None, refreshM
         dbSql.setAccount(userId=call.from_user.id, accountId=acSettings['account']['user_id'], userName=acSettings['account']['username'], token=response['access_token'], deviceCode=deviceCode, isPremium=acSettings['account']['premium'], invitesRemaining=acSettings['account']['invites'])
         
         if refreshMode:
-            bot.send_message(call.from_user.id, language=userLanguage['refreshed'][userLanguage])
+            bot.send_message(call.from_user.id, language['refreshed'][userLanguage])
         
         else:
             bot.delete_message(call.message.chat.id, call.message.id)
