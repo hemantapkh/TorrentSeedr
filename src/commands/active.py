@@ -19,30 +19,32 @@ def active(message, userLanguage=None):
             account = Seedr(token=ac['token'])
             response = account.listContents().json()
 
-            if 'torrents' in response:
-                #! If user has active torrents
-                if response['torrents']:
-                    text = ''
-                    for i in response['torrents']:
-                        text += f"<b>📂 {i['name']}</b>\n\n💾 {convertSize(i['size'])}, ⏰ {i['last_update']}\n\n"
-                        text += f"{language['torrentQuality'][userLanguage]} {i['torrent_quality']}\n{language['connectedTo'][userLanguage]} {i['connected_to']}\n{language['downloadingFrom'][userLanguage]} {i['downloading_from']}\n{language['seeders'][userLanguage]} {i['seeders']}\n{language['leechers'][userLanguage]} {i['leechers']}\n{language['uploadingTo'][userLanguage]} {i['uploading_to']}\n"
-                    
-                        #! Show warnings if any
-                        # if i['warnings'] != '[]':
-                        #     warnings = i['warnings'].strip('[]').replace('"','').split(',')
-                        #     for warning in warnings:
-                        #         text += f"\n⚠️ {warning.capitalize()}"
+            
+            if 'error' not in response:
+                if 'torrents' in response:
+                    #! If user has active torrents
+                    if response['torrents']:
+                        text = ''
+                        for i in response['torrents']:
+                            text += f"<b>📂 {i['name']}</b>\n\n💾 {convertSize(i['size'])}, ⏰ {i['last_update']}\n\n"
+                            text += f"{language['torrentQuality'][userLanguage]} {i['torrent_quality']}\n{language['connectedTo'][userLanguage]} {i['connected_to']}\n{language['downloadingFrom'][userLanguage]} {i['downloading_from']}\n{language['seeders'][userLanguage]} {i['seeders']}\n{language['leechers'][userLanguage]} {i['leechers']}\n{language['uploadingTo'][userLanguage]} {i['uploading_to']}\n"
                         
-                        text += f"\n{progressBar(i['progress'])}\n\n{language['cancel'][userLanguage]} /cancel_{i['id']}\n\n"
+                            #! Show warnings if any
+                            # if i['warnings'] != '[]':
+                            #     warnings = i['warnings'].strip('[]').replace('"','').split(',')
+                            #     for warning in warnings:
+                            #         text += f"\n⚠️ {warning.capitalize()}"
+                            
+                            text += f"\n{progressBar(i['progress'])}\n\n{language['cancel'][userLanguage]} /cancel_{i['id']}\n\n"
 
-                    bot.send_message(message.chat.id, text)
+                        bot.send_message(message.chat.id, text)
         
                 #! If user don't have any active torrents
                 else:
                     bot.send_message(message.chat.id, language['noActiveTorrents'][userLanguage])
             
             else:
-                exceptions(message, response, userLanguage)
+                exceptions(message, response, ac, userLanguage)
         
         #! If no accounts
         else:

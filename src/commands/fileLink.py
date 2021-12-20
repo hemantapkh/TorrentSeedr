@@ -20,24 +20,25 @@ def fileLink(message):
             sent = bot.send_message(message.chat.id, language['fetchingLink'][userLanguage])
             response = account.fetchFile(id[1:]).json()
 
-            #! If download link found
-            if 'url' in response:
-                encodedUrl = urlEncode(response['url'])
-                text = f"🖹 <b>{response['name']}</b>\n\n"
-                text += f"🔗 <code>{encodedUrl}</code>\n\n<b>🔥via @TorrentSeedrBot</b>"
+            if 'error' not in response:
+                #! If download link found
+                if 'url' in response:
+                    encodedUrl = urlEncode(response['url'])
+                    text = f"🖹 <b>{response['name']}</b>\n\n"
+                    text += f"🔗 <code>{encodedUrl}</code>\n\n<b>🔥via @TorrentSeedrBot</b>"
 
-                markup = telebot.types.InlineKeyboardMarkup()
-                markup.add(telebot.types.InlineKeyboardButton(text=language['openInBrowserBtn'][userLanguage], url=encodedUrl))
+                    markup = telebot.types.InlineKeyboardMarkup()
+                    markup.add(telebot.types.InlineKeyboardButton(text=language['openInBrowserBtn'][userLanguage], url=encodedUrl))
 
-                if id[0] != 'u':
-                    markup.add(telebot.types.InlineKeyboardButton(text=language['openInPlayerBtn'][userLanguage], callback_data=f'getPlaylist_000_file_{id[1:]}'))
-                
-                markup.add(telebot.types.InlineKeyboardButton(text=language['joinChannelBtn'][userLanguage], url='t.me/h9youtube'), telebot.types.InlineKeyboardButton(text=language['joinDiscussionBtn'][userLanguage], url='t.me/h9discussion'))
-                
-                bot.edit_message_text(text=text, chat_id=message.chat.id, message_id=sent.id, reply_markup=markup)
+                    if id[0] != 'u':
+                        markup.add(telebot.types.InlineKeyboardButton(text=language['openInPlayerBtn'][userLanguage], callback_data=f'getPlaylist_000_file_{id[1:]}'))
+                    
+                    markup.add(telebot.types.InlineKeyboardButton(text=language['joinChannelBtn'][userLanguage], url='t.me/h9youtube'), telebot.types.InlineKeyboardButton(text=language['joinDiscussionBtn'][userLanguage], url='t.me/h9discussion'))
+                    
+                    bot.edit_message_text(text=text, chat_id=message.chat.id, message_id=sent.id, reply_markup=markup)
 
             else:
-                exceptions(message, response, userLanguage)
+                exceptions(message, response, ac, userLanguage)
         
         #! If no accounts
         else:

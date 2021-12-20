@@ -19,34 +19,35 @@ def getFiles(message, called=False):
 
             response = account.listContents(folderId=id).json()
 
-            #! If success
-            if 'name' in response:
-                text = f"<b>📁 {response['name']}</b>\n\n"
-                markup = telebot.types.InlineKeyboardMarkup()
-                markup.add(telebot.types.InlineKeyboardButton(text=language['getLinkBtn'][userLanguage], callback_data=f'getLink_{id}'), telebot.types.InlineKeyboardButton(text=language['deleteBtn'][userLanguage], callback_data=f'delete_{id}'))
+            if 'error' not in response:
+                #! If success
+                if 'name' in response:
+                    text = f"<b>📁 {response['name']}</b>\n\n"
+                    markup = telebot.types.InlineKeyboardMarkup()
+                    markup.add(telebot.types.InlineKeyboardButton(text=language['getLinkBtn'][userLanguage], callback_data=f'getLink_{id}'), telebot.types.InlineKeyboardButton(text=language['deleteBtn'][userLanguage], callback_data=f'delete_{id}'))
 
-                for folder in response['folders']:
-                    text += f"🖿 {folder['name']} <b>[ {convertSize(folder['size'])}]</b>\n\n"
-                    text += f"{language['files'][userLanguage]} /getFiles_{folder['id']}\n"
-                    text += f"{language['link'][userLanguage]} /getLink_{folder['id']}\n"
-                    text += f"{language['delete'][userLanguage]} /delete_{folder['id']}\n\n"
+                    for folder in response['folders']:
+                        text += f"🖿 {folder['name']} <b>[ {convertSize(folder['size'])}]</b>\n\n"
+                        text += f"{language['files'][userLanguage]} /getFiles_{folder['id']}\n"
+                        text += f"{language['link'][userLanguage]} /getLink_{folder['id']}\n"
+                        text += f"{language['delete'][userLanguage]} /delete_{folder['id']}\n\n"
 
-                for file in response['files']:
-                    text += f"<code>{'🎬' if file['play_video'] == True else '🎵' if file['play_audio'] == True else '📄'} {file['name']}</code> <b>[{convertSize(file['size'])}]</b>\n\n"
-                    text += f"{language['link'][userLanguage]} /fileLink_{'v' if file['play_video'] == True else 'a' if file['play_audio'] == True else 'u'}{file['folder_file_id']}\n"
-                    text += f"{language['delete'][userLanguage]} /remove_{file['folder_file_id']}\n\n"
-                
-                markup.add(telebot.types.InlineKeyboardButton(text=language['openInPlayerBtn'][userLanguage], callback_data=f'getPlaylist_000_folder_{id}'))
-                markup.add(telebot.types.InlineKeyboardButton(text=language['joinChannelBtn'][userLanguage], url='t.me/h9youtube'), telebot.types.InlineKeyboardButton(text=language['joinDiscussionBtn'][userLanguage], url='t.me/h9discussion'))
-                
-                if called:
-                    bot.answer_callback_query(message.id)
-                    bot.edit_message_text(chat_id=message.message.chat.id, message_id=message.message.message_id, text=text, reply_markup=markup)
-                else:
-                    bot.send_message(message.chat.id, text, reply_markup=markup)
+                    for file in response['files']:
+                        text += f"<code>{'🎬' if file['play_video'] == True else '🎵' if file['play_audio'] == True else '📄'} {file['name']}</code> <b>[{convertSize(file['size'])}]</b>\n\n"
+                        text += f"{language['link'][userLanguage]} /fileLink_{'v' if file['play_video'] == True else 'a' if file['play_audio'] == True else 'u'}{file['folder_file_id']}\n"
+                        text += f"{language['delete'][userLanguage]} /remove_{file['folder_file_id']}\n\n"
+                    
+                    markup.add(telebot.types.InlineKeyboardButton(text=language['openInPlayerBtn'][userLanguage], callback_data=f'getPlaylist_000_folder_{id}'))
+                    markup.add(telebot.types.InlineKeyboardButton(text=language['joinChannelBtn'][userLanguage], url='t.me/h9youtube'), telebot.types.InlineKeyboardButton(text=language['joinDiscussionBtn'][userLanguage], url='t.me/h9discussion'))
+                    
+                    if called:
+                        bot.answer_callback_query(message.id)
+                        bot.edit_message_text(chat_id=message.message.chat.id, message_id=message.message.message_id, text=text, reply_markup=markup)
+                    else:
+                        bot.send_message(message.chat.id, text, reply_markup=markup)
 
             else:
-                exceptions(message, response, userLanguage)
+                exceptions(message, response, ac, userLanguage)
         
         #! If no accounts
         else:

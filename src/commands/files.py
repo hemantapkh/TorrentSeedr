@@ -17,7 +17,7 @@ def files(message, userLanguage=None):
             account = Seedr(token=ac['token'])
             response = account.listContents().json()
             
-            if 'result' not in response:
+            if 'error' not in response:
                 #! If user has files
                 if response['folders']:
                     text = ''
@@ -32,7 +32,7 @@ def files(message, userLanguage=None):
                 else:
                     bot.send_message(message.chat.id, language['noFiles'][userLanguage])
             else:
-                exceptions(message, response, userLanguage)
+                exceptions(message, response, ac, userLanguage)
         
         #! If no accounts
         else:

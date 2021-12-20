@@ -18,16 +18,17 @@ def deleteFolder(message, called=False):
             id = message.data[7:] if called else message.text[8:]
             response = account.deleteFolder(id).json()
 
-            #! If folder is deleted successfully
-            if response['result'] == True:
-                if called:
-                    bot.answer_callback_query(message.id)
-                    bot.edit_message_text(text=language['deletedSuccessfully'][userLanguage], chat_id=message.message.chat.id, message_id=message.message.id)
-                else:
-                    bot.send_message(message.chat.id, language['deletedSuccessfully'][userLanguage])
+            if 'error' not in response:
+                #! If folder is deleted successfully
+                if response['result'] == True:
+                    if called:
+                        bot.answer_callback_query(message.id)
+                        bot.edit_message_text(text=language['deletedSuccessfully'][userLanguage], chat_id=message.message.chat.id, message_id=message.message.id)
+                    else:
+                        bot.send_message(message.chat.id, language['deletedSuccessfully'][userLanguage])
 
             else:
-                exceptions(message, response, userLanguage)
+                exceptions(message, response, ac, userLanguage)
             
         #! If no accounts
         else:

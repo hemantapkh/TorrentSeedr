@@ -20,12 +20,13 @@ def removeFile(message):
 
             response = account.deleteFile(id).json()
 
-            #! If file removed successfully
-            if response['result'] == True:
-                bot.edit_message_text(text=language['removedSuccessfully'][userLanguage], chat_id=message.chat.id, message_id=sent.id)
+            if 'error' not in response:
+                #! If file removed successfully
+                if response['result'] == True:
+                    bot.edit_message_text(text=language['removedSuccessfully'][userLanguage], chat_id=message.chat.id, message_id=sent.id)
             
             else:
-                exceptions(message, response, userLanguage)
+                exceptions(message, response, ac, userLanguage)
             
         #! If no accounts
         else:

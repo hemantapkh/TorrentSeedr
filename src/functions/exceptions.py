@@ -1,22 +1,15 @@
 from src.objs import *
-from src.functions.referralCode import referralCode
+from src.callbacks.authorize import authorize
 from src.functions.keyboard import mainReplyKeyboard
 
-def exceptions(message, response, userLanguage, called=False):
+def exceptions(message, response, ac, userLanguage, called=False):
     chatId = message.message.chat.id if called else message.chat.id
-    if 'result' in response:
-        if response['result'] == 'login_required':
-            markup = telebot.types.InlineKeyboardMarkup()
-            ac = dbSql.getDefaultAc(message.from_user.id)
 
-            markup.add(telebot.types.InlineKeyboardButton(text=language['loginBtn'][userLanguage], url='https://torrentseedrbot.herokuapp.com/login'), telebot.types.InlineKeyboardButton(text=language['signupBtn'][userLanguage], url=f'https://www.seedr.cc/?r={referralCode()}'))
-            markup.add(telebot.types.InlineKeyboardButton(text=language['removeAccountBtn'][userLanguage], callback_data=f"removeAccount_{ac['id']}"))
-            markup.add(telebot.types.InlineKeyboardButton(text=language['refreshBtn'][userLanguage], url='https://torrentseedrbot.herokuapp.com/refresh'))
-            
-            bot.send_message(chatId, language['loginRequired'][userLanguage].format(ac['userName']), reply_markup=markup)
+    if response['error'] in ['expired_token', 'invalid_token']:
+        authorize(message, ac['id'], ac['deviceCode'], userLanguage, refreshMode=True)
     
     else:
-        print(response)
+        bot.send_message(chatId, language['unknownError'][userLanguage], reply_markup=mainReplyKeyboard(userId=chatId, userLanguage=userLanguage))
 
 def noAccount(message, userLanguage, called=False):
     chatId = message.message.chat.id if called else message.chat.id

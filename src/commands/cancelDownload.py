@@ -24,12 +24,13 @@ def cancelDownload(message, called=False):
             
             response = account.deleteTorrent(id).json()
 
-            #! If torrent cancelled successfully
-            if response['result'] == True:
-                bot.edit_message_text(text=language['cancelledSuccessfully'][userLanguage], chat_id=message.message.chat.id if called else message.chat.id, message_id=message.message.id if called else sent.id)
+            if 'error' not in response:
+                #! If torrent cancelled successfully
+                if response['result'] == True:
+                    bot.edit_message_text(text=language['cancelledSuccessfully'][userLanguage], chat_id=message.message.chat.id if called else message.chat.id, message_id=message.message.id if called else sent.id)
 
             else:
-                exceptions(message, response, userLanguage)
+                exceptions(message, response, ac, userLanguage)
             
         #! If no accounts
         else:

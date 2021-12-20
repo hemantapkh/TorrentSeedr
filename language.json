@@ -41,7 +41,7 @@
     },
 
     "refreshed":{
-        "english": "💫 Successfully refreshed the cookies of {}."
+        "english": "💫 Successfully refreshed the token of your account. Now, you can use the bot."
    
     },
 
@@ -74,8 +74,8 @@
    
     },
 
-    "unknwonError":{
-        "english": "⚠️ Unknown error occured. I have reported this to admin."
+    "unknownError":{
+        "english": "⚠️ Unknown error occured. If you are seeing this error repeatedly, report this issue to us."
    
     },
 
@@ -216,6 +216,10 @@
 
     "noActiveTorrents":{
         "english": "🤝 You don't have any active torrents."
+    },
+
+    "tokenExpired":{
+        "english": "😬 Your account token has expired. Please add your account again."
     },
 
     "loginRequired":{
