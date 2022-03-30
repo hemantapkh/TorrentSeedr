@@ -42,7 +42,7 @@ class dbQuery():
         con.row_factory = lambda cursor, row: row[0]
         cur = con.cursor()
         
-        users = cur.execute(f'SELECT ownerId FROM settings where githubId!=0').fetchall()
+        users = cur.execute(f'SELECT DISTINCT settings.ownerId FROM settings INNER JOIN accounts ON accounts.id = settings.defaultAcId WHERE githubId != 0 and accounts.invitesRemaining != 0').fetchall()
         con.commit()
 
         return users if users else None

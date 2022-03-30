@@ -6,16 +6,13 @@ def referralCode():
     users = dbSql.getAllGhUsers()
     
     if users:
-        index = 0 if not previousUser else users.index(previousUser) + 1 if (len(users)-1) > users.index(previousUser) else 0
+        index = (users.index(previousUser)+1) % len(users) if previousUser else 0
         account = dbSql.getDefaultAc(users[index])
 
-        if account: 
-            previousUser = users[index]
-            dbSql.setSetting(account['ownerId'], 'totalRefer', dbSql.getSetting(account['ownerId'], 'totalRefer')+1)
+        previousUser = users[index]
+        dbSql.setSetting(account['ownerId'], 'totalRefer', dbSql.getSetting(account['ownerId'], 'totalRefer')+1)
 
-            return account['accountId']
-        else:
-            return '921385'
+        return account['accountId']
     
     else:
-        return '921385'
+        return 921385
