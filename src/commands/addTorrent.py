@@ -32,7 +32,7 @@ async def addTorrent(message, userLanguage, magnetLink=None, messageId=None):
                 account = Seedr(token=ac['token'])
                 response = account.addTorrent(magnetLink or message.text).json()
 
-                if 'error' not in response:
+                if 'result' in response:
                     #! If torrent added successfully
                     if 'user_torrent_id' in response:
                         startTime = time()
@@ -163,25 +163,21 @@ async def addTorrent(message, userLanguage, magnetLink=None, messageId=None):
                             else:
                                 bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=language['delayWhileCollectingSeeds'][userLanguage], reply_markup=cancelMarkup)
                         
-                        #! If failed to find progressUrl
-                    else:
-                        exceptions(message, response, ac, userLanguage)
+                    #! If no enough space
+                    elif response['result'] in ['not_enough_space_added_to_wishlist', 'not_enough_space_wishlist_full']:
+                        bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=language['noEnoughSpace'][userLanguage])
 
-                #! If no enough space
-                elif response['result'] in ['not_enough_space_added_to_wishlist', 'not_enough_space_wishlist_full']:
-                    bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=language['noEnoughSpace'][userLanguage])
+                    #! Invalid magnet link
+                    elif response['result'] == 'parsing_error':
+                        invalidMagnet(message, userLanguage, sent.id)
+                    
+                    #! If parallel downloads exceeds
+                    elif response['result'] == 'queue_full_added_to_wishlist':
+                        bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=language['parallelDownloadExceed'][userLanguage])
 
-                #! Invalid magnet link
-                elif response['result'] == 'parsing_error':
-                    invalidMagnet(message, userLanguage, sent.id)
-                
-                #! If parallel downloads exceeds
-                elif response['result'] == 'queue_full_added_to_wishlist':
-                    bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=language['parallelDownloadExceed'][userLanguage])
-
-                #! If the torrent is already downloading
-                elif response == {'result': True}:
-                    bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=language['alreadyDownloading'][userLanguage])
+                    #! If the torrent is already downloading
+                    elif response == {'result': True}:
+                        bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=language['alreadyDownloading'][userLanguage])
                 
                 else:
                     exceptions(message, response, ac, userLanguage)
