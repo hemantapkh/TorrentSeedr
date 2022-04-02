@@ -128,6 +128,10 @@
         "english": "🔄 Collecting torrent information"
     },
 
+    "torrentAddedSuccessfully":{
+        "english": "🙌 The torrent is added successfully to the download queue. Please see the status of the torrent in /active torrent list or in /files manager."
+    },
+
     "alreadyDownloading":{
         "english": "🥴 The torrent is already downloading. Please see the status in active torrents list or by clicking /active."
     },
