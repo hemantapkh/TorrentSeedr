@@ -69,7 +69,7 @@ async def addTorrent(message, userLanguage, magnetLink=None, messageId=None):
                                 
                                 #! Increase the amount of sleep in each iteration
                                 #sleep(i)
-                                await asyncio.sleep(i)
+                                await asyncio.sleep(10)
                                 
                             #! If seeds collected successfully
                             if 'title' in progressResponse:
@@ -120,7 +120,7 @@ async def addTorrent(message, userLanguage, magnetLink=None, messageId=None):
                                                             cancelled = True
                                                             break
                                                 else:
-                                                    await asyncio.sleep(5)
+                                                    await asyncio.sleep(10)
                                         
                                         if not copyFlag:
                                             bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=language['delayWhileCopying'][userLanguage], reply_markup=cancelMarkup)
@@ -152,7 +152,7 @@ async def addTorrent(message, userLanguage, magnetLink=None, messageId=None):
                                                         cancelled = True
                                                         break
                                         #sleep(3)
-                                        await asyncio.sleep(3)
+                                        await asyncio.sleep(10)
                                         progressResponse = json.loads(requests.get(progressUrl).text[2:-1])
                                 
                                 #! If download is taking long time
