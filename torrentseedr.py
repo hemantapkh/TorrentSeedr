@@ -10,6 +10,7 @@ webhookUrlPath = f"/{config['botToken']}/"
 
 app = web.Application()
 
+
 #: Process webhook calls
 async def handle(request):
     if request.match_info.get('token') == bot.token:
@@ -24,11 +25,11 @@ app.router.add_post('/{token}/', handle)
 
 async def text(message):
     userLanguage = dbSql.getSetting(message.from_user.id, 'language')
-    
+
     #! Add accounts
     if message.text == language['addAccountBtn'][userLanguage]:
         addAccount(message, called=False, userLanguage=userLanguage)
-    
+
     #! File manager
     elif message.text == language['fileManagerBtn'][userLanguage]:
         files(message, userLanguage)
@@ -43,8 +44,8 @@ async def text(message):
 
     #! Wishlist
     elif message.text == language['wishlistBtn'][userLanguage]:
-        bot.send_message(message.chat.id, language['featureNotAvailable'][userLanguage])
-    
+        wishlist(message, userLanguage)
+
     #! Account and profile
     elif message.text == language['accountBtn'][userLanguage]:
         account(message, userLanguage)
@@ -52,7 +53,7 @@ async def text(message):
     #! Earn free space
     elif message.text == '🆓 Get free space':
         bot.send_message(message.chat.id, language['getFreeSpace'][userLanguage], reply_markup=githubAuthKeyboard(userLanguage))
-    
+
     #! Support
     elif message.text == language['supportBtn'][userLanguage]:
         support(message, userLanguage)
@@ -60,6 +61,11 @@ async def text(message):
     #! Cancel process
     elif message.text == language['cancelBtn'][userLanguage]:
         cancel(message, userLanguage)
+
+    #! Adding torrent from wishlist
+    elif message.text.startswith('/addTorrent'):
+        wishlistId = message.text[13:]
+        await asyncio.gather(addTorrent(message, userLanguage, wishlistId=wishlistId))
 
     #! Adding torrents
     else:
@@ -71,7 +77,7 @@ async def text(message):
 @bot.message_handler(content_types=['text'])
 def _text(message):
     asyncio.run(text(message))
-    
+
 #: Polling Bot
 if config['connectionType'] == 'polling':
     #! Remove previous webhook if exists

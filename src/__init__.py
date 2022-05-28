@@ -13,6 +13,7 @@ from src.commands.support import support
 from src.commands.getLink import getLink
 from src.commands.fileLink import fileLink
 from src.commands.getFiles import getFiles
+from src.commands.wishlist import wishlist
 from src.commands.authorize import authorize
 from src.commands.broadcast import broadcast
 from src.commands.addAccount import addAccount
@@ -20,6 +21,7 @@ from src.commands.addTorrent import addTorrent
 from src.commands.removeFile import removeFile
 from src.commands.deleteFolder import deleteFolder
 from src.commands.cancelDownload import cancelDownload
+from src.commands.removeWishlist import removeWishlist
 
 from src.callbacks.login import login
 from src.callbacks.getLink import getLink

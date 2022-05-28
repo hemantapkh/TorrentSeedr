@@ -123,7 +123,7 @@
     },
 
     "deletedSuccessfully":{
-        "english": "🙌  The selected folder is deleted successfully."
+        "english": "🙌  The selected item is deleted successfully."
    
     },
 
@@ -198,7 +198,7 @@
     },
 
     "noEnoughSpace":{
-        "english": "⚠️ You don't have enough space to download this torrent. Please remove the files and try again."
+        "english": "⚠️ You don't have enough space to download this torrent. Please remove your existing files and try adding again from the /wishlist."
     },
 
     "invalidMagnet":{
@@ -219,7 +219,7 @@
     },
 
     "parallelDownloadExceed":{
-        "english": "⚠️ Maximum parrallel download exceed for you account. Please cancel the active torrent or wait for the previous download to complete."
+        "english": "⚠️ Maximum parrallel download exceeds, the torrent is added in your /wishlist. Please cancel the active torrent or wait for the previous download to complete."
     },
 
     "noFiles":{
@@ -256,6 +256,10 @@
 
     "notSubscribedCallback": {
         "english": "You are not subscribed yet."
+    },
+
+    "noWishlist": {
+        "english": "🤷‍♂️ You don't have any torrents in your wishlist."
     },
 
     "clickForMoreDetails": {
