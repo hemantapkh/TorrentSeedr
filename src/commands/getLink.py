@@ -3,6 +3,7 @@ from src.functions.urlEncode import urlEncode
 from src.functions.floodControl import floodControl
 from src.functions.exceptions import exceptions, noAccount
 
+
 #: Get download link of torrents
 @bot.message_handler(func=lambda message: message.text and message.text[:9] == '/getLink_')
 def getLink(message, called=False):
@@ -15,9 +16,14 @@ def getLink(message, called=False):
         #! If user has an account
         if ac:
             id = message.data[8:] if called else message.text[9:]
-            account = Seedr(token=ac['token'])
+            account = Seedr(
+                token=ac['token'],
+                callbackFunc=lambda token: dbSql.updateAccount(
+                    token, userId, ac['accountId']
+                )
+            )
 
-            response = account.createArchive(id).json()
+            response = account.createArchive(id)
 
             if 'error' not in response:
                 #! If download link found
@@ -36,10 +42,10 @@ def getLink(message, called=False):
                         bot.edit_message_text(text=text, chat_id=message.message.chat.id, message_id=message.message.id, reply_markup=markup)
                     else:
                         bot.send_message(text=text, chat_id=message.chat.id, reply_markup=markup)
-            
+
             else:
                 exceptions(message, response, ac, userLanguage, called)
-        
+
         #! If no accounts
         else:
             noAccount(message, userLanguage)

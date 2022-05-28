@@ -1,13 +1,14 @@
 from src.objs import *
 
+
 # Get user stats
 @bot.message_handler(commands=['stats'])
 def stats(message):
     if message.from_user.id == int(config['adminId']):
         languageSet = ["english"]
-        
+
         msg = f'<b>📊 Statistics</b>\n\n'
-        
+
         languageStats = {}
         for i in languageSet:
             languageStats[i.capitalize()] = len(dbSql.getUsers(i)) if dbSql.getUsers(i) else 0

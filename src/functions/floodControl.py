@@ -1,10 +1,11 @@
 import time
 from src.objs import *
 
+
 #: Flood prevention
 def floodControl(message, userLanguage):
     userId = message.from_user.id
-    
+
     if userId == config['adminId']:
         return True
 
@@ -22,14 +23,14 @@ def floodControl(message, userLanguage):
                 bot.send_message(message.message.chat.id if called else message.chat.id, language['blockedTooFast'][userLanguage])
                 dbSql.setSetting(userId, 'blockTill', int(time.time())+300, table='flood')
                 dbSql.setSetting(userId, 'warned', 0, table='flood')
-            
+
             #! If the user is not warned, warn for the first time
             else:
                 bot.send_message(message.message.chat.id if called else message.chat.id, language['warningTooFast'][userLanguage])
                 dbSql.setSetting(userId, 'warned', 1, table='flood')
-            
+
             return False
-        
+
         #! No spam
         else:
             dbSql.setSetting(userId, 'lastMessage', messageDate, table='flood')

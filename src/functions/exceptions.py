@@ -1,20 +1,17 @@
 from src.objs import *
-from src.callbacks.authorize import authorize
 from src.functions.keyboard import mainReplyKeyboard
+
 
 def exceptions(message, response, ac, userLanguage, called=False):
     chatId = message.message.chat.id if called else message.chat.id
 
-    if response['error'] in ['expired_token', 'invalid_token']:
-        if ac['deviceCode']:
-            authorize(message, ac['id'], ac['deviceCode'], userLanguage, refreshMode=True)
-        
-        else:
-            dbSql.deleteAccount(chatId, ac['id'])
-            bot.send_message(chatId, language['tokenExpired'][userLanguage], reply_markup=mainReplyKeyboard(userId=chatId, userLanguage=userLanguage))
-    
+    if response['error'] == 'invalid_token':
+        dbSql.deleteAccount(chatId, ac['id'])
+        bot.send_message(chatId, language['tokenExpired'][userLanguage], reply_markup=mainReplyKeyboard(userId=chatId, userLanguage=userLanguage))
+
     else:
         bot.send_message(chatId, language['unknownError'][userLanguage], reply_markup=mainReplyKeyboard(userId=chatId, userLanguage=userLanguage))
+
 
 def noAccount(message, userLanguage, called=False):
     chatId = message.message.chat.id if called else message.chat.id

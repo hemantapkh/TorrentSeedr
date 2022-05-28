@@ -2,6 +2,7 @@ from src.objs import *
 from src.functions.floodControl import floodControl
 from src.functions.exceptions import exceptions, noAccount
 
+
 #: Cancel active downloads
 @bot.message_handler(func=lambda message: message.text and message.text[:8] == '/cancel_')
 def cancelDownload(message, called=False):
@@ -13,7 +14,12 @@ def cancelDownload(message, called=False):
 
         #! If user has an account
         if ac:
-            account = Seedr(token=ac['token'])
+            account = Seedr(
+                token=ac['token'],
+                callbackFunc=lambda token: dbSql.updateAccount(
+                    token, userId, ac['accountId']
+                )
+            )
 
             if not called:
                 sent = bot.send_message(message.chat.id, language['cancellingDownload'][userLanguage])
@@ -21,8 +27,8 @@ def cancelDownload(message, called=False):
 
             else:
                 id = message.data[7:]
-            
-            response = account.deleteTorrent(id).json()
+
+            response = account.deleteTorrent(id)
 
             if 'error' not in response:
                 #! If torrent cancelled successfully
@@ -31,7 +37,7 @@ def cancelDownload(message, called=False):
 
             else:
                 exceptions(message, response, ac, userLanguage, called)
-            
+
         #! If no accounts
         else:
             noAccount(message, userLanguage)

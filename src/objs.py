@@ -4,7 +4,7 @@ from os import path
 import telebot
 
 from models import dbQuery
-from seedr import *
+from seedrcc import Login, Seedr
 
 config = json.load(open('src/config.json'))
 language = json.load(open(config['language']))

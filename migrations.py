@@ -31,7 +31,7 @@ conn.execute('''CREATE TABLE settings
          totalRefer     INTEGER DEFAULT 0,
          defaultAcId    INTEGER
          );''')
-         
+
 print('[+] Table settings created successfully.')
 
 conn.execute('''CREATE TABLE accounts
@@ -41,12 +41,13 @@ conn.execute('''CREATE TABLE accounts
          ownerId    INTEGER NOT NULL,
          userName   TEXT    NOT NULL,
          token      TEXT    NOT NULL,
-         deviceCode TEXT    NOT NULL,
-         isPremium    INTEGER Not NULL,
-         invitesRemaining INTEGER NOT NULL,
-         timestamp  INTEGER NOT NULL
+         email      TEXT,
+         password   TEXT,
+         isPremium    INTEGERL,
+         invitesRemaining INTEGER,
+         timestamp  INTEGER
          );''')
-         
+
 print('[+] Table accounts created successfully.')
 
 conn.execute('''CREATE TABLE flood
@@ -55,5 +56,5 @@ conn.execute('''CREATE TABLE flood
          lastMessage   INTEGER DEFAULT 0,
          blockTill     INTEGER DEFAULT 0
          );''')
-         
+
 print('[+] Table flood created successfully.')

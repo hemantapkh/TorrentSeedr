@@ -13,16 +13,21 @@ def getPlaylist(call):
     userLanguage = dbSql.getSetting(call.from_user.id, 'language')
 
     if ac:        
-        account = Seedr(token=ac['token'])
+        account = Seedr(
+                token = ac['token'],
+                callbackFunc = lambda token: dbSql.updateAccount(
+                    token, call.from_user.id, ac['accountId']
+                )
+            )
 
         playlistType = call.data[12:15]
         callBacked = True
-        
+
         #! If playlist type 000, get the type from database
         if playlistType == '000':
             playlistType = dbSql.getSetting(call.from_user.id, 'playlist')
             callBacked = False
-            
+
         elif playlistType in ['m3u', 'vlc', 'xpf']:
             dbSql.setSetting(call.from_user.id, 'playlist', playlistType)
 
@@ -35,37 +40,37 @@ def getPlaylist(call):
             mediaType = 'file'
             id = call.data[21:]
             playlist = mediaToPlaylist(account, id, playlistType)
-        
+
         #! Create playlist for folder
         else:
             mediaType = 'folder'
             id = call.data[23:]
             playlist = folderToPlaylist(account, id, playlistType, [])
-            
+
         if playlist:
             bot.answer_callback_query(call.id)
             if not callBacked:
                 bot.send_chat_action(call.message.chat.id, 'upload_document')
-            
+
             thumb = open(f'images/{playlistType}.jpg', 'rb')
-            
+
             bot.send_document(call.message.chat.id, open(playlist, 'rb'), thumb=thumb, reply_markup=playListButtons(userLanguage, mediaType, id, playlistType), caption=language['openInMediaCaption'][userLanguage])    
             remove(playlist)
-        
+
         else:
             bot.answer_callback_query(call.id, language['noPlayableMedia'][userLanguage], show_alert=True)
-                
+
     else:
         noAccount(call, userLanguage, called=True)
 
 #: Generate playlist file for media
 def mediaToPlaylist(account, fileId, playlistType):
-    response = account.fetchFile(fileId).json()
+    response = account.fetchFile(fileId)
 
     if 'url' in response:
         if playlistType == 'xpf':
             track = xspf.Track(location=urlEncode(response['url']), title=response['name'])
-                            
+
             playlist = xspf.Playlist(title=response['name'].replace('.',' '), trackList=[track])
 
             Path(f"/tmp/TorrentSeedr/{fileId}").mkdir(parents=True, exist_ok=True)
@@ -79,23 +84,23 @@ def mediaToPlaylist(account, fileId, playlistType):
             Path(f"/tmp/TorrentSeedr/{fileId}").mkdir(parents=True, exist_ok=True)
             playlistFile = f"/tmp/TorrentSeedr/{fileId}/{response['name'].replace('.',' ')}.{playlistType}"
             open(playlistFile, 'wb').write(track.encode())
-        
+
         return playlistFile
-    
+
     else:
         return None
 
 #: Generate playlist file for folder
 def folderToPlaylist(account, folderId, playlistType, trackList):
-    response = account.listContents(folderId=folderId).json()
+    response = account.listContents(folderId=folderId)
 
     #! If success
     if 'name' in response:
         files = sorted(response['files'], key=lambda k: k['name']) 
-        
+
         for file in files:
             if file['play_video'] == True or file['play_audio'] == True:
-                fileUrl = account.fetchFile(file['folder_file_id']).json()
+                fileUrl = account.fetchFile(file['folder_file_id'])
 
                 if playlistType == 'xpf':
                     trackList+=[xspf.Track(location=urlEncode(fileUrl['url']), title=fileUrl['name'])]
@@ -104,30 +109,30 @@ def folderToPlaylist(account, folderId, playlistType, trackList):
 
         #!? sort the list of files by its name
         folders = sorted(response['folders'], key=lambda k: k['name']) 
-        
+
         #!? If the folder contains another folder, recall the function
         for folder in folders:
             folderToPlaylist(account, folder['id'], playlistType, trackList=trackList)
-        
+
         #!? Create a playlist file if the folder contains tracks
         if trackList:
             if playlistType== 'xpf':
                 playlist = xspf.Playlist(title=response['name'].replace('.',' '), trackList=trackList)
 
                 Path(f"/tmp/TorrentSeedr/{folderId}").mkdir(parents=True, exist_ok=True)
-                
+
                 playlistFile = f"/tmp/TorrentSeedr/{folderId}/{response['name'].replace('.',' ')}.xspf"
                 open(playlistFile, 'wb').write(playlist.xml_string().encode())
 
             # For M3U and VLC
             else:
                 Path(f"/tmp/TorrentSeedr/{folderId}").mkdir(parents=True, exist_ok=True)
-                
+
                 playlistFile = f"/tmp/TorrentSeedr/{folderId}/{response['name'].replace('.',' ')}.{playlistType}"
                 open(playlistFile, 'wb').write(('#EXTM3U\n'+''.join(trackList)).encode())
-            
+
             return playlistFile
-    
+
     return None
 
 def playListButtons(userLanguage, mediaType, id, playlistType):
@@ -136,5 +141,5 @@ def playListButtons(userLanguage, mediaType, id, playlistType):
                telebot.types.InlineKeyboardButton(text=('✅ ' if playlistType=='m3u' else '')+ language['m3uBtn'][userLanguage], callback_data=f'getPlaylist_m3u_{mediaType}_{id}'),
                telebot.types.InlineKeyboardButton(text=('✅ ' if playlistType=='xpf' else '')+language['xspfBtn'][userLanguage], callback_data=f'getPlaylist_xpf_{mediaType}_{id}'),
     )
-        
+
     return markup

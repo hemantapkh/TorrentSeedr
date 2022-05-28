@@ -14,9 +14,15 @@ def files(message, userLanguage=None):
 
         #! If user has an account
         if ac:
-            account = Seedr(token=ac['token'])
-            response = account.listContents().json()
+            account = Seedr(
+                token=ac['token'],
+                callbackFunc=lambda token: dbSql.updateAccount(
+                    token, userId, ac['accountId']
+                )
+            )
             
+            response = account.listContents()
+
             if 'error' not in response:
                 #! If user has files
                 if response['folders']:
@@ -27,13 +33,13 @@ def files(message, userLanguage=None):
                         text += f"\n\n{language['files'][userLanguage]} /getFiles_{i['id']}\n{language['link'][userLanguage]} /getLink_{i['id']}\n{language['delete'][userLanguage]} /delete_{i['id']}\n\n"
 
                     bot.send_message(message.chat.id, text)
-                
+
                 #! If user has no files
                 else:
                     bot.send_message(message.chat.id, language['noFiles'][userLanguage])
             else:
                 exceptions(message, response, ac, userLanguage)
-        
+
         #! If no accounts
         else:
             noAccount(message, userLanguage)

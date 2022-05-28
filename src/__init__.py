@@ -2,6 +2,7 @@ from src.objs import config, dbSql
 from src.objs import bot, language
 
 from src.commands.start import start
+from src.commands.login import login
 from src.commands.stats import stats
 from src.commands.files import files
 from src.commands.cancel import cancel
@@ -12,6 +13,7 @@ from src.commands.support import support
 from src.commands.getLink import getLink
 from src.commands.fileLink import fileLink
 from src.commands.getFiles import getFiles
+from src.commands.authorize import authorize
 from src.commands.broadcast import broadcast
 from src.commands.addAccount import addAccount
 from src.commands.addTorrent import addTorrent
@@ -19,6 +21,7 @@ from src.commands.removeFile import removeFile
 from src.commands.deleteFolder import deleteFolder
 from src.commands.cancelDownload import cancelDownload
 
+from src.callbacks.login import login
 from src.callbacks.getLink import getLink
 from src.callbacks.getFiles import getFiles
 from src.callbacks.authorize import authorize
