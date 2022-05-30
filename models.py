@@ -132,7 +132,7 @@ class dbQuery():
         con = sqlite3.connect(self.db)
         cur = con.cursor()
 
-        cur.execute(f'UPDATE accounts SET token="{token}" WHERE ownerId={userId} AND accountId={accountId}')
+        cur.execute(f'UPDATE accounts SET token=? WHERE ownerId=? AND accountId=?', (token, userId, accountId))
         con.commit()
 
     #: Delete a user's account
@@ -211,6 +211,36 @@ class dbQuery():
 
         return magnetLink[0] if magnetLink else None
 
+    #: Get the wish list from the database
+    def getWishList(self, userId, wishlistId):
+        con = sqlite3.connect(self.mdb)
+        cur = con.cursor()
+
+        magnetKey = cur.execute(f'SELECT magnetKey FROM wishlist WHERE ownerId={userId} AND wishlistId={wishlistId}').fetchone()
+        con.commit()
+
+        if magnetKey:
+            magnetLink = self.getMagnet(magnetKey[0])
+            return magnetLink if magnetLink else None
+
+    #: Get all wish list from the database
+    def getWishLists(self, userId):
+        con = sqlite3.connect(self.mdb)
+        con.row_factory = dict_factory
+        cur = con.cursor()
+
+        wishlists = cur.execute(f'SELECT * FROM wishlist WHERE ownerId={userId}').fetchall()
+        con.commit()
+
+        return wishlists
+
+    #: Remove wishlist from the database
+    def removeWishList(self, userId, wishlistId):
+        con = sqlite3.connect(self.mdb)
+        cur = con.cursor()
+
+        cur.execute(f'DELETE FROM wishlist WHERE ownerId={userId} AND wishlistId={wishlistId}')
+        con.commit()
 
 #: Return query as dictionary
 #! https://stackoverflow.com/a/3300514/13987868
