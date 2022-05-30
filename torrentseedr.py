@@ -1,4 +1,5 @@
 import ssl
+import requests
 import telebot, asyncio
 from aiohttp import web
 
@@ -77,6 +78,26 @@ async def text(message):
 @bot.message_handler(content_types=['text'])
 def _text(message):
     asyncio.run(text(message))
+
+
+#: Adding torrent from files
+async def document(message):
+    userLanguage = dbSql.getSetting(message.from_user.id, 'language')
+
+    if message.document.mime_type == 'application/x-bittorrent':
+        fileInfo = bot.get_file(message.document.file_id)
+        torrentUrl = f'https://api.telegram.org/file/bot{bot.token}/{fileInfo.file_path}'
+
+        await asyncio.gather(addTorrent(message, userLanguage, torrentFile=torrentUrl))
+
+    else:
+        bot.send_message(message.chat.id, language['wrongTorrentFile'][userLanguage])
+
+
+@bot.message_handler(content_types=['document'])
+def _document(message):
+    asyncio.run(document(message))
+
 
 #: Polling Bot
 if config['connectionType'] == 'polling':

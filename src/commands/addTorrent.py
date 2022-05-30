@@ -10,7 +10,7 @@ from src.functions.exceptions import exceptions, noAccount
 
 
 #: Add torrent into the user's account
-async def addTorrent(message, userLanguage, magnetLink=None, wishlistId=None, messageId=None):
+async def addTorrent(message, userLanguage, magnetLink=None, torrentFile=None, wishlistId=None, messageId=None):
     userId = message.from_user.id
 
     if floodControl(message, userLanguage):
@@ -19,7 +19,7 @@ async def addTorrent(message, userLanguage, magnetLink=None, wishlistId=None, me
         #! If user has an account
         if ac:
             #! If the text is a valid url or magnet link
-            if magnetLink or wishlistId or message.text.startswith('http') or 'magnet:?' in message.text:
+            if magnetLink or wishlistId or torrentFile or message.text.startswith('http') or 'magnet:?' in message.text:
                 #! Add torrent in the account
 
                 #!? If torrent is added via start paramater
@@ -37,11 +37,11 @@ async def addTorrent(message, userLanguage, magnetLink=None, wishlistId=None, me
                     )
                 )
 
-                if wishlistId:
-                    response = account.addTorrent(wishlistId=wishlistId)
-
-                else:
-                    response = account.addTorrent(magnetLink or message.text, wishlistId)
+                response = account.addTorrent(
+                    magnetLink=magnetLink or message.text,
+                    torrentFile=torrentFile,
+                    wishlistId=wishlistId
+                )
 
                 if 'result' in response:
                     #! If torrent added successfully

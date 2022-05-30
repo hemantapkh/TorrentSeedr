@@ -172,6 +172,10 @@
         "english": "⚠️ This folder doesn't contain any playable media."
     },
 
+    "wrongTorrentFile": {
+        "english": "⚠️ The provided file is not a valid torrent file."
+    },
+
     "fileNotFound":{
         "english": "❌ File not found."
     }, 
