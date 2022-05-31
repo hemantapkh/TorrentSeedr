@@ -216,7 +216,7 @@ class dbQuery():
         con = sqlite3.connect(self.mdb)
         cur = con.cursor()
 
-        magnetKey = cur.execute(f'SELECT magnetKey FROM wishlist WHERE ownerId={userId} AND wishlistId={wishlistId}').fetchone()
+        magnetKey = cur.execute(f'SELECT hash FROM wishlist WHERE ownerId={userId} AND wishlistId={wishlistId}').fetchone()
         con.commit()
 
         if magnetKey:
@@ -229,7 +229,7 @@ class dbQuery():
         con.row_factory = dict_factory
         cur = con.cursor()
 
-        wishlists = cur.execute(f'SELECT * FROM wishlist WHERE ownerId={userId}').fetchall()
+        wishlists = cur.execute(f'SELECT wishlistId, data.title FROM wishlist INNER JOIN data on wishlist.hash=data.hash WHERE ownerId={userId}').fetchall()
         con.commit()
 
         return wishlists

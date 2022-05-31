@@ -66,7 +66,19 @@ async def text(message):
     #! Adding torrent from wishlist
     elif message.text.startswith('/addTorrent'):
         wishlistId = message.text[13:]
-        await asyncio.gather(addTorrent(message, userLanguage, wishlistId=wishlistId))
+        wishlistType = message.text[13:]
+
+        if wishlistType == '0':
+            await asyncio.gather(addTorrent(message, userLanguage, wishlistId=wishlistId))
+
+        else:
+            magnetLink = dbSql.getWishList(message.from_user.id, wishlistId)
+
+            if magnetLink:
+                await asyncio.gather(addTorrent(message, userLanguage, magnetLink=magnetLink))
+
+            else:
+                bot.send_message(message.chat.id, language['wishlistNotFound'][userLanguage])
 
     #! Adding torrents
     else:

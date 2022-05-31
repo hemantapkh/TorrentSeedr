@@ -10,6 +10,7 @@ def wishlist(message, userLanguage=None):
 
     if floodControl(message, userLanguage):
         userLanguage = userLanguage or dbSql.getSetting(userId, 'language')
+
         ac = dbSql.getDefaultAc(userId)
 
         #! If user has an account
@@ -25,15 +26,26 @@ def wishlist(message, userLanguage=None):
 
             #! On success
             if 'error' not in response:
+
+                text = ''
+
+                # Torrent Hunt wishlist
+                wishlistItems = dbSql.getWishLists(userId)
+                if wishlistItems:
+                    for item in wishlistItems:
+                        text += f"🌟 <b>{item['title']}</b>\n\nAdd: /addTorrent_1{item['wishlistId']}\nRemove: /removeWL_1{item['wishlistId']}\n\n"
+
+                # Seedr Wishlist
                 if response['result'] is True:
                     if response['account']['wishlist']:
                         for wish in response['account']['wishlist']:
-                            text = f"🔖 <b>{wish['title']}</b>\n\nAdd: /addTorrent_0{wish['id']}\nRemove: /removeWL_0{wish['id']}"
+                            text += f"⭐ <b>{wish['title']}</b>\n\nAdd: /addTorrent_0{wish['id']}\nRemove: /removeWL_0{wish['id']}\n\n"
 
-                        bot.send_message(message.chat.id, text)
+                if text:
+                    bot.send_message(message.chat.id, text)
 
-                    else:
-                        bot.send_message(message.chat.id, language["noWishlist"][userLanguage])
+                else:
+                    bot.send_message(message.chat.id, language["noWishlist"][userLanguage])
 
             else:
                 exceptions(message, response, ac, userLanguage)

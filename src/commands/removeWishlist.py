@@ -22,15 +22,22 @@ def removeWishlist(message, userLanguage=None):
             )
 
             wishlistId = message.text[11:]
-            response = account.deleteWishlist(wishlistId)
+            wishlistType = message.text[11]
 
-            if 'error' not in response:
-                #! If wishlist is deleted successfully
-                if response['result'] == True:
-                    bot.send_message(message.chat.id, language['deletedSuccessfully'][userLanguage])
+            if wishlistType == '0':
+                response = account.deleteWishlist(wishlistId)
+
+                if 'error' not in response:
+                    #! If wishlist is deleted successfully
+                    if response['result'] == True:
+                        bot.send_message(message.chat.id, language['deletedSuccessfully'][userLanguage])
+
+                else:
+                    exceptions(message, response, ac, userLanguage)
 
             else:
-                exceptions(message, response, ac, userLanguage)
+                dbSql.removeWishList(message.from_user.id, wishlistId)
+                bot.send_message(message.chat.id, language['deletedSuccessfully'][userLanguage])
 
         #! If no accounts
         else:

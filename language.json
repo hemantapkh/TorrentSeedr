@@ -32,6 +32,10 @@
         "english": "❗Invalid email address. Please enter a account email address."
     },
 
+    "wishlistNotFound":{
+        "english": "❗Wishlist not found."
+    },
+
     "enterPassword":{
         "english": "🔑 Enter your account password."
     },

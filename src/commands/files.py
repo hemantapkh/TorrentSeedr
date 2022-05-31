@@ -20,7 +20,7 @@ def files(message, userLanguage=None):
                     token, userId, ac['accountId']
                 )
             )
-            
+
             response = account.listContents()
 
             if 'error' not in response:
