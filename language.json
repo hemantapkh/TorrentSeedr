@@ -180,6 +180,10 @@
         "english": "⚠️ The provided file is not a valid torrent file."
     },
 
+    "noTorrentInURL": {
+        "english": "⚠️ No torrent information found on the URL."
+    },
+
     "fileNotFound":{
         "english": "❌ File not found."
     }, 

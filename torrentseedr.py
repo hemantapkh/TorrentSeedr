@@ -1,5 +1,7 @@
 import ssl
 import requests
+
+import validators
 import telebot, asyncio
 from aiohttp import web
 
@@ -80,11 +82,17 @@ async def text(message):
             else:
                 bot.send_message(message.chat.id, language['wishlistNotFound'][userLanguage])
 
-    #! Adding torrents
+    #! Adding torrent from remote URL
+    elif validators.url(message.text):
+        await remoteTorrent(message)
+
+    #! Adding torrents via magnet link
+    elif 'magnet:?' in message.text:
+        await asyncio.gather(addTorrent(message, userLanguage, magnetLink=message.text))
+
     else:
-        #addTorrent(message, userLanguage)
-        #asyncio.run(addTorrent(message, userLanguage))
-        await asyncio.gather(addTorrent(message, userLanguage))
+        invalidMagnet(message, userLanguage)
+
 
 #: Text handler
 @bot.message_handler(content_types=['text'])
