@@ -23,10 +23,9 @@ async def addTorrent(message, userLanguage, magnetLink=None, torrentFile=None, w
                 #! Add torrent in the account
 
                 #!? If torrent is added via start paramater
-                if magnetLink:
+                if messageId:
                     sent = bot.edit_message_text(text=language['collectingInfo'][userLanguage], chat_id=message.chat.id, message_id=messageId)
 
-                #!? If torrent is added via direct message
                 else:
                     sent = bot.send_message(message.chat.id, language['collectingInfo'][userLanguage])
 
