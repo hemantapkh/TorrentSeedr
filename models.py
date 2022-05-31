@@ -13,15 +13,15 @@ class dbQuery():
         con = sqlite3.connect(self.db)
         cur = con.cursor()
 
-        isRegistered = cur.execute(f'SELECT * FROM users WHERE userId={userId}').fetchone()
+        isRegistered = cur.execute(f'SELECT * FROM users WHERE userId=?', (userId,)).fetchone()
         con.commit()
 
         isRegistered = True if isRegistered else False
 
         if not isRegistered:
-            cur.execute(f"Insert into users (userId, date) values ({userId}, \"{datetime.today().strftime('%Y-%m-%d')}\")")
-            cur.execute(f'Insert into settings (ownerId) values ({userId})')
-            cur.execute(f'Insert into flood (ownerId) values ({userId})')
+            cur.execute('Insert into users (userId, date) values (?, ?)', (userId, datetime.today().strftime('%Y-%m-%d')))
+            cur.execute('Insert into settings (ownerId) values (?)', (userId,))
+            cur.execute('Insert into flood (ownerId) values (?)', (userId,))
             con.commit()
 
         return isRegistered
@@ -64,7 +64,7 @@ class dbQuery():
         con.row_factory = lambda cursor, row: row[0]
         cur = con.cursor()
 
-        users = cur.execute(f'SELECT ownerId FROM settings WHERE language="{language}"').fetchall()
+        users = cur.execute(f'SELECT ownerId FROM settings WHERE language=?', (language,)).fetchall()
         con.commit()
 
         return users if users else None
@@ -90,7 +90,7 @@ class dbQuery():
         con = sqlite3.connect(self.db)
         cur = con.cursor()
 
-        setting = cur.execute(f'SELECT {var} FROM {table} WHERE ownerId={userId} limit 1').fetchone()
+        setting = cur.execute(f'SELECT {var} FROM {table} WHERE ownerId=?', (userId,)).fetchone()
         con.commit()
 
         return setting[0] if setting else None
@@ -101,10 +101,8 @@ class dbQuery():
         con = sqlite3.connect(self.db)
         cur = con.cursor()
 
-        #!? If value is None, put value as NULL else "{string}"
-        value = f'"{value}"' if value else 'NULL'
-        cur.execute(f'INSERT OR IGNORE INTO {table} (ownerId, {var}) VALUES ({userId}, {value})')
-        cur.execute(f'UPDATE {table} SET {var}={value} WHERE ownerId={userId}')
+        cur.execute(f'INSERT OR IGNORE INTO {table} (ownerId, {var}) VALUES (?, ?)', (userId, value))
+        cur.execute(f'UPDATE {table} SET {var}=? WHERE ownerId=?' , (value, userId))
         con.commit()
 
     #: Add account in the user's accounts table
@@ -114,14 +112,14 @@ class dbQuery():
         cursor = con.cursor()
 
         #!? If the seedrId not on the table, insert new
-        if cursor.execute(f'SELECT * FROM accounts WHERE ownerId={userId} AND accountId="{accountId}"').fetchone() == None:
+        if cursor.execute(f'SELECT * FROM accounts WHERE ownerId=? AND accountId=?', (userId, accountId)).fetchone() == None:
             id = cursor.execute('INSERT INTO accounts (accountId, ownerId, userName, token, email, password, isPremium, invitesRemaining, timestamp) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',(accountId, userId, userName , token, email, password, isPremium, invitesRemaining, int(time()))).lastrowid
             con.commit()
 
         #!? If the accountId is already on the table, update the token
         else:
             cursor.execute('UPDATE accounts SET token=?, email=?, password=?, isPremium=?, invitesRemaining=?, timestamp=? WHERE ownerId=? AND accountId=?', (token, email, password, isPremium, invitesRemaining, int(time()), userId, accountId))
-            id = cursor.execute(f'SELECT id FROM accounts WHERE ownerID={userId} AND accountId="{accountId}"').fetchone()[0]
+            id = cursor.execute('SELECT id FROM accounts WHERE ownerID=? AND accountId=?', (userId, accountId)).fetchone()[0]
             con.commit()
 
         #!? Set the added account as the default account
@@ -140,7 +138,7 @@ class dbQuery():
         con = sqlite3.connect(self.db)
         cur = con.cursor()
         defaultAcId = self.getSetting(userId, 'defaultAcId')
-        cur.execute(f'DELETE FROM accounts WHERE ownerId={userId} AND id={accountId}')
+        cur.execute('DELETE FROM accounts WHERE ownerId=? AND id=?' , (userId, accountId))
         con.commit()
 
         #!? If the deleted account is the default account, set another account as a default account
@@ -161,7 +159,7 @@ class dbQuery():
         con = sqlite3.connect(self.db)
         con.row_factory = dict_factory
         cur = con.cursor()
-        accounts = cur.execute(f'SELECT * FROM accounts WHERE ownerId={userId}').fetchall()
+        accounts = cur.execute('SELECT * FROM accounts WHERE ownerId=?', (userId,)).fetchall()
         con.commit()
 
         return accounts if accounts else None
@@ -171,7 +169,7 @@ class dbQuery():
         con = sqlite3.connect(self.db)
         con.row_factory = dict_factory
         cur = con.cursor()
-        accounts = cur.execute(f'SELECT * FROM accounts WHERE ownerId={userId} and id={accountId}').fetchone()
+        accounts = cur.execute('SELECT * FROM accounts WHERE ownerId=? and id=?', (userId, accountId)).fetchone()
         con.commit()
 
         return accounts if accounts else None
@@ -185,7 +183,7 @@ class dbQuery():
 
         #!? If defaultAcId, return the account
         if defaultAcId:
-            account = cur.execute(f'SELECT * FROM accounts WHERE ownerId={userId} AND id={defaultAcId}').fetchone()
+            account = cur.execute('SELECT * FROM accounts WHERE ownerId=? AND id=?', (userId, defaultAcId)).fetchone()
             con.commit()
 
             return account
@@ -196,8 +194,8 @@ class dbQuery():
     def setDefaultAc(self, userId, accountId):
         con = sqlite3.connect(self.db)
         cur = con.cursor()
-        cur.execute(f'INSERT OR IGNORE INTO settings (ownerId, defaultAcId) VALUES ({userId}, {accountId})')
-        cur.execute(f'UPDATE settings SET defaultAcId={accountId} WHERE ownerId={userId}')
+        cur.execute('INSERT OR IGNORE INTO settings (ownerId, defaultAcId) VALUES (?, ?)', (userId, accountId))
+        cur.execute('UPDATE settings SET defaultAcId=? WHERE ownerId=?', (accountId, userId))
         con.commit()
 
 
@@ -206,7 +204,7 @@ class dbQuery():
         con = sqlite3.connect(self.mdb)
         cur = con.cursor()
 
-        magnetLink = cur.execute(f'SELECT magnetLink FROM data WHERE key="{key}"').fetchone()
+        magnetLink = cur.execute('SELECT magnetLink FROM data WHERE key=?', (key,)).fetchone()
         con.commit()
 
         return magnetLink[0] if magnetLink else None
@@ -216,7 +214,7 @@ class dbQuery():
         con = sqlite3.connect(self.mdb)
         cur = con.cursor()
 
-        magnetKey = cur.execute(f'SELECT hash FROM wishlist WHERE ownerId={userId} AND wishlistId={wishlistId}').fetchone()
+        magnetKey = cur.execute('SELECT hash FROM wishlist WHERE ownerId=? AND wishlistId=?', (userId, wishlistId)).fetchone()
         con.commit()
 
         if magnetKey:
@@ -229,7 +227,7 @@ class dbQuery():
         con.row_factory = dict_factory
         cur = con.cursor()
 
-        wishlists = cur.execute(f'SELECT wishlistId, data.title FROM wishlist INNER JOIN data on wishlist.hash=data.hash WHERE ownerId={userId}').fetchall()
+        wishlists = cur.execute('SELECT wishlistId, data.title FROM wishlist INNER JOIN data on wishlist.hash=data.hash WHERE ownerId=?', (userId,)).fetchall()
         con.commit()
 
         return wishlists
@@ -239,7 +237,7 @@ class dbQuery():
         con = sqlite3.connect(self.mdb)
         cur = con.cursor()
 
-        cur.execute(f'DELETE FROM wishlist WHERE ownerId={userId} AND wishlistId={wishlistId}')
+        cur.execute(f'DELETE FROM wishlist WHERE ownerId=? AND wishlistId=?', (userId, wishlistId))
         con.commit()
 
 #: Return query as dictionary
