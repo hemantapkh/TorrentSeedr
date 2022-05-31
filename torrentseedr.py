@@ -66,7 +66,7 @@ async def text(message):
     #! Adding torrent from wishlist
     elif message.text.startswith('/addTorrent'):
         wishlistId = message.text[13:]
-        wishlistType = message.text[13]
+        wishlistType = message.text[12]
 
         if wishlistType == '0':
             await asyncio.gather(addTorrent(message, userLanguage, wishlistId=wishlistId))

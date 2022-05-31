@@ -22,7 +22,7 @@ def removeWishlist(message, userLanguage=None):
             )
 
             wishlistId = message.text[11:]
-            wishlistType = message.text[11]
+            wishlistType = message.text[10]
 
             if wishlistType == '0':
                 response = account.deleteWishlist(wishlistId)

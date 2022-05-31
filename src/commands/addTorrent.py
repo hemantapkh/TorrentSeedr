@@ -19,7 +19,7 @@ async def addTorrent(message, userLanguage, magnetLink=None, torrentFile=None, w
         #! If user has an account
         if ac:
             #! If the text is a valid url or magnet link
-            if magnetLink or wishlistId or torrentFile or message.text.startswith('http') or 'magnet:?' in message.text:
+            if magnetLink or wishlistId or torrentFile:
                 #! Add torrent in the account
 
                 #!? If torrent is added via start paramater
@@ -37,7 +37,7 @@ async def addTorrent(message, userLanguage, magnetLink=None, torrentFile=None, w
                 )
 
                 response = account.addTorrent(
-                    magnetLink=magnetLink or message.text,
+                    magnetLink=magnetLink,
                     torrentFile=torrentFile,
                     wishlistId=wishlistId
                 )
