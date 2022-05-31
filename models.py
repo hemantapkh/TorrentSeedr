@@ -204,7 +204,7 @@ class dbQuery():
         con = sqlite3.connect(self.mdb)
         cur = con.cursor()
 
-        magnetLink = cur.execute('SELECT magnetLink FROM data WHERE key=?', (key,)).fetchone()
+        magnetLink = cur.execute('SELECT magnetLink FROM data WHERE hash=?', (key,)).fetchone()
         con.commit()
 
         return magnetLink[0] if magnetLink else None
