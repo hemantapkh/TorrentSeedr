@@ -5,6 +5,7 @@ from src.commands.start import start
 from src.commands.login import login
 from src.commands.stats import stats
 from src.commands.files import files
+from src.commands.token import token
 from src.commands.cancel import cancel
 from src.commands.active import active
 from src.commands.switch import switch

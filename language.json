@@ -53,6 +53,11 @@
    
     },
 
+    "token":{
+        "english": "🔑 Token for <b>{}</b> is <code>\n\n{}</code>\n\n🔒 <b>This token can be used to access your account. Do not share it with others unless you know what you are doing.</b>"
+   
+    },
+
     "getFreeSpace":{
         "english": "✨ Get a chance to add <b>free 2GB space</b> in your seedr account. Your referral link will be shown to other users and you will be benifited when someone signup using your link. To get in, follow us on GitHub and click the button below to verify."
     },
