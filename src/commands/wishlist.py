@@ -42,7 +42,7 @@ def wishlist(message, userLanguage=None):
                             text += f"⭐ <b>{wish['title']}</b>\n\nAdd: /addTorrent_0{wish['id']}\nRemove: /removeWL_0{wish['id']}\n\n"
 
                 if text:
-                    bot.send_message(message.chat.id, text)
+                    bot.send_message(message.chat.id, text[:4000])
 
                 else:
                     bot.send_message(message.chat.id, language["noWishlist"][userLanguage])

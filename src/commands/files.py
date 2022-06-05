@@ -32,7 +32,7 @@ def files(message, userLanguage=None):
                         text += f"<b>📂 {i['fullname']}</b>\n\n💾 {convertSize(i['size'])}B, ⏰ {i['last_update']}"
                         text += f"\n\n{language['files'][userLanguage]} /getFiles_{i['id']}\n{language['link'][userLanguage]} /getLink_{i['id']}\n{language['delete'][userLanguage]} /delete_{i['id']}\n\n"
 
-                    bot.send_message(message.chat.id, text)
+                    bot.send_message(message.chat.id, text[:4000])
 
                 #! If user has no files
                 else:

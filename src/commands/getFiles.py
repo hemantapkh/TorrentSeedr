@@ -48,9 +48,9 @@ def getFiles(message, called=False):
 
                     if called:
                         bot.answer_callback_query(message.id)
-                        bot.edit_message_text(chat_id=message.message.chat.id, message_id=message.message.message_id, text=text, reply_markup=markup)
+                        bot.edit_message_text(chat_id=message.message.chat.id, message_id=message.message.message_id, text=text[:4000], reply_markup=markup)
                     else:
-                        bot.send_message(message.chat.id, text, reply_markup=markup)
+                        bot.send_message(message.chat.id, text[:4000], reply_markup=markup)
 
             else:
                 exceptions(message, response, ac, userLanguage, called)
