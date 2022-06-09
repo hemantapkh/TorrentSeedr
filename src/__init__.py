@@ -32,6 +32,7 @@ from src.callbacks.authorize import authorize
 from src.callbacks.addAccount import addAccount
 from src.callbacks.getPlaylist import getPlaylist
 from src.callbacks.deleteFolder import deleteFolder
+from src.callbacks.refreshActive import refreshActive
 from src.callbacks.removeAccount import removeAccount
 from src.callbacks.cancelDownload import cancelDownload
 from src.callbacks.viewCredintials import viewCredintials

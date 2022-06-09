@@ -8,7 +8,7 @@ from src.functions.exceptions import exceptions, noAccount
 
 #: View active torrents list
 @bot.message_handler(commands=['active'])
-def active(message, userLanguage=None):
+def active(message, userLanguage=None, called=None):
     userId = message.from_user.id
     userLanguage = userLanguage or dbSql.getSetting(userId, 'language')
 
@@ -43,11 +43,22 @@ def active(message, userLanguage=None):
 
                             text += f"\n{progressBar(i['progress'])}\n\n{language['cancel'][userLanguage]} /cancel_{i['id']}\n\n"
 
-                        bot.send_message(message.chat.id, text)
+                        markup = telebot.types.InlineKeyboardMarkup()
+                        markup.add(telebot.types.InlineKeyboardButton(text=language['refreshBtn'][userLanguage], callback_data='refreshActive'))
+
+                        if called:
+                            bot.edit_message_text(chat_id=message.message.chat.id, message_id=message.message.id, text=text, reply_markup=markup)
+
+                        else:
+                            bot.send_message(message.chat.id, text, reply_markup=markup)
 
                     #! If user don't have any active torrents
                     else:
-                        bot.send_message(message.chat.id, language['noActiveTorrents'][userLanguage])
+                        if called:
+                            bot.edit_message_text(chat_id=message.message.chat.id, message_id=message.message.id, text=language['noActiveTorrents'][userLanguage])
+
+                        else:
+                            bot.send_message(message.chat.id, language['noActiveTorrents'][userLanguage])
 
             else:
                 exceptions(message, response, ac, userLanguage)

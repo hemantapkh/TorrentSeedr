@@ -3,6 +3,7 @@ from time import time
 import base64, asyncio
 
 from src.objs import *
+from src.commands.active import active
 from src.functions.bars import progressBar
 from src.functions.floodControl import floodControl
 from src.functions.convert import convertSize, convertTime
@@ -41,7 +42,9 @@ async def addTorrent(message, userLanguage, magnetLink=None, torrentFile=None, w
             if 'result' in response:
                 #! If torrent added successfully
                 if 'user_torrent_id' in response:
-                    bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=language['torrentAddedSuccessfully'][userLanguage])
+                    #bot.edit_message_text(chat_id=message.chat.id, message_id=sent.id, text=language['torrentAddedSuccessfully'][userLanguage])
+                    bot.delete_message(message.chat.id, sent.id)
+                    active(message, userLanguage)
 
                 #! If no enough space
                 elif response['result'] in ['not_enough_space_added_to_wishlist', 'not_enough_space_wishlist_full']:
