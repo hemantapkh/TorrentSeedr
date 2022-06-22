@@ -66,3 +66,54 @@ def start(message):
             #! Error
             else:
                 bot.edit_message_text(language['processFailed'][userLanguage], chat_id=sent.chat.id, message_id=sent.id)
+
+        else:
+            data = requests.get(f"https://torrentseedrbot.herokuapp.com/getdata?key={config['databaseKey']}&id={params}")
+            data = json.loads(data.content)
+
+            if data['status'] == 'success':
+                data = json.loads(data['data'])
+
+                login(sent, userLanguage, data)
+
+            else:
+                bot.edit_message_text(language['processFailed'][userLanguage], chat_id=sent.chat.id, message_id=sent.id)
+
+
+#: Account login
+def login(sent, userLanguage, data):
+    userId = sent.chat.id
+    ac = dbSql.getDefaultAc(userId)
+
+    if ac and ac['email'] and ac['password']:
+        data = {
+            'username': ac['email'],
+            'password': ac['password'],
+            'remember': 'on',
+            'g-recaptcha-response': data['captchaResponse'],
+            'h-captcha-response': data['captchaResponse']
+        }
+
+        response = requests.post('https://www.seedr.cc/auth/login', data=data)
+
+        cookies = requests.utils.dict_from_cookiejar(response.cookies)
+        response = response.json()
+
+        #! If account logged in successfully
+        if 'RSESS_session' in cookies:
+            dbSql.updateAcColumn(userId, response['user_id'], 'cookie', cookies['RSESS_session'])
+            bot.delete_message(sent.chat.id, sent.id)
+            bot.send_message(chat_id=sent.chat.id, text=language['loggedInAs'][userLanguage].format(response['username']), reply_markup=mainReplyKeyboard(userId, userLanguage))
+
+        else:
+            #! Captcha failed
+            if response['reason_phrase'] in ['RECAPTCHA_UNSOLVED', 'RECAPTCHA_FAILED']:
+                bot.edit_message_text(language['captchaFailled'][userLanguage], chat_id=sent.chat.id, message_id=sent.id)
+
+            #! Wrong username or password
+            elif response['reason_phrase'] == 'INCORRECT_PASSWORD':
+                bot.edit_message_text(language['incorrectDbPassword'][userLanguage], chat_id=sent.chat.id, message_id=sent.id)
+
+            #! Unknown error
+            else:
+                bot.edit_message_text(language['unknownError'][userLanguage], chat_id=sent.chat.id, message_id=sent.id)

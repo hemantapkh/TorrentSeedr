@@ -43,6 +43,7 @@ conn.execute('''CREATE TABLE accounts
          token      TEXT    NOT NULL,
          email      TEXT,
          password   TEXT,
+         cookie     TEXT,
          isPremium    INTEGERL,
          invitesRemaining INTEGER,
          timestamp  INTEGER

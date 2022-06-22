@@ -12,6 +12,7 @@ from src.commands.switch import switch
 from src.commands.account import account
 from src.commands.support import support
 from src.commands.getLink import getLink
+from src.commands.password import password
 from src.commands.fileLink import fileLink
 from src.commands.getFiles import getFiles
 from src.commands.wishlist import wishlist

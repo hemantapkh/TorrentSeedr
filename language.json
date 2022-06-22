@@ -40,6 +40,10 @@
         "english": "🔑 Enter your account password."
     },
 
+    "enterPasswordFor":{
+        "english": "🔑 Enter your account password for <b>{}</b>."
+    },
+
     "storePassword?":{
         "english": "<b>🔑Do you want to store your account password in our database?</b> Storing the password will give the ability to the bot to regenerate your account token once it expires."
     },
@@ -84,6 +88,11 @@
 
     "incorrectPassword":{
         "english": "⚠️ The email and password do not match. Please try again."
+   
+    },
+
+    "incorrectDbPassword":{
+        "english": "⚠️ The email and password do not match. Please update your password by clicking /password and try again."
    
     },
 

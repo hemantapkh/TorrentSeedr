@@ -126,11 +126,19 @@ class dbQuery():
         self.setDefaultAc(userId, id)
 
     #: Update the account's token
-    def updateAccount(self, userId, accountId, token):
+    def updateAccount(self, token, userId, accountId):
         con = sqlite3.connect(self.db)
         cur = con.cursor()
 
         cur.execute(f'UPDATE accounts SET token=? WHERE ownerId=? AND accountId=?', (token, userId, accountId))
+        con.commit()
+
+    #: Update certain column of accounts
+    def updateAcColumn(self, userId, accountId, variable, value):
+        con = sqlite3.connect(self.db)
+        cur = con.cursor()
+
+        cur.execute(f'UPDATE accounts SET {variable}=? WHERE ownerId=? AND accountId=?', (value, userId, accountId ))
         con.commit()
 
     #: Delete a user's account
