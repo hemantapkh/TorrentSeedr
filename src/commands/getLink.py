@@ -1,3 +1,4 @@
+import json
 import requests
 import secrets
 
@@ -26,9 +27,7 @@ def getLink(message, called=False):
                 'archive_arr[0][id]': folderId,
             }
 
-            cookies = {
-                        'RSESS_session': ac['cookie'],
-            }
+            cookies = json.loads((ac['cookie']))
 
             response = requests.put(f'https://www.seedr.cc/download/archive/init/2c94612b-ecc0-41f7-8892-{secrets.token_hex(6)}', cookies=cookies, data=data).json()
 

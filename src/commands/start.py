@@ -1,3 +1,4 @@
+import json
 import asyncio
 import requests, json
 from src.objs import *
@@ -89,7 +90,7 @@ def login(sent, userLanguage, data):
         data = {
             'username': ac['email'],
             'password': ac['password'],
-            'remember': 'on',
+            'rememberme': 'on',
             'g-recaptcha-response': data['captchaResponse'],
             'h-captcha-response': data['captchaResponse']
         }
@@ -100,8 +101,8 @@ def login(sent, userLanguage, data):
         response = response.json()
 
         #! If account logged in successfully
-        if 'RSESS_session' in cookies:
-            dbSql.updateAcColumn(userId, response['user_id'], 'cookie', cookies['RSESS_session'])
+        if cookies:
+            dbSql.updateAcColumn(userId, response['user_id'], 'cookie', json.dumps(cookies))
             bot.delete_message(sent.chat.id, sent.id)
             bot.send_message(chat_id=sent.chat.id, text=language['loggedInAs'][userLanguage].format(response['username']), reply_markup=mainReplyKeyboard(userId, userLanguage))
 
