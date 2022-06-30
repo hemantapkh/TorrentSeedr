@@ -79,14 +79,13 @@ async def addTorrent(message, userLanguage, magnetLink=None, torrentFile=None, w
 def invalidMagnet(message, userLanguage, message_id=None):
     markup = telebot.types.InlineKeyboardMarkup()
 
-    if message_id:
-        url = 'https://t.me/torrenthuntbot'
+    url = f'https://t.me/torrenthuntbot?start={botUsername}'
 
-    else:
-        params = base64.b64encode(message.text.encode('utf-8')).decode('utf-8')
-        params = f'?start={params}' if len(params) <= 64 else ''
+    if not message_id:
+        params = '_' + base64.b64encode(message.text.encode('utf-8')).decode('utf-8')
 
-        url = f'https://t.me/torrenthuntbot{params}'
+        if len(params)+len(botUsername) <= 64:
+            url = url + params
 
     markup.add(telebot.types.InlineKeyboardButton('Torrent Hunt 🔎', url))
 
