@@ -67,7 +67,7 @@ def login4(message, userLanguage, email, password):
                 token=seedr.token,
                 isPremium=acSettings['account']['premium'],
                 invitesRemaining=acSettings['account']['invites'],
-                email=email if storePassword else None,
+                email=acSettings['account']['email'],
                 password=password if storePassword else None
             )
 

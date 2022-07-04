@@ -25,7 +25,15 @@ def Authorize(call, accountId=None, deviceCode=None, userLanguage=None):
         )
         acSettings = ac.getSettings()
 
-        dbSql.setAccount(userId=call.from_user.id, accountId=acSettings['account']['user_id'], userName=acSettings['account']['username'], token=seedr.token, isPremium=acSettings['account']['premium'], invitesRemaining=acSettings['account']['invites'])
+        dbSql.setAccount(
+            userId=call.from_user.id,
+            accountId=acSettings['account']['user_id'],
+            userName=acSettings['account']['username'],
+            token=seedr.token,
+            isPremium=acSettings['account']['premium'],
+            invitesRemaining=acSettings['account']['invites'],
+            email=acSettings['account']['email']
+        )
 
 
         bot.delete_message(call.message.chat.id, call.message.id)
