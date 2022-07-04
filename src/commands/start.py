@@ -86,9 +86,9 @@ def login(sent, userLanguage, data):
     userId = sent.chat.id
     ac = dbSql.getDefaultAc(userId)
 
-    if ac and ac['email'] and ac['password']:
+    if ac and ac['password']:
         data = {
-            'username': ac['email'],
+            'username': ac['email'] or ac['userName'],
             'password': ac['password'],
             'rememberme': 'on',
             'g-recaptcha-response': data['captchaResponse'],

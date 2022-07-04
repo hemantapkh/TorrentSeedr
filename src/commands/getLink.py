@@ -51,7 +51,7 @@ def getLink(message, called=False):
             else:
                 solveCaptcha(message, called)
 
-        elif ac and ac['email'] and ac['password']:
+        elif ac and ac['password']:
             solveCaptcha(message, called)
 
         elif ac:
