@@ -75,7 +75,7 @@ async def addTorrent(message, userLanguage, magnetLink=None, torrentFile=None, w
                                 break
 
                             #! Increase the amount of sleep in each iteration
-                            await asyncio.sleep(5*i)
+                            await asyncio.sleep(2*i)
 
                         #! If seeds collected successfully
                         if 'title' in progressResponse:
@@ -118,7 +118,7 @@ async def addTorrent(message, userLanguage, magnetLink=None, torrentFile=None, w
                                             break
 
                                         else:
-                                            response = account.listContents().json()
+                                            response = account.listContents()
                                             if response['torrents']:
                                                 for torrents in response['torrents']:
                                                     if torrentId not in torrents.values():
@@ -158,7 +158,7 @@ async def addTorrent(message, userLanguage, magnetLink=None, torrentFile=None, w
                                                     cancelled = True
                                                     break
 
-                                    await asyncio.sleep(5*i)
+                                    await asyncio.sleep(2*i)
                                     progressResponse = json.loads(requests.get(progressUrl).text[2:-1])
 
                             #! If download is taking long time
