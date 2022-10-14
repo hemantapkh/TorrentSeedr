@@ -11,9 +11,9 @@ def exceptions(message, response, ac, userLanguage, called=False):
 
     else:
         bot.send_message(chatId, language['unknownError'][userLanguage],
-            reply_markup=telebot.types.InlineKeyboardMarkup(
+            reply_markup=telebot.types.InlineKeyboardMarkup([
                 telebot.types.InlineKeyboardButton(text=language['removeAccountBtn'][userLanguage], callback_data=f"removeAccount_{ac['id']}")
-        ))
+            ]))
 
 
 def noAccount(message, userLanguage, called=False):
