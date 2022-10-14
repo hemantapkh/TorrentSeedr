@@ -10,7 +10,10 @@ def exceptions(message, response, ac, userLanguage, called=False):
         bot.send_message(chatId, language['tokenExpired'][userLanguage], reply_markup=mainReplyKeyboard(userId=chatId, userLanguage=userLanguage))
 
     else:
-        bot.send_message(chatId, language['unknownError'][userLanguage], reply_markup=mainReplyKeyboard(userId=chatId, userLanguage=userLanguage))
+        bot.send_message(chatId, language['unknownError'][userLanguage],
+            reply_markup=telebot.types.InlineKeyboardMarkup(
+                telebot.types.InlineKeyboardButton(text=language['removeAccountBtn'][userLanguage], callback_data=f"removeAccount_{ac['id']}")
+        ))
 
 
 def noAccount(message, userLanguage, called=False):

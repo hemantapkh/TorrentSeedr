@@ -97,7 +97,7 @@
     },
 
     "unknownError":{
-        "english": "⚠️ Unknown error occured. If you are seeing this error repeatedly, report this issue to us."
+        "english": "⚠️ Unknown error occured. If you are seeing this error repeatedly, please logout your account and login again."
    
     },
 
@@ -427,7 +427,7 @@
     },
 
     "removeAccountBtn":{
-        "english": "➖ Remove Account"
+        "english": "➖ Logout"
 
     },
 
