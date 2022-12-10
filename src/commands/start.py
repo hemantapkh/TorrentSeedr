@@ -69,7 +69,7 @@ def start(message):
                 bot.edit_message_text(language['processFailed'][userLanguage], chat_id=sent.chat.id, message_id=sent.id)
 
         else:
-            data = requests.get(f"https://torrentseedrbot.herokuapp.com/getdata?key={config['databaseKey']}&id={params}")
+            data = requests.get(f"https://torrent-seedr.onrender.com/getdata?key={config['databaseKey']}&id={params}")
             data = json.loads(data.content)
 
             if data['status'] == 'success':
