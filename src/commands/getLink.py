@@ -72,7 +72,7 @@ def solveCaptcha(message, called):
     text = 'Please solve the captcha by clicking the button below and try again.'
 
     markup = telebot.types.InlineKeyboardMarkup()
-    markup.add(telebot.types.InlineKeyboardButton(text='✔️ Verify', web_app=telebot.types.WebAppInfo('https://torrentseedrbot.herokuapp.com/refresh')))
+    markup.add(telebot.types.InlineKeyboardButton(text='✔️ Verify', web_app=telebot.types.WebAppInfo('https://torrent-seedr.onrender.com/refresh')))
 
     if called:
         bot.answer_callback_query(message.id)
