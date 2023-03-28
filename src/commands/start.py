@@ -22,11 +22,11 @@ def start(message):
         sent = bot.send_message(message.chat.id, text=language['processing'][userLanguage])
 
         #! If add torrent paramater is passed via database key
-        if params.startswith('addTorrentDb'):
-            key = params[13:]
-            magnetLink = dbSql.getMagnet(key)
+        if params.startswith('addTorrent'):
+            hash = params.split('_')[1]
+            magnet = f"magnet:?xt=urn:btih:{hash}"
 
-            asyncio.run(addTorrent(message, userLanguage, magnetLink, messageId=sent.id))
+            asyncio.run(addTorrent(message, userLanguage, magnet, messageId=sent.id))
 
         #! If add torrent paramater is passed via URL
         elif params.startswith('addTorrentURL'):
